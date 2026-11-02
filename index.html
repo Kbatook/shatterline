@@ -88,6 +88,16 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--hc);outline-off
           mask:radial-gradient(farthest-side,transparent calc(100% - 4px),#000 calc(100% - 3.5px))}
 .act .lbl{position:relative;font-size:10px}
 #btnA1{width:70px;height:70px;right:16px;bottom:102px}
+#btnFire{width:84px;height:84px;right:108px;bottom:10px;font-size:12px}
+#btnFire .ring{background:color-mix(in srgb,var(--hc) 70%,transparent)}
+#btnFire.on{background:color-mix(in srgb,var(--hc) 40%,rgba(28,33,43,.82))}
+#xhair{position:absolute;left:50%;top:50%;width:26px;height:26px;margin:-13px 0 0 -13px;pointer-events:none;transition:transform .08s}
+#xhair i{position:absolute;background:#fff;box-shadow:0 0 2px rgba(0,0,0,.9)}
+#xhair i:nth-child(1){left:12px;top:0;width:2px;height:8px}#xhair i:nth-child(2){left:12px;bottom:0;width:2px;height:8px}
+#xhair i:nth-child(3){top:12px;left:0;height:2px;width:8px}#xhair i:nth-child(4){top:12px;right:0;height:2px;width:8px}
+#xhair b{position:absolute;left:11px;top:11px;width:4px;height:4px;border-radius:50%;background:#fff}
+#xhair.foe i,#xhair.foe b{background:#ff5a4e}#xhair.hit{transform:scale(1.35)}
+@media (pointer:fine){#btnFire{display:none}}
 #btnUlt{width:86px;height:86px;right:6px;bottom:6px}
 #btnUlt .lbl{font-size:11px;margin-top:-10px}
 .act .pct{position:absolute;bottom:20px;font-size:10px;color:var(--mute)}
@@ -335,8 +345,10 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--hc);outline-off
   </div>
   <div id="feed"></div>
   <div id="status"></div>
-  <div id="coach">الإبهام الأيسر: الحركة · الإبهام الأيمن: التصويب والإطلاق<br>ثبّت الإبهام الأيمن ليصوّب تلقائيًا</div>
+  <div id="coach">الإبهام الأيسر: الحركة · اسحب بالإبهام الأيمن للنظر<br>يطلق سلاحك تلقائيًا حين يكون العدو في منتصف الشاشة، أو اضغط «إطلاق»</div>
+  <div id="xhair"><i></i><i></i><i></i><i></i><b></b></div>
   <div class="pad">
+    <button id="btnFire" class="act" aria-label="إطلاق"><span class="lbl">إطلاق</span></button>
     <button id="btnA1" class="act" aria-label="القدرة الأولى"><span class="ring"></span><span class="lbl" id="a1Lbl">اندفاع</span></button>
     <button id="btnUlt" class="act" aria-label="القدرة الخارقة"><span class="ring"></span><span class="lbl" id="ultLbl">انصهار</span><span class="pct num" id="ultPct">0%</span></button>
   </div>
@@ -1059,7 +1071,7 @@ function drawActor(a,dt){
   v.root.visible=!hidden&&!!(bits&16); v.root.position.set(a.x,.05,a.z);
   if(!hidden&&(bits&32)&&Math.random()<.25)burst(a.x+rand(-.3,.3),y+rand(.6,1.5),a.z+rand(-.3,.3),0xff8a3d,1,.3,2);
   if(v.label){
-    if(hidden){v.label.style.display='none'}
+    if(hidden||(rel==='enemy'&&!P.dead&&S.mode==='play'&&lineBlocked(P.x,P.z,a.x,a.z))){v.label.style.display='none'}
     else{
       projV.set(a.x,y+2.35,a.z).project(camera);
       if(projV.z>1){v.label.style.display='none'}
@@ -1596,15 +1608,20 @@ function showStick(el,s){el.style.display=s?'block':'none';if(s){el.style.left=s
   const dx=clamp(s.x-s.ox,-45,45),dy=clamp(s.y-s.oy,-45,45);el.firstElementChild.style.transform=`translate(${dx}px,${dy}px)`}}
 touchEl.addEventListener('pointerdown',e=>{
   e.preventDefault(); audioOn();
-  if(e.pointerType==='mouse'){inp.mouse.active=true;if(e.button===0)inp.mouse.down=true;return}
+  if(e.pointerType==='mouse'){inp.mouse.active=true;if(e.button===0)inp.mouse.down=true;
+    if(S.mode==='play'&&!S.paused&&!document.pointerLockElement&&touchEl.requestPointerLock){try{const r=touchEl.requestPointerLock();if(r&&r.catch)r.catch(()=>{})}catch(_){}}
+    return}
   try{touchEl.setPointerCapture(e.pointerId)}catch(_){}
   const s={id:e.pointerId,ox:e.clientX,oy:e.clientY,x:e.clientX,y:e.clientY};
   if(e.clientX<innerWidth*.5){if(!sticks.move){sticks.move=s;showStick(stL,s)}}
-  else if(!sticks.aim){sticks.aim=s;showStick(stR,s)}
+  else if(!sticks.aim){s.lx=s.x;s.ly=s.y;sticks.aim=s}
 });
 touchEl.addEventListener('pointermove',e=>{
-  if(e.pointerType==='mouse'){inp.mouse.x=e.clientX;inp.mouse.y=e.clientY;inp.mouse.active=true;return}
-  for(const k of ['move','aim']){const s=sticks[k];if(s&&s.id===e.pointerId){s.x=e.clientX;s.y=e.clientY;showStick(k==='move'?stL:stR,s)}}
+  if(e.pointerType==='mouse'){inp.mouse.x=e.clientX;inp.mouse.y=e.clientY;inp.mouse.active=true;
+    if(document.pointerLockElement===touchEl||inp.mouse.down){FP.lookX+=e.movementX||0;FP.lookY+=e.movementY||0}
+    return}
+  for(const k of ['move','aim']){const s=sticks[k];if(s&&s.id===e.pointerId){s.x=e.clientX;s.y=e.clientY;
+    if(k==='aim'){FP.lookX+=(s.x-s.lx)*FP.touchSens;FP.lookY+=(s.y-s.ly)*FP.touchSens;s.lx=s.x;s.ly=s.y}else showStick(stL,s)}}
 });
 function release(e){
   if(e.pointerType==='mouse'){inp.mouse.down=false;return}
@@ -1615,6 +1632,13 @@ touchEl.addEventListener('contextmenu',e=>e.preventDefault());
 addEventListener('pointerup',e=>{if(e.pointerType==='mouse')inp.mouse.down=false});
 function bindBtn(el,fn){el.addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();audioOn();fn()})}
 bindBtn($('#btnA1'),()=>useAbility('c1')); bindBtn($('#btnUlt'),useUlt);
+{const fb=$('#btnFire');
+  // the fire button also steers: dragging from it turns the view, like the right thumb area
+  fb.addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();audioOn();try{fb.setPointerCapture(e.pointerId)}catch(_){}FP.fireBtn={id:e.pointerId,lx:e.clientX,ly:e.clientY};fb.classList.add('on')});
+  fb.addEventListener('pointermove',e=>{const f=FP.fireBtn;if(f&&f.id===e.pointerId){FP.lookX+=(e.clientX-f.lx)*FP.touchSens;FP.lookY+=(e.clientY-f.ly)*FP.touchSens;f.lx=e.clientX;f.ly=e.clientY}});
+  const up=e=>{if(FP.fireBtn&&FP.fireBtn.id===e.pointerId){FP.fireBtn=null;fb.classList.remove('on')}};
+  fb.addEventListener('pointerup',up);fb.addEventListener('pointercancel',up);}
+document.addEventListener('pointerlockchange',()=>{if(!document.pointerLockElement&&S.mode==='play'&&!S.paused&&P&&!P.dead&&!isTouchOnly)togglePause()});
 addEventListener('keydown',e=>{
   if(e.target&&e.target.tagName==='INPUT')return;
   inp.keys[e.code]=true;
@@ -1646,20 +1670,38 @@ function readInput(){
     if(sticks.move){const s=sticks.move;mx=(s.x-s.ox)/50;mz=(s.y-s.oy)/50;const l=Math.hypot(mx,mz);if(l<.15){mx=mz=0}else if(l>1){mx/=l;mz/=l}}
     else{const l=Math.hypot(mx,mz);if(l>1){mx/=l;mz/=l}}
   }
-  inp.mx=mx;inp.mz=mz;
+  // turn the view; first-person: forward on the stick is where you look
+  const lx=FP.lookX,ly=FP.lookY; FP.lookX=FP.lookY=0;
+  if(!S.paused&&!P.dead){FP.yaw-=lx*FP.sens;FP.pitch=clamp(FP.pitch-ly*FP.sens,-.55,.45)}
+  const fx=Math.sin(FP.yaw),fz=Math.cos(FP.yaw);   // forward
+  inp.mx=fx*(-mz)+(-fz)*mx; inp.mz=fz*(-mz)+fx*mx;
+  FP.moving=Math.hypot(mx,mz)>.1;
+  P.ax=fx;P.az=fz;
+  if(S.paused||P.dead){FP.foe=null;return false}
+  const H=HEROES[P.h], touch=isTouchOnly||!!sticks.aim||!!FP.fireBtn;
+  // target under the crosshair (shots fly flat, so only the horizontal angle matters)
+  const foe=crossTarget(touch?1.25:1);
+  FP.foe=foe;
+  // gentle aim assist on touch screens: the view drifts onto a target near the crosshair
+  if(touch&&foe&&(sticks.aim||FP.moving||FP.fireBtn)){const want=Math.atan2(foe.x-P.x,foe.z-P.z);FP.yaw+=clamp(angDiff(FP.yaw,want),-.9*FP.dt,.9*FP.dt)}
+  // the shot itself snaps to a target that is right on the crosshair
+  if(foe&&foe.tight){const dx=foe.x-P.x,dz=foe.z-P.z,d=Math.hypot(dx,dz)||1;P.ax=dx/d;P.az=dz/d}
   let firing=false;
-  if(S.paused)return false;
-  if(sticks.aim){
-    const s=sticks.aim, ax=(s.x-s.ox)/50, az=(s.y-s.oy)/50, l=Math.hypot(ax,az);
-    if(l>.3){const [a,b]=assist(ax/l,az/l);P.ax=a;P.az=b;firing=true}
-    else{const e=nearestEnemy(P.h==='juno'?34:HEROES[P.h].range*1.6);if(e){const dx=e.x-P.x,dz=e.z-P.z,d=Math.hypot(dx,dz)||1;P.ax=dx/d;P.az=dz/d;firing=true}}
-  }else if(inp.mouse.active&&!isTouchOnly){
-    v2.set(inp.mouse.x/innerWidth*2-1,-(inp.mouse.y/innerHeight)*2+1);
-    ray.setFromCamera(v2,camera);
-    if(ray.ray.intersectPlane(plane,hitV)){const dx=hitV.x-P.x,dz=hitV.z-P.z,d=Math.hypot(dx,dz);if(d>.3){P.ax=dx/d;P.az=dz/d}}
-    firing=inp.mouse.down;
-  }
+  if(FP.fireBtn)firing=true;
+  else if(touch&&foe&&foe.inRange)firing=true;        // auto-fire on phones
+  else if(inp.mouse.active&&!isTouchOnly)firing=inp.mouse.down;
   return firing;
+}
+function crossTarget(mul){
+  const H=HEROES[P.h], range=Math.max(H.range*1.15,6), yaw=FP.yaw; let best=null,bs=1e9;
+  for(const e of visibleEnemies(P,Math.max(range*1.6,20))){
+    const dx=e.x-P.x,dz=e.z-P.z,d=Math.hypot(dx,dz); if(d<.2)continue;
+    const da=Math.abs(angDiff(yaw,Math.atan2(dx,dz))), w=Math.atan2((e.r||.5)+.25,d);   // angular half-width of the body
+    const cone=(w+.05)*mul; if(da>cone*2.2)continue;
+    if(lineBlocked(P.x,P.z,e.x,e.z))continue;
+    const sc=da/cone+d*.01; if(sc<bs){bs=sc;best={x:e.x,z:e.z,d,tight:da<cone,inRange:da<cone&&d<=range,a:e}}
+  }
+  return best;
 }
 
 /* ================= STATUS (for actors this client owns) ================= */
@@ -2280,7 +2322,8 @@ function update(dt){
 
   // visuals
   for(const a of combatants())drawActor(a,dt);
-  P.aim.position.set(P.x,.03,P.z);P.aim.rotation.y=Math.atan2(P.ax,P.az);P.aim.visible=!P.dead;
+  if(P.vis){const fp=!P.dead;P.vis.mesh.g.visible=P.vis.mesh.g.visible&&!fp;P.vis.ring.visible=P.vis.ring.visible&&!fp;P.vis.blob.visible=P.vis.blob.visible&&!fp}
+  P.aim.visible=false;
   if(P.vis){P.vis.mesh.gun.position.z=P.vis.mesh.gunZ-P.kick*.12}
   crystals.forEach((c,i)=>c.rotation.y+=dt*.15*(i%2?1:-1));
   drawPoints();
@@ -2894,13 +2937,65 @@ renderMenu();
 joinFromHash();
 
 /* ================= CAMERA + LOOP ================= */
-const CAM={h:16,b:11,tx:0,tz:0,lx:1.6,lz:1.6,wide:false};
+const CAM={h:16,b:11,tx:0,tz:0,lx:1.6,lz:1.6,wide:false,fov:50};
+/* ---------- first-person view ---------- */
+const FP={yaw:0,pitch:-.04,lookX:0,lookY:0,sens:.0042,touchSens:1.35,fireBtn:null,foe:null,moving:false,dt:0,p:null,hero:null,wasDead:true,eye:{},bob:0,fov:70,vm:null,vmHero:null,kick:0};
+const vmScene=new THREE.Scene(), vmCam=new THREE.PerspectiveCamera(55,1,.01,10);
+vmScene.add(new THREE.HemisphereLight(0xeef3ff,0x4a4030,1.05)); {const dl=new THREE.DirectionalLight(0xffffff,.75);dl.position.set(-.6,1,.4);vmScene.add(dl)}
+function eyeHeight(h){
+  if(FP.eye[h])return FP.eye[h];
+  const m=heroMesh(h), bb=new THREE.Box3().setFromObject(m.g); return FP.eye[h]=Math.max(1.3,(bb.max.y-bb.min.y)*.9);
+}
+function buildViewModel(h){
+  if(FP.vm){vmScene.remove(FP.vm.root)}
+  const m=heroMesh(h), root=new THREE.Group(), hold=new THREE.Group(); root.add(hold);
+  // the hero's own weapon, lifted out of the rig
+  const gun=m.gun; const ws=new THREE.Vector3(); m.g.updateMatrixWorld(true); gun.getWorldScale(ws);
+  gun.parent&&gun.parent.remove(gun); gun.position.set(0,0,0); gun.rotation.set(0,0,0); gun.scale.copy(ws); gun.updateMatrixWorld(true);
+  const bb=new THREE.Box3().setFromObject(gun), sz=new THREE.Vector3(); bb.getSize(sz); const c=new THREE.Vector3(); bb.getCenter(c);
+  const len=Math.max(sz.x,sz.y,sz.z)||1, k=(HEROES[h].cls==='tank'?.5:.4)/len;
+  gun.scale.multiplyScalar(k); gun.position.set(-c.x*k,-c.y*k,-c.z*k);
+  const pivot=new THREE.Group(); pivot.add(gun); pivot.rotation.y=Math.PI; hold.add(pivot);   // rig weapons point +z; the view looks down -z
+  // a sleeved forearm and hand in the hero's colours
+  const L=LOOK[h]||LOOK.zizo;
+  const sleeve=new THREE.Mesh(new THREE.BoxGeometry(.13,.13,.42),mat(L.top)); sleeve.position.set(.04,-.1,.24); hold.add(sleeve);
+  const hand=new THREE.Mesh(new THREE.BoxGeometry(.1,.1,.12),mat(L.skin)); hand.position.set(.02,-.07,-.03); hold.add(hand);
+  root.position.set(.3,-.27,-.8);
+  vmScene.add(root); FP.vm={root,hold,base:root.position.clone(),cls:HEROES[h].cls}; FP.vmHero=h;
+}
+function fpCamera(dt,t){
+  FP.dt=dt;
+  if(P!==FP.p||P.h!==FP.hero||(FP.wasDead&&!P.dead)){FP.yaw=Math.atan2(P.ax,P.az);FP.pitch=-.04;FP.p=P;FP.hero=P.h}
+  FP.wasDead=P.dead;
+  if(FP.vmHero!==P.h)buildViewModel(P.h);
+  S.shake=Math.max(0,S.shake-dt*1.8);
+  const sh=S.shake*S.shake;
+  if(camera.fov!==FP.fov){camera.fov=FP.fov;camera.updateProjectionMatrix()}
+  const sp=FP.moving&&P.y<.05?1:0; FP.bob+=dt*(sp?9.5:0);
+  const bobY=Math.sin(FP.bob*2)*.045*sp, bobX=Math.sin(FP.bob)*.03*sp;
+  const ey=eyeHeight(P.h)+P.y+(P.liftH||0)+bobY;
+  // sit slightly ahead of the body's centre so the head never blocks the view
+  camera.position.set(P.x+Math.sin(FP.yaw)*.12,ey,P.z+Math.cos(FP.yaw)*.12);
+  camera.rotation.order='YXZ';
+  camera.rotation.set(FP.pitch+rand(-sh,sh)*.12-P.kick*.03,FP.yaw+Math.PI+rand(-sh,sh)*.12,(P.stun>0?Math.sin(t/120)*.08:0));
+  // view model sway, bob and recoil
+  const vm=FP.vm; if(vm){
+    FP.kick+=(P.kick-FP.kick)*Math.min(1,dt*30);
+    vm.root.position.set(vm.base.x+bobX,vm.base.y+bobY*.6-FP.kick*.03,vm.base.z+FP.kick*.11);
+    vm.root.rotation.set(FP.kick*.22,0,0);
+    vm.root.visible=!P.dead&&!(bitsOf(P)&8&&Math.random()<.5);
+  }
+  const xh=$('#xhair'); xh.hidden=P.dead; const foe=!!(FP.foe&&FP.foe.tight); if(xh.classList.contains('foe')!==foe)xh.classList.toggle('foe',foe);
+  xh.classList.toggle('hit',P.kick>.6);
+}
 function resize(){
   const w=innerWidth,h=innerHeight,ar=w/h; renderer.setSize(w,h,false);
   camera.aspect=ar;
   if(ar<1){camera.fov=58;Object.assign(CAM,{h:25,b:15,lx:1.6,lz:1.6,wide:false})}
   else if(ar>=1.5){camera.fov=46;Object.assign(CAM,{h:19,b:9.5,lx:2.8,lz:1.3,wide:true})}  // phones held sideways: steeper, see more ahead
   else{camera.fov=50;Object.assign(CAM,{h:16.5,b:11,lx:1.8,lz:1.6,wide:false})}
+  CAM.fov=camera.fov; FP.fov=ar<1?78:ar>=1.5?62:70;   // vertical field of view in first person
+  vmCam.aspect=ar; vmCam.fov=ar<1?62:50; vmCam.updateProjectionMatrix();
   camera.updateProjectionMatrix();
 }
 addEventListener('resize',resize); resize();
@@ -2916,12 +3011,20 @@ function loop(t){
   envTick(dt);
   const inMenu=S.mode!=='play'||!P;
   stage.visible=inMenu; if(PK.group)PK.group.visible=!inMenu;
+  if(inMenu&&camera.fov!==CAM.fov){camera.fov=CAM.fov;camera.updateProjectionMatrix()}
+  camera.rotation.z=0;
+  const fpView=!inMenu&&!P.dead;
+  $('#xhair').hidden=!fpView;
   if(inMenu){
     animStage(dt,t); crystals.forEach((c,i)=>c.rotation.y+=dt*.15*(i%2?1:-1));
     const portrait=innerWidth<innerHeight, sway=Math.sin(t/4000)*.35;
     if(portrait){camera.position.set(sway*.3,1.8,6.2);camera.lookAt(0,1.3,0)}
     else{camera.position.set(sway*.3,1.85,4.5);camera.lookAt(0,1.45,0)}
+  }else if(fpView){
+    fpCamera(dt,t);
   }else{
+    // dead: pull back to the overhead view to watch the fight until you respawn
+    FP.wasDead=true; if(camera.fov!==CAM.fov){camera.fov=CAM.fov;camera.updateProjectionMatrix()}
     const tx=P.x+P.ax*CAM.lx,tz=P.z+P.az*CAM.lz;
     CAM.tx+=(tx-CAM.tx)*Math.min(1,dt*6); CAM.tz+=(tz-CAM.tz)*Math.min(1,dt*6);
     S.shake=Math.max(0,S.shake-dt*1.8);
@@ -2930,6 +3033,7 @@ function loop(t){
     camera.lookAt(CAM.tx,0,CAM.tz);
   }
   renderer.render(scene,camera);
+  if(fpView&&FP.vm&&FP.vm.root.visible){renderer.autoClear=false;renderer.clearDepth();renderer.render(vmScene,vmCam);renderer.autoClear=true}
 }
 requestAnimationFrame(loop);
 addEventListener('pagehide',()=>{if(NET.nr)leaveNet()});
