@@ -424,6 +424,49 @@ body.intro-on #hud,body.kc-on #hud{display:none!important}
   .in-mode{font-size:26px}.in-map{font-size:13px}.in-team{gap:3px}.in-vs{font-size:22px}.in-foot b{font-size:15px}.in-teams{gap:12px}
   .kc-top{font-size:14px}.kc-who b{font-size:15px}.kc-skip{font-size:13px;padding:7px 14px}
 }
+/* ---------- Play of the game + vote ---------- */
+#kc.potg{--c:#ffc94a;box-shadow:inset 0 0 160px rgba(255,180,40,.28)}
+#kc.potg .kc-rec{background:#ffc94a}
+#kc.potg .kc-top b{color:#ffe08a}
+.onext{font-size:13px;color:var(--mute)}
+.otabs{display:flex;justify-content:center;gap:6px}
+.otabs button{border:1px solid var(--line);background:rgba(28,33,43,.8);color:var(--mute);font-family:var(--display);font-weight:700;font-size:14px;padding:6px 16px}
+.otabs button[aria-pressed="true"]{border-color:var(--vantite);color:#fff;background:rgba(207,232,255,.12)}
+.vwrap{display:grid;gap:8px;justify-items:center}
+.vcards{display:grid;grid-template-columns:repeat(4,minmax(0,200px));gap:12px;justify-content:center;width:100%}
+.vcard{--c:var(--ally);position:relative;display:grid;grid-template-rows:auto auto 1fr auto;background:rgba(20,25,34,.92);border:1px solid var(--line);border-top:3px solid var(--c);overflow:hidden;min-width:0;transition:transform .25s,box-shadow .25s}
+.vcard.enemy{--c:color-mix(in srgb,var(--enemy) 50%,#ff3d5a)} .vcard.ffa{--c:var(--vantite)}
+.vacc{font-family:var(--display);font-weight:800;font-size:15px;color:#ffe08a;text-align:center;padding:7px 6px 4px}
+.vpic{position:relative;aspect-ratio:1.25;background:color-mix(in srgb,var(--hc2) 30%,var(--panel));overflow:hidden}
+.vpic img{width:100%;height:100%;object-fit:cover;display:block}
+.vpic .vstat{position:absolute;inset-inline:0;bottom:0;display:flex;align-items:baseline;justify-content:center;gap:6px;padding:16px 6px 5px;background:linear-gradient(transparent,rgba(0,0,0,.85))}
+.vstat b{font-family:var(--display);font-size:26px;font-weight:800;color:#fff}.vstat small{font-size:12px;color:#d6dbe6}
+.vwho{display:grid;justify-items:center;padding:6px 6px 2px;line-height:1.2;min-width:0}
+.vwho b{font-family:var(--display);font-size:16px;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vwho small{font-size:11px;color:var(--mute)}
+.vfoot{display:grid;gap:6px;padding:6px 8px 9px;justify-items:center}
+.vpips{display:flex;gap:4px;min-height:10px;flex-wrap:wrap;justify-content:center}
+.vpips i{width:10px;height:10px;transform:rotate(45deg);background:#ffc94a;box-shadow:0 0 6px rgba(255,201,74,.7)}
+.vcount{font-size:12px;color:var(--mute)}
+.vbtn{width:100%;border:1px solid var(--c);background:color-mix(in srgb,var(--c) 22%,transparent);color:#fff;font-family:var(--display);font-weight:700;font-size:14px;padding:6px 8px}
+.vbtn:hover:not(:disabled){background:color-mix(in srgb,var(--c) 40%,transparent)}
+.vbtn:disabled{opacity:.55;border-color:var(--line);background:transparent}
+.vcard.mine{box-shadow:0 0 0 2px #ffc94a,0 0 22px rgba(255,201,74,.35)}
+.vcard.mine .vbtn{opacity:1;border-color:#ffc94a;color:#ffe08a}
+.vcard.win{transform:translateY(-6px) scale(1.04);box-shadow:0 0 0 2px #ffc94a,0 0 36px rgba(255,201,74,.55);z-index:1}
+.vbadge{position:absolute;top:34px;inset-inline:0;margin:auto;width:max-content;max-width:94%;background:#ffc94a;color:#1b1406;font-family:var(--display);font-weight:800;font-size:13px;padding:2px 10px;z-index:2;animation:vpop .4s ease-out}
+@keyframes vpop{from{transform:scale(1.6);opacity:0}to{transform:none;opacity:1}}
+.vnote{margin:0;font-size:12px;color:var(--mute);text-align:center}
+@media (max-width:820px){.vcards{grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}}
+@media (max-height:500px){
+  .otabs button{font-size:12px;padding:4px 12px}
+  .vcards{gap:7px;grid-template-columns:repeat(4,minmax(0,170px))}
+  .vacc{font-size:12px;padding:4px 4px 2px}.vpic{aspect-ratio:2.1}.vstat b{font-size:19px}.vpic .vstat{padding:10px 4px 3px}
+  .vwho{padding:3px 4px 0}.vwho b{font-size:13px}.vwho small{display:none}.vfoot{gap:4px;padding:4px 6px 6px}
+  .vbtn{font-size:12px;padding:4px 6px}.vnote{display:none}.vbadge{top:24px;font-size:11px}.vpips i{width:8px;height:8px}
+  #over .result .k{font-size:12px}
+  #over .bwrap{max-height:calc(100vh - 168px)}#over .mvp{font-size:11px}#over .result .big{font-size:26px}
+}
 /* ---------- Rotate prompt ---------- */
 #rotate{position:fixed;inset:0;z-index:50;display:none;place-items:center;align-content:center;gap:12px;text-align:center;background:var(--ink);padding:24px}
 #rotate .ph{width:44px;height:76px;border:3px solid var(--vantite);border-radius:9px;animation:rot 2.4s ease-in-out infinite}
@@ -612,7 +655,7 @@ html.mainbg body::after{content:"";position:fixed;inset:0;pointer-events:none;
       <button id="mAvatar" class="mavatar" aria-label="تغيير البطل"><img alt=""></button>
     </div>
   </nav>
-  <div class="mver">شاترلاين · الإصدار 2.0</div>
+  <div class="mver">شاترلاين · الإصدار 2.1</div>
   <section class="mevent">
     <span class="mtag">حدث</span>
     <h1>المواجهة</h1>
@@ -695,8 +738,8 @@ html.mainbg body::after{content:"";position:fixed;inset:0;pointer-events:none;
   <footer class="in-foot"><b id="inCount"></b><div class="in-bar"><i id="inBar"></i></div></footer>
 </div>
 <div id="kc" hidden>
-  <div class="kc-top"><span class="kc-rec"></span><b>إعادة القتل</b></div>
-  <div class="kc-bot"><img id="kcPic" alt=""><div class="kc-who"><small>أقصاك</small><b id="kcName"></b><span id="kcHero"></span></div><button id="kcSkip" class="kc-skip">تخطَّ الإعادة<span class="key">Space</span></button></div>
+  <div class="kc-top"><span class="kc-rec"></span><b id="kcTitle">إعادة القتل</b></div>
+  <div class="kc-bot"><img id="kcPic" alt=""><div class="kc-who"><small id="kcSmall">أقصاك</small><b id="kcName"></b><span id="kcHero"></span></div><button id="kcSkip" class="kc-skip">تخطَّ الإعادة<span class="key">Space</span></button></div>
 </div>
 <div id="rotate"><div class="ph"></div><b>أدر هاتفك أفقيًا</b><span>صُمّمت شاترلاين للشاشة الأفقية</span><button id="rotOk" class="ghost sm">متابعة على أي حال</button></div>
 
@@ -723,8 +766,10 @@ html.mainbg body::after{content:"";position:fixed;inset:0;pointer-events:none;
   <div class="panel sbw">
     <div class="result"><div class="k" id="overK">انتهت المباراة</div><div class="big" id="overTitle">انتصار</div></div>
     <div class="mvp" id="overMvp"></div>
-    <div class="bwrap"><div class="sboard" id="overBoard"></div></div>
-    <div class="row"><div class="hint" id="overNext">المباراة التالية خلال 8</div><button id="overLeave" class="ghost">مغادرة المباراة</button></div>
+    <div class="otabs" role="tablist"><button data-t="vote" aria-pressed="true">التصويت لأفضل لاعب</button><button data-t="board" aria-pressed="false">لوحة النتائج</button></div>
+    <div id="ovVote" class="vwrap"><div class="vcards" id="vCards"></div><p class="vnote" id="vNote">صوّت للاعب الذي تراه الأفضل في هذه المباراة</p></div>
+    <div class="bwrap" id="ovBoardWrap" hidden><div class="sboard" id="overBoard"></div></div>
+    <div class="row"><div class="onext" id="overNext">المباراة التالية خلال 8</div><button id="overReplay" class="ghost" hidden>إعادة أفضل لقطة</button><button id="overLeave" class="ghost">مغادرة المباراة</button></div>
   </div>
 </div>
 
@@ -1526,7 +1571,7 @@ let feed=[];
 function freshMatch(id){return {id,ph:'pre',preT:PRE,tl:RULES[S.match].time,v:[0,0,0],own:[-1,-1,-1],sc:[0,0],win:null,endT:0,acc:0,pk:PK.list.map(()=>0)}}
 
 function newActor(o){
-  return Object.assign({id:'',name:'',h:'kael',team:0,x:0,z:0,y:0,vy:0,r:.5,ax:0,az:-1,hp:200,maxHp:200,dead:true,k:0,d:0,
+  return Object.assign({id:'',name:'',h:'zizo',team:0,x:0,z:0,y:0,vy:0,r:.5,ax:0,az:-1,hp:200,maxHp:200,dead:true,k:0,d:0,
     burn:0,burnBy:null,burnTick:0,lift:0,liftBy:null,liftH:0,root:0,slow:0,mark:0,gr:0,pull:null,kx:0,kz:0,sp:0,inv:0,lastHurt:9,respawnT:0,
     stun:0,ah:0,em:0,dr:0,ovh:0,ovhT:0,
     fireCd:0,bits:0,flash:0,local:false,bot:false,localBot:false,vis:null,nx:0,nz:0,ny:0,na:0,fresh:true},o);
@@ -1804,6 +1849,7 @@ function kill(a,by){
 function processDie(v,by,as){
   const va=findActor(v), ka=findActor(by);
   addFeed(ka,va);
+  if(ka&&va&&ka!==va)noteMoment(ka.id,100,true);
   if(Array.isArray(as)&&M.ph==='live'){
     if(P&&as.includes(P.id)&&by!==P.id&&v!==P.id){P.as=(P.as|0)+1;if(va)popText(va.x,2.4,va.z,'مساعدة +'+SCORE.assist,'#cfe8ff')}
     if(amHost)for(const b of bots)if(as.includes(b.id)&&b.id!==by&&b.id!==v)b.as=(b.as|0)+1;
@@ -2067,16 +2113,43 @@ const REC={fr:[],shots:[],t:0};
 function recTick(dt){
   REC.t-=dt; if(REC.t>0)return; REC.t=.05; const now=performance.now();
   REC.fr.push({t:now,a:combatants().map(a=>[a.id,a.x,isAuth(a)?a.y+a.liftH:a.y,a.z,Math.atan2(a.ax,a.az),a.h,a.dead?1:0])});
-  while(REC.fr.length&&now-REC.fr[0].t>7000)REC.fr.shift();
-  while(REC.shots.length&&now-REC.shots[0].t>7000)REC.shots.shift();
+  while(REC.fr.length&&now-REC.fr[0].t>10000)REC.fr.shift();
+  while(REC.shots.length&&now-REC.shots[0].t>10000)REC.shots.shift();
+  hlTick(now);
+}
+/* highlights: each client scores every player's moments and keeps the best clip per player */
+const HL={best:new Map(),ev:new Map(),pend:new Map()};
+function noteMoment(id,pts,kill){
+  if(!id||M.ph!=='live')return; const now=performance.now();
+  const L=HL.ev.get(id)||[]; L.push({t:now,p:pts,k:kill?1:0}); while(L.length&&now-L[0].t>8000)L.shift(); HL.ev.set(id,L);
+  HL.pend.set(id,now+1500);
+}
+function hlTick(now){
+  for(const [id,at] of HL.pend){
+    if(now<at)continue; HL.pend.delete(id);
+    const L=(HL.ev.get(id)||[]).filter(e=>now-e.t<=7500); if(!L.length)continue;
+    const kills=L.reduce((n,e)=>n+e.k,0), sc=L.reduce((n,e)=>n+e.p,0)+Math.max(0,kills-1)*60;
+    const old=HL.best.get(id); if(old&&old.sc>=sc)continue;
+    const t0=Math.max(L[0].t-3000,now-8000), fr=REC.fr.filter(f=>f.t>=t0);
+    if(fr.length<3||!fr[0].a.some(r=>r[0]===id))continue;
+    const a=findActor(id); HL.best.set(id,{id,sc,kills,fr,shots:REC.shots.filter(x=>x.t>=t0),t1:now,name:a?a.name:'',h:a?a.h:fr[0].a.find(r=>r[0]===id)[5]});
+  }
+}
+function potgClip(){
+  const mvp=combatants().slice().sort((a,b)=>score(b)-score(a))[0];
+  let c=mvp&&HL.best.get(mvp.id);
+  if(!c)for(const x of HL.best.values())if(!c||x.sc>c.sc)c=x;
+  return c?{c,mvp:mvp&&c.id===mvp.id}:null;
 }
 function recShot(A,an,ex,ez){if(A)REC.shots.push({t:performance.now(),id:A.id,h:A.h,a:an,ex,ez})}
-const KC={on:false,meshes:new Map()};
+const KC={on:false,mode:'kill',meshes:new Map()};
+const END_T=22;
 function startKillcam(k){
-  if(!REC.fr.length||!k||k===P)return false;
+  if(!REC.fr.length||!k||k===P||M.ph!=='live')return false;
   const now=performance.now();
-  Object.assign(KC,{on:true,kid:k.id,t1:now,t0:Math.max(REC.fr[0].t,now-3600),sh:0});
-  KC.cur=KC.t0; KC.sh=REC.shots.findIndex(s=>s.t>=KC.t0); if(KC.sh<0)KC.sh=REC.shots.length;
+  Object.assign(KC,{on:true,mode:'kill',F:REC.fr,SH:REC.shots,kid:k.id,t1:now,t0:Math.max(REC.fr[0].t,now-3600),sh:0,sp:.85});
+  KC.cur=KC.t0; KC.sh=KC.SH.findIndex(s=>s.t>=KC.t0); if(KC.sh<0)KC.sh=KC.SH.length;
+  $('#kc').classList.remove('potg'); $('#kcTitle').textContent='إعادة القتل'; $('#kcSmall').textContent='أقصاك';
   const h=HEROES[k.h]; $('#kcName').textContent=k.name; $('#kcHero').textContent=h.name+(k.bot?' · روبوت':'');
   const im=$('#kcPic'); im.src=PORTRAITS[k.h]||''; im.hidden=!PORTRAITS[k.h]; $('#kc').style.setProperty('--c',h.css);
   P.respawnT=Math.max(P.respawnT,6.5); $('#kc').hidden=false; $('#dead').hidden=true; return true;
@@ -2084,13 +2157,27 @@ function startKillcam(k){
 function endKillcam(){
   if(!KC.on)return; KC.on=false;
   for(const e of KC.meshes.values()){scene.remove(e.hm.g);e.hm.g.traverse(o=>{if(o.geometry)o.geometry.dispose()});e.hm.mats.forEach(m=>m.dispose&&m.dispose())}
-  KC.meshes.clear(); $('#kc').hidden=true;
+  KC.meshes.clear(); $('#kc').hidden=true; $('#kc').classList.remove('potg');
+  const wasPotg=KC.mode==='potg'; KC.mode='kill';
+  if(wasPotg){if(P&&S.mode==='play'&&M.ph==='end'&&overShown){$('#over').hidden=false;$('#dead').hidden=true}return}
   if(P&&P.dead&&S.mode==='play'&&M.ph==='live'&&$('#over').hidden)$('#dead').hidden=false;
 }
+function startPotg(){
+  const r=potgClip(); if(!r||!P)return false;
+  const c=r.c, h=HEROES[c.h]||HEROES.zizo, a=findActor(c.id);
+  if(KC.on)endKillcam();
+  Object.assign(KC,{on:true,mode:'potg',F:c.fr,SH:c.shots,kid:c.id,t0:c.fr[0].t,t1:c.t1,sp:.9});
+  KC.cur=KC.t0; KC.sh=KC.SH.findIndex(s=>s.t>=KC.t0); if(KC.sh<0)KC.sh=KC.SH.length;
+  $('#kc').classList.add('potg'); $('#kcTitle').textContent='أفضل لقطة في المباراة';
+  $('#kcSmall').textContent=r.mvp?'أفضل لاعب في المباراة':'صاحب أفضل لقطة';
+  const nm=a?a.name:c.name; $('#kcName').textContent=nm+(a===P?' (أنت)':''); $('#kcHero').textContent=h.name+(c.kills>1?' · '+c.kills+' إقصاءات متتالية':'');
+  const im=$('#kcPic'); im.src=PORTRAITS[c.h]||''; im.hidden=!PORTRAITS[c.h]; $('#kc').style.setProperty('--c','#ffc94a');
+  $('#over').hidden=true; $('#dead').hidden=true; $('#kc').hidden=false; SFX.wave(); return true;
+}
 function killcamTick(dt){
-  KC.cur+=dt*1000*.85;                                    // slightly slowed down
+  KC.cur+=dt*1000*(KC.sp||.85);                           // slightly slowed down
   if(KC.cur>=KC.t1+450){endKillcam();return false}
-  const pt=Math.min(KC.cur,KC.t1), F=REC.fr;
+  const pt=Math.min(KC.cur,KC.t1), F=KC.F;
   let i=F.findIndex(f=>f.t>=pt); if(i<0)i=F.length-1; if(i<1)i=1;
   const f0=F[i-1]||F[0], f1=F[i]||f0, k=f1.t>f0.t?clamp((pt-f0.t)/(f1.t-f0.t),0,1):0, now=performance.now();
   const seen=new Set();
@@ -2107,8 +2194,8 @@ function killcamTick(dt){
     if(id===KC.kid){KC.cx=x;KC.cy=y;KC.cz=z;KC.cyaw=yaw;KC.ch=r[5]}
   }
   for(const [id,e] of KC.meshes)if(!seen.has(id))e.hm.g.visible=false;
-  while(KC.sh<REC.shots.length&&REC.shots[KC.sh].t<=pt){
-    const s=REC.shots[KC.sh++], e=KC.meshes.get(s.id); if(!e)continue;
+  while(KC.sh<KC.SH.length&&KC.SH[KC.sh].t<=pt){
+    const s=KC.SH[KC.sh++], e=KC.meshes.get(s.id); if(!e)continue;
     playAnim(e.act,'f'); const p=e.hm.g.position, H=HEROES[s.h], fy=p.y+1.25;
     const ox=p.x+Math.sin(s.a)*.8, oz=p.z+Math.cos(s.a)*.8;
     if(s.ex!==undefined&&s.ex!==null)tracer3(ox,fy,oz,s.ex,1.15,s.ez,0xffd27a,1.2,.12);
@@ -2345,7 +2432,7 @@ document.addEventListener('pointerlockerror',()=>{FP.noLock=true});
 document.addEventListener('pointerlockchange',()=>{
   if(document.pointerLockElement)return;
   FP.lockLostT=performance.now(); inp.mouse.down=false;
-  if(S.mode==='play'&&!S.paused&&P&&!P.dead&&$('#over').hidden&&!FP.wantRelease)togglePause();
+  if(S.mode==='play'&&!S.paused&&P&&!P.dead&&$('#over').hidden&&!KC.on&&!FP.wantRelease)togglePause();
   FP.wantRelease=false;
 });
 addEventListener('keydown',e=>{
@@ -2746,7 +2833,7 @@ function handlePeer(p){
   NET.cache.set(p.peer,pr);
   // the player
   let a=remotes.get(p.peer);
-  const h=HEROES[pr.h]?pr.h:'kael';
+  const h=HEROES[pr.h]?pr.h:'zizo';
   if(!a){a=newActor({id:p.peer});remotes.set(p.peer,a)}
   applyNetActor(a,pr,h);
   // their objects
@@ -2770,6 +2857,7 @@ function applyNetActor(a,pr,h){
   const wasDead=a.dead; a.dead=!!pr.dd;
   a.nx=clamp(num(pr.x),-ARENA,ARENA); a.nz=clamp(num(pr.z),-ARENA,ARENA); a.ny=clamp(num(pr.y),0,6); a.na=num(pr.a);
   if(a.fresh||wasDead&&!a.dead||Math.hypot(a.nx-a.x,a.nz-a.z)>7){a.x=a.nx;a.z=a.nz;a.y=a.ny;a.fresh=false}
+  a.vt=Array.isArray(pr.vt)&&pr.vt.length===2?[num(pr.vt[0]),String(pr.vt[1]).slice(0,24)]:null;
   a.k=num(pr.k)|0; a.d=num(pr.d)|0; a.cp=clamp(num(pr.cp),0,1e5); a.as=clamp(num(pr.as),0,999)|0; a.dmg=clamp(num(pr.dg),0,1e7); a.heal=clamp(num(pr.hl),0,1e7); a.bits=num(pr.st)|0; a.ult=!!pr.u;
 }
 function syncRemoteBots(list){
@@ -2779,7 +2867,7 @@ function syncRemoteBots(list){
     const id=b.i.slice(0,24); seen.add(id);
     let a=remotes.get(id);
     if(!a){a=newActor({id,bot:true});remotes.set(id,a)}
-    applyNetActor(a,{n:b.n,h:b.h,t:b.t,hp:b.hp,dd:b.dd,x:b.x,z:b.z,y:b.y,a:b.a,k:b.k,d:b.d,cp:b.cp,as:b.as,dg:b.dg,hl:b.hl,st:b.st},HEROES[b.h]?b.h:'kael');
+    applyNetActor(a,{n:b.n,h:b.h,t:b.t,hp:b.hp,dd:b.dd,x:b.x,z:b.z,y:b.y,a:b.a,k:b.k,d:b.d,cp:b.cp,as:b.as,dg:b.dg,hl:b.hl,st:b.st,vt:b.vt},HEROES[b.h]?b.h:'zizo');
   }
   for(const [id,a] of remotes)if(a.bot&&!seen.has(id)){dropVis(a);remotes.delete(id)}
 }
@@ -2831,7 +2919,7 @@ function becomeHost(){
     readMatch(lh.m); M.acc=0;
     for(const b of lh.b){
       if(!b||typeof b.i!=='string')continue;
-      const h=HEROES[b.h]?b.h:'kael';
+      const h=HEROES[b.h]?b.h:'zizo';
       const nb=newActor({id:b.i.slice(0,24),name:String(b.n||'Bot').slice(0,14),h,team:b.t===1?1:0,bot:true,localBot:true,think:0,tgt:null,strafe:1,react:.3});
       nb.k=num(b.k)|0;nb.d=num(b.d)|0;nb.cp=num(b.cp);nb.as=num(b.as)|0;nb.dmg=num(b.dg);nb.heal=num(b.hl);nb.x=num(b.x);nb.z=num(b.z);nb.maxHp=HEROES[h].hp;nb.hp=clamp(num(b.hp,nb.maxHp),1,nb.maxHp);nb.dead=!!b.dd;nb.respawnT=2;
       bots.push(nb);
@@ -2852,7 +2940,7 @@ function readMatch(m){
 function newMatch(){
   const id=(Date.now()%1e9)+(Math.random()*1000|0);
   M=freshMatch(id);
-  for(const b of bots){b.k=b.d=b.cp=b.as=b.dmg=b.heal=0;b.dead=true;b.respawnT=rand(.2,1)}
+  for(const b of bots){b.k=b.d=b.cp=b.as=b.dmg=b.heal=0;b.vt=null;b.dead=true;b.respawnT=rand(.2,1)}
   resetForMatch(id);
 }
 function resetForMatch(id){
@@ -2860,7 +2948,7 @@ function resetForMatch(id){
   if(!P)return;
   P.k=0;P.d=0;P.cp=0;P.as=0;P.dmg=0;P.heal=0;P.objT=0;S.prevOwn=[];
   if(!first||!P.dead){P.dead=true;P.respawnT=first?0:.4}
-  $('#over').hidden=true; overShown=false; endKillcam();
+  $('#over').hidden=true; overShown=false; endKillcam(); resetHL();
   if(M.ph!=='pre')banner(RULES[S.match].name,S.match==='dm'?'أول من يصل إلى '+RULES.dm.goal+' إقصاءً':S.match==='tdm'?'أول فريق يصل إلى '+RULES.tdm.goal+' إقصاءً':'سيطروا على النقاط');
   SFX.wave();
 }
@@ -2881,14 +2969,14 @@ function hostTick(dt){
         M.v[i]=v; M.own[i]=own;
       });
       M.acc+=dt; while(M.acc>=1){M.acc-=1;M.own.forEach(o=>{if(o>=0)M.sc[o]++})}
-      if(M.sc[0]>=RULES.dom.goal||M.sc[1]>=RULES.dom.goal||M.tl<=0){M.ph='end';M.endT=9;M.win=M.sc[0]===M.sc[1]?-1:(M.sc[0]>M.sc[1]?0:1)}
+      if(M.sc[0]>=RULES.dom.goal||M.sc[1]>=RULES.dom.goal||M.tl<=0){M.ph='end';M.endT=END_T;M.win=M.sc[0]===M.sc[1]?-1:(M.sc[0]>M.sc[1]?0:1)}
     }else if(S.match==='tdm'){
-      if(M.sc[0]>=RULES.tdm.goal||M.sc[1]>=RULES.tdm.goal||M.tl<=0){M.ph='end';M.endT=9;M.win=M.sc[0]===M.sc[1]?-1:(M.sc[0]>M.sc[1]?0:1)}
+      if(M.sc[0]>=RULES.tdm.goal||M.sc[1]>=RULES.tdm.goal||M.tl<=0){M.ph='end';M.endT=END_T;M.win=M.sc[0]===M.sc[1]?-1:(M.sc[0]>M.sc[1]?0:1)}
     }else{
       let lead=null; for(const a of all)if(!lead||a.k>lead.k)lead=a;
-      if(lead&&(lead.k>=RULES.dm.goal||M.tl<=0)){M.ph='end';M.endT=9;M.win=lead.id}
+      if(lead&&(lead.k>=RULES.dm.goal||M.tl<=0)){M.ph='end';M.endT=END_T;M.win=lead.id}
     }
-  }else{M.endT-=dt;if(M.endT<=0){if(S.lobbyCfg)S.pendingLobby=true;else newMatch()}}
+  }else{M.endT-=dt;botVotes(dt);if(M.endT<=0){if(S.lobbyCfg)S.pendingLobby=true;else newMatch()}}
   if(M.pk)M.pk=M.pk.map(v=>Math.max(0,v-dt));
   S.botT=(S.botT||0)-dt; if(S.botT<=0){S.botT=1;manageBots()}
 }
@@ -2897,12 +2985,12 @@ function buildPresence(){
   // hits, heals and eliminations stay up for 1.2s; cosmetic shots only briefly, so bots' rapid fire can't crowd out damage
   const keep=myEv.filter(e=>e.p.k!=='s'&&now-e.tm<1200).slice(-36), shots=myEv.filter(e=>e.p.k==='s'&&now-e.tm<400).slice(-10);
   myEv=keep.concat(shots).sort((a,b)=>a.p.s-b.p.s);
-  const pr={v:1,n:S.nick,h:P.h,t:P.team,x:r2(P.x),z:r2(P.z),y:r2(P.y+P.liftH),a:r2(Math.atan2(P.ax,P.az)),hp:Math.ceil(Math.max(0,P.hp)),dd:P.dead?1:0,k:P.k,d:P.d,cp:Math.round(P.cp||0),as:P.as|0,dg:Math.round(P.dmg||0),hl:Math.round(P.heal||0),st:bitsOf(P),u:(P.ultT>0||P.deadeye)?1:0,
+  const pr={v:1,n:S.nick,h:P.h,t:P.team,x:r2(P.x),z:r2(P.z),y:r2(P.y+P.liftH),a:r2(Math.atan2(P.ax,P.az)),hp:Math.ceil(Math.max(0,P.hp)),dd:P.dead?1:0,k:P.k,d:P.d,cp:Math.round(P.cp||0),as:P.as|0,dg:Math.round(P.dmg||0),hl:Math.round(P.heal||0),st:bitsOf(P),u:(P.ultT>0||P.deadeye)?1:0,vt:(VOTE.my&&VOTE.m===M.id)?[M.id,VOTE.my]:null,
     ev:myEv.map(e=>e.p),o:objs.map(o=>[o.i,o.k,r2(o.x),r2(o.z),r2(o.a||0),r2(o.t)]),m:null,b:null,
     lb:(S.lobbyCfg&&L&&L.isHost)?{c:L.code,md:L.md,mp:L.mp,s:L.slots,go:L.go}:null};
   if(amHost){
     pr.m={i:M.id,ph:M.ph,pt:r2(M.preT||0),tl:Math.ceil(M.tl),v:M.v.map(r2),o:M.own,sc:M.sc.map(Math.floor),w:M.win,e:Math.ceil(M.endT),pk:(M.pk||[]).map(v=>Math.ceil(v))};
-    pr.b=bots.map(b=>({i:b.id,n:b.name,h:b.h,t:b.team,x:r2(b.x),z:r2(b.z),y:r2(b.y+b.liftH),a:r2(Math.atan2(b.ax,b.az)),hp:Math.ceil(Math.max(0,b.hp)),dd:b.dead?1:0,k:b.k,d:b.d,cp:Math.round(b.cp||0),as:b.as|0,dg:Math.round(b.dmg||0),hl:Math.round(b.heal||0),st:bitsOf(b)}));
+    pr.b=bots.map(b=>({i:b.id,n:b.name,h:b.h,t:b.team,x:r2(b.x),z:r2(b.z),y:r2(b.y+b.liftH),a:r2(Math.atan2(b.ax,b.az)),hp:Math.ceil(Math.max(0,b.hp)),dd:b.dead?1:0,k:b.k,d:b.d,cp:Math.round(b.cp||0),as:b.as|0,dg:Math.round(b.dmg||0),hl:Math.round(b.heal||0),st:bitsOf(b),vt:b.vt||null}));
   }
   let s=JSON.stringify(pr);
   while(s.length>3800&&pr.ev.length){let i=pr.ev.findIndex(e=>e.k==='s');if(i<0)i=pr.ev.findIndex(e=>e.k==='f');pr.ev.splice(i>=0?i:0,1);s=JSON.stringify(pr)}
@@ -3087,6 +3175,7 @@ function domTick(dt){
       a.cp=(a.cp||0)+(z.c[1-me]?SCORE.contest:(own!==me||mine<1)?SCORE.capture:SCORE.hold)*dt;
       if(prev!==undefined&&own===me&&prev!==me){a.cp+=SCORE.taken;if(a===P)popText(p.x,2.4,p.z,'استيلاء +'+SCORE.taken,'#7fe3ff',true)}
     }
+    if(live&&prev!==undefined&&own!==prev&&own>=0)for(const a of inz)if((a.team?1:0)===own)noteMoment(a.id,120,false);
     if(live&&P&&prev!==undefined&&own!==prev){
       if(own===P.team){banner('استوليتم على النقطة '+p.n,'+'+SCORE.taken+' لكل من في النقطة');SFX.cap()}
       else if(prev===P.team)banner('خسرتم النقطة '+p.n,'استعيدوها!');
@@ -3266,7 +3355,7 @@ function updateHud(){
   const now=performance.now(); const fl=feed.filter(f=>now-f.t<5000);
   if(fl.length!==feed.length||hudCache.feedN!==feed.length){feed=fl;hudCache.feedN=feed.length;renderFeed()}
   // end of match
-  if(M.ph==='end'){if(!overShown)showOver();$('#overNext').textContent=(S.lobbyCfg?'العودة إلى الغرفة خلال ':'المباراة التالية خلال ')+Math.max(0,Math.ceil(M.endT));}
+  if(M.ph==='end'){if(!overShown)showOver();renderVotes(false);setTxt('#overNext',(S.lobbyCfg?'العودة إلى الغرفة خلال ':'المباراة التالية خلال ')+Math.max(0,Math.ceil(M.endT)));}
 }
 function addFeed(k,v){
   feed.push({t:performance.now(),k:k?{n:k.name,c:HEROES[k.h].css}:null,v:v?{n:v.name,c:HEROES[v.h].css}:null});
@@ -3332,9 +3421,75 @@ function showOver(){
   if(S.match!=='dm'){title=M.win===-1?'تعادل':M.win===P.team?'انتصار':'هزيمة';$('#overK').textContent=RULES[S.match].name+' · '+Math.floor(M.sc[P.team|0])+' مقابل '+Math.floor(M.sc[1-(P.team|0)])}
   else{const w=findActor(M.win);title=w===P?'لقد فزت':(w?'الفائز: '+w.name:'انتهت المباراة');$('#overK').textContent='قتال حتى الموت · الترتيب النهائي'}
   $('#overTitle').textContent=title;
-  boardRows($('#overBoard'));
-  $('#over').hidden=false; $('#dead').hidden=true;
+  boardRows($('#overBoard')); overTab('vote'); buildVote();
+  $('#overReplay').hidden=!potgClip();
+  $('#dead').hidden=true;
+  if(M.endT>END_T-6&&startPotg()){}else $('#over').hidden=false;
   SFX.cap();
+}
+/* ---------- best-player vote (one vote each, not for yourself) ---------- */
+const VOTE={m:null,my:null,cands:[],key:''};
+function resetHL(){HL.best.clear();HL.ev.clear();HL.pend.clear();VOTE.my=null;VOTE.m=null;VOTE.cands=[];VOTE.key=''}
+function voteOf(a){if(a===P)return VOTE.m===M.id?VOTE.my:null;return a.vt&&a.vt[0]===M.id?a.vt[1]:null}
+function voteCounts(){const m=new Map();for(const a of combatants()){const v=voteOf(a);if(v&&v!==a.id)m.set(v,(m.get(v)||0)+1)}return m}
+function pickCands(){
+  const all=combatants(), out=[], used=new Set();
+  const cats=[['الأكثر إقصاءً',a=>a.k|0,'إقصاء'],['الأكثر ضررًا',a=>Math.round(a.dmg||0),'ضرر'],['الأكثر علاجًا',a=>Math.round(a.heal||0),'علاج'],
+    S.match==='dom'?['الأكثر سيطرة على النقاط',a=>Math.round(a.cp||0),'نقطة سيطرة']:['الأكثر مساعدة',a=>a.as|0,'مساعدة']];
+  for(const [acc,f,u] of cats){const b=all.filter(a=>!used.has(a.id)&&f(a)>0).sort((x,y)=>f(y)-f(x)||score(y)-score(x))[0];if(b){used.add(b.id);out.push({id:b.id,acc,v:f(b),u})}}
+  for(const b of all.slice().sort((x,y)=>score(y)-score(x))){if(out.length>=4)break;if(!used.has(b.id)){used.add(b.id);out.push({id:b.id,acc:'أعلى النقاط',v:score(b),u:'نقطة'})}}
+  return out;
+}
+function buildVote(){
+  if(VOTE.m!==M.id){VOTE.m=M.id;VOTE.my=null}
+  VOTE.cands=pickCands(); VOTE.key=''; const box=$('#vCards'); box.innerHTML='';
+  const mk=(tag,cls,txt)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(txt!==undefined)e.textContent=txt;return e};
+  for(const c of VOTE.cands){
+    const a=findActor(c.id); if(!a)continue; const h=HEROES[a.h];
+    const card=mk('div','vcard '+(S.match==='dm'?'ffa':a.team===(P.team|0)?'ally':'enemy')); card.dataset.id=c.id; card.style.setProperty('--hc2',h.css);
+    const pic=mk('div','vpic'); if(PORTRAITS[a.h]){const im=mk('img');im.src=PORTRAITS[a.h];im.alt='';pic.append(im)}
+    const st=mk('div','vstat'); st.append(mk('b','num',Math.round(c.v).toLocaleString('en-US')),mk('small','',c.u)); pic.append(st);
+    const who=mk('div','vwho'); who.append(mk('b','',a.name+(a===P?' (أنت)':'')),mk('small','',h.name+(a.bot?' · روبوت':'')));
+    const foot=mk('div','vfoot'), pips=mk('div','vpips'), cnt=mk('div','vcount','لا أصوات بعد'), btn=mk('button','vbtn',a===P?'لا يمكنك التصويت لنفسك':'صوّت');
+    btn.type='button'; btn.disabled=a===P; btn.onclick=e=>{e.stopPropagation();castVote(c.id)};
+    foot.append(pips,cnt,btn); card.append(mk('div','vacc',c.acc),pic,who,foot); box.append(card);
+  }
+  renderVotes(true);
+}
+function castVote(id){
+  if(VOTE.my||!P||id===P.id||M.ph!=='end')return;
+  VOTE.my=id; VOTE.m=M.id; SFX.kill&&SFX.kill(); renderVotes(true);
+}
+function renderVotes(force){
+  if($('#over').hidden&&!force)return;
+  const cnt=voteCounts(), fin=M.ph==='end'&&M.endT<=3;
+  let top=null,tv=0; for(const c of VOTE.cands){const v=cnt.get(c.id)||0;if(v>tv){tv=v;top=c.id}}
+  const key=VOTE.cands.map(c=>cnt.get(c.id)||0).join(',')+'|'+VOTE.my+'|'+(fin?top:'');
+  if(!force&&key===VOTE.key)return; VOTE.key=key;
+  for(const card of $('#vCards').children){
+    const id=card.dataset.id, n=cnt.get(id)||0, a=findActor(id);
+    const pips=card.querySelector('.vpips'); if(pips.children.length!==n){pips.innerHTML='';for(let i=0;i<Math.min(n,8);i++)pips.append(document.createElement('i'))}
+    card.querySelector('.vcount').textContent=n?n+(n===1?' صوت':n===2?' صوتان':n<=10?' أصوات':' صوتًا'):'لا أصوات بعد';
+    const btn=card.querySelector('.vbtn');
+    if(a!==P){btn.disabled=!!VOTE.my;btn.textContent=VOTE.my===id?'صوّتَّ له':'صوّت'}
+    card.classList.toggle('mine',VOTE.my===id);
+    const win=fin&&top===id; card.classList.toggle('win',win);
+    let b=card.querySelector('.vbadge'); if(win&&!b){b=document.createElement('div');b.className='vbadge';b.textContent='الأكثر تصويتًا';card.append(b)}else if(!win&&b)b.remove();
+  }
+  $('#vNote').textContent=VOTE.my?'تم تسجيل صوتك':'صوّت للاعب الذي تراه الأفضل في هذه المباراة';
+}
+function botVotes(dt){
+  if(M.endT>END_T-9)return;                       // bots vote after the replay
+  for(const b of bots){
+    if(b.vt&&b.vt[0]===M.id)continue; if(Math.random()>dt*.5)continue;
+    const c=pickCands().filter(x=>x.id!==b.id); if(!c.length)continue;
+    const w=c.map((x,i)=>4-i), t=w.reduce((n,v)=>n+v,0); let r=Math.random()*t,i=0; while(r>w[i]){r-=w[i];i++}
+    b.vt=[M.id,c[Math.min(i,c.length-1)].id];
+  }
+}
+function overTab(t){
+  for(const b of document.querySelectorAll('.otabs button'))b.setAttribute('aria-pressed',String(b.dataset.t===t));
+  $('#ovVote').hidden=t!=='vote'; $('#ovBoardWrap').hidden=t!=='board';
 }
 
 /* ================= FLOW ================= */
@@ -3433,6 +3588,7 @@ function showDead(by){
   P.nextHero=P.nextHero||P.h;
   const pick=id=>{P.nextHero=id;rosterPicker($('#deadHeroes'),id,pick)};
   rosterPicker($('#deadHeroes'),P.nextHero,pick);
+  if(M.ph==='end')return;
   if(!startKillcam(k))$('#dead').hidden=false;
 }
 function goLandscape(){
@@ -3476,7 +3632,7 @@ function clearWorld(){
   if(P){dropVis(P);if(P.aim)scene.remove(P.aim)}
   P=null; myEv=[]; pending.clear(); lastSeq.clear(); feed=[]; $('#feed').innerHTML=''; $('#pops').innerHTML=''; $('#labels').innerHTML='';
   pointVis.forEach(p=>{p.g.visible=false;p.mk.hidden=true});
-  endKillcam(); nades.forEach(n=>scene.remove(n.m)); nades=[]; REC.fr=[]; REC.shots=[];
+  endKillcam(); nades.forEach(n=>scene.remove(n.m)); nades=[]; REC.fr=[]; REC.shots=[]; resetHL();
   overShown=false;
 }
 function toMenu(){
@@ -3503,6 +3659,8 @@ $('#pauseBtn').addEventListener('pointerdown',e=>{e.stopPropagation();e.preventD
 $('#resumeBtn').onclick=()=>{togglePause();if(S.mode==='play'&&!S.paused)requestLock()};
 $('#quitBtn').onclick=leaveMatch;
 $('#overLeave').onclick=leaveMatch;
+$('#overReplay').onclick=()=>{if(M.ph==='end')startPotg()};
+for(const b of document.querySelectorAll('.otabs button'))b.onclick=()=>overTab(b.dataset.t);
 $('#soundBtn').onclick=()=>{S.sound=!S.sound;$('#soundBtn').textContent='الصوت: '+(S.sound?'مفعّل':'متوقف')};
 $('#quickBtn').onclick=quickGame;
 $('#mpBtn').onclick=()=>{audioOn();$('#mpMsg').textContent='';show('#mp')};
@@ -3589,7 +3747,7 @@ function lobbyMembers(){
   for(const p of NET.peers){
     if(p.sameTab){m.set(p.peer,{n:S.nick,h:S.hero,tm:L.want});continue}
     const pr=p.presence;
-    if(p.kind==='viewer'&&pr&&pr.v===2)m.set(p.peer,{n:String(pr.n||'لاعب').slice(0,14),h:HEROES[pr.h]?pr.h:'kael',tm:pr.tm===0||pr.tm===1?pr.tm:-1});
+    if(p.kind==='viewer'&&pr&&pr.v===2)m.set(p.peer,{n:String(pr.n||'لاعب').slice(0,14),h:HEROES[pr.h]?pr.h:'zizo',tm:pr.tm===0||pr.tm===1?pr.tm:-1});
   }
   return m;
 }
@@ -3661,7 +3819,7 @@ function renderLobby(mem,inMatch,force){
       const nm=document.createElement('span'); const tg=document.createElement('span');tg.className='tg';
       if(typeof x==='string'){
         filled++;
-        const m=mem.get(x)||{n:'لاعب',h:'kael'};
+        const m=mem.get(x)||{n:'لاعب',h:'zizo'};
         el.classList.add('p'); el.style.setProperty('--c',HEROES[m.h].css);
         nm.textContent=m.n; if(x===me){nm.className='me';nm.textContent=m.n+' (أنت)'}
         tg.textContent=HEROES[m.h].name+(x===L.hostPeer?' · المضيف':'');
@@ -3948,11 +4106,11 @@ function loop(t){
   stage.visible=inMenu; if(PK.group)PK.group.visible=!inMenu;
   if(inMenu&&camera.fov!==CAM.fov){camera.fov=CAM.fov;camera.updateProjectionMatrix()}
   camera.rotation.z=0;
-  const kcView=!inMenu&&KC.on&&P.dead, introView=!inMenu&&!kcView&&M.ph==='pre'&&P.dead;
-  const fpView=!inMenu&&!P.dead;
+  const kcView=!inMenu&&KC.on&&(P.dead||KC.mode==='potg'), introView=!inMenu&&!kcView&&M.ph==='pre'&&P.dead;
+  const fpView=!inMenu&&!P.dead&&!kcView;
   introTick(introView); document.body.classList.toggle('kc-on',kcView);
   if(!inMenu&&!isTouchOnly){
-    const needFree=P.dead||!$('#over').hidden||S.paused;
+    const needFree=P.dead||KC.on||!$('#over').hidden||S.paused;
     if(needFree&&document.pointerLockElement){FP.wantRelease=true;releaseLock()}
     const lh=!needFree&&!FP.noLock&&!document.pointerLockElement&&inp.mouse.active; if($('#lockHint').hidden===lh)$('#lockHint').hidden=!lh;
     if(inp.keys.Tab)showTab(true);
