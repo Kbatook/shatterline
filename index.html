@@ -77,6 +77,8 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--hc);outline-off
   font-size:12px;font-weight:600;letter-spacing:.18em;color:var(--hc);text-shadow:0 0 12px var(--hc)}
 #labels{position:absolute;inset:0;overflow:hidden}
 #mscore .clock.ot{color:#ffd23a}
+.prrow{display:flex;gap:14px;direction:rtl}.prrow span{display:grid;justify-items:center;font-size:10px;color:var(--mute)}.prrow b{font-size:18px;color:#fff;font-weight:800}
+@media (max-height:500px){.prrow{gap:9px}.prrow b{font-size:15px}}
 .hyrow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center}
 .hyrole{font-family:var(--display);font-weight:800;font-size:12px;padding:1px 8px;color:#0d1118}
 .hyrole.a{background:var(--ally)} .hyrole.e{background:var(--enemy)}
@@ -293,6 +295,9 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--hc);outline-off
   #pause .row,#over .row{gap:8px}#pause .primary,#pause .ghost,#over .ghost{padding:7px 14px;font-size:13px}
   #over .result .big{font-size:30px}.mvp{font-size:12px}
 }
+.pracbox .row{flex-wrap:wrap;justify-content:center}#pause.prac .bwrap{display:none}
+.pracbox{display:grid;gap:8px;justify-items:center}.pracbox>b{font-family:var(--display);font-size:16px}
+@media (max-height:500px){.pracbox{gap:4px}#pracHeroes .tile{width:40px}#pracHeroes .tile span{font-size:8px}#pracHeroes.roster{flex-wrap:nowrap;gap:6px}#pracHeroes .rtiles{gap:3px}#pause .bwrap{display:none}}
 .respawn{display:grid;gap:10px;justify-items:center;text-align:center}
 .respawn .cd{font-size:13px;letter-spacing:.24em;color:var(--mute)}
 .respawn .cd b{font-size:28px;color:var(--text);letter-spacing:0;display:block}
@@ -652,6 +657,9 @@ html.mainbg body::after{content:"";position:fixed;inset:0;pointer-events:none;
 .pcard{position:relative;width:min(300px,40vw);height:clamp(130px,30vh,200px);border:none;padding:16px 20px;display:grid;align-content:end;justify-items:start;gap:3px;text-align:start;overflow:hidden;
   clip-path:polygon(14px 0,100% 0,calc(100% - 14px) 100%,0 100%);transition:transform .15s}
 .pcard.red{background:linear-gradient(135deg,#ff5d8f,#c3123f 60%,#4a0618)}
+.pcards{flex-wrap:nowrap}
+@media (max-height:500px){.pcards{gap:10px}.pcard{width:min(250px,30vw);height:clamp(96px,28vh,130px);padding:10px 12px}.pcard b{font-size:18px}.pcard small{font-size:10px}.psheet{gap:10px}.psheet h2{font-size:22px}}
+.pcard.gold{background:linear-gradient(200deg,#ffd76a,#d68a12 60%,#4a2a05)}
 .pcard.blue{background:linear-gradient(225deg,#58d8ff,#1167d6 60%,#071f55)}
 .pcard img{position:absolute;inset-inline-end:0;top:0;height:100%;width:58%;object-fit:cover;pointer-events:none;-webkit-mask-image:linear-gradient(to right,#000 55%,transparent);mask-image:linear-gradient(to right,#000 55%,transparent)}
 .pcard b{position:relative;font-family:var(--display);font-size:clamp(20px,2.4vw,28px);color:#fff;text-shadow:0 2px 6px rgba(0,0,0,.5)}
@@ -733,7 +741,7 @@ html.mainbg body::after{content:"";position:fixed;inset:0;pointer-events:none;
       <button id="mAvatar" class="mavatar" aria-label="تغيير البطل"><img alt=""></button>
     </div>
   </nav>
-  <div class="mver">شاترلاين · الإصدار 2.5</div>
+  <div class="mver">شاترلاين · الإصدار 2.6</div>
   <section class="mevent">
     <span class="mtag">حدث</span>
     <h1>المواجهة</h1>
@@ -761,6 +769,7 @@ html.mainbg body::after{content:"";position:fixed;inset:0;pointer-events:none;
     </div>
     <div class="pcards" id="pCards">
       <button id="pQuick" class="pcard red"><img id="pQuickImg" alt=""><b>لعبة سريعة</b><small>اختر النمط، والروبوتات تكمل الفريقين</small></button>
+      <button id="pPrac" class="pcard gold"><b>ساحة التدريب</b><small>جرّب الشخصيات على أهداف ثابتة ومتحركة</small></button>
       <button id="pMp" class="pcard blue"><img id="pMpImg" alt=""><b>3 ضد 3 مع الأصدقاء</b><small>غرفة خاصة برمز دعوة</small></button>
     </div>
     <div class="pmaps" id="pMaps"></div>
@@ -849,6 +858,10 @@ html.mainbg body::after{content:"";position:fixed;inset:0;pointer-events:none;
     <div class="row"><button id="resumeBtn" class="primary">العودة إلى القتال</button><button id="soundBtn" class="ghost">الصوت: مفعّل</button><button id="musicBtn" class="ghost">الموسيقى: مفعّلة</button><button id="quitBtn" class="ghost">مغادرة المباراة</button></div>
     <label class="sens pcOnly">حساسية الفأرة <input id="sensIn" type="range" min="1" max="20" step="1" value="10"><b id="sensVal" class="num">1.0</b></label>
     <div class="ctrls pcOnly"><span class="kchip"><kbd>WASD</kbd>الحركة</span><span class="kchip"><kbd>الفأرة</kbd>النظر</span><span class="kchip"><kbd>الزر الأيسر</kbd>إطلاق</span><span class="kchip"><kbd>E / Shift / الزر الأيمن</kbd>القدرة</span><span class="kchip"><kbd>Q</kbd>الخارقة</span><span class="kchip"><kbd>Tab</kbd>النتائج</span><span class="kchip"><kbd>Esc</kbd>القائمة</span></div>
+    <div id="pracBox" class="pracbox" hidden>
+      <b>تبديل الشخصية</b><div class="roster sm" id="pracHeroes"></div>
+      <div class="row"><button id="prUlt" class="ghost"></button><button id="prMove" class="ghost"></button><button id="prSpar" class="ghost"></button><button id="prReset" class="ghost">تصفير الإحصاءات</button></div>
+    </div>
     <p class="hint" id="pauseHint"></p>
   </div>
 </div>
@@ -960,7 +973,7 @@ const LIM=ARENA+2;
 const ZR=5;   // domination zone radius
 const POINTS=[{n:'أ',x:-12,z:0},{n:'ب',x:0,z:0},{n:'ج',x:12,z:0}];
 const PRE=6, SELT=10;   // seconds of map flyover and team lineup before a match goes live
-const RULES={dm:{time:360,goal:15,size:6,name:'قتال حتى الموت'},dom:{time:420,goal:150,per:3,name:'السيطرة'},tdm:{time:360,goal:20,per:3,name:'قتال الفرق'},hyb:{time:180,addA:120,addCp:90,name:'الهجين'}};
+const RULES={dm:{time:360,goal:15,size:6,name:'قتال حتى الموت'},dom:{time:420,goal:150,per:3,name:'السيطرة'},tdm:{time:360,goal:20,per:3,name:'قتال الفرق'},hyb:{time:180,addA:120,addCp:90,name:'الهجين'},prac:{time:5999,name:'ساحة التدريب'}};
 const COL={ally:0x4aa3ff,enemy:0xff9a3c,neutral:0x6b7285};
 const CSS={ally:'#4aa3ff',enemy:'#ff9a3c'};
 const BOTNAMES=['صقر','نمر','ذئب','برق','ظل','رعد','سهم','نجم','فهد','موج'];
@@ -1391,9 +1404,14 @@ const MAPS=[
         [-5,-12,3,1,1.3],[-15,-15,1,3,1.3],[2,15,2,1,1.2],[-14,15,3,1,1.2],[26,-1,2,1,1.2]],
    crys:[],
    hyA:[10,9], hyRoute:[[10,-1.5],[-4,-3],[-9,-7],[-10,-13],[-18.4,-21]],
-   pts:[[10,9],[-4,-3],[-17,-17]], hp:[[16,17],[2,-1],[-8,-17],[-20,-1],[14,-14],[-22,16],[25,-4]], ult:[[-6,9],[16,-3]]}
+   pts:[[10,9],[-4,-3],[-17,-17]], hp:[[16,17],[2,-1],[-8,-17],[-20,-1],[14,-14],[-22,16],[25,-4]], ult:[[-6,9],[16,-3]]},
+  {id:'range',pr:true,name:'ساحة التدريب',d:'منشأة تدريب نهارية: أهداف على 5 و10 و20 و30 مترًا، ومنصّات مرتفعة، وأهداف متحركة، وعيادة لتجربة العلاج',bg:0x1a1d22,floor:0x8a8a84,line:0x9a9a94,wall:0xb0b0aa,cap:0xc0c0b8,
+   spawn:[[-3,3,23],[-3,3,-24]],
+   obs:[[-16,-2,3,3,2.4,'plat'],[16,-6,3,3,3.5,'plat'],[0,-13,36,1,4],[-12,20,1,4,1.1],[12,20,1,4,1.1],
+        [-4,8,2,1,1.2],[4,8,2,1,1.2],[-18.5,12,1,14,1.2],[19,10,1,12,1.4],[23,2,4,1,1.4],[23,16,4,1,1.4],[-24,-8,6,2,2.6,'crate',0x2f5a5a],[24,-18,3,3,4,'tank']],
+   crys:[], pts:[[0,12],[-22,12],[22,9]], hp:[[-22,22],[22,22]], ult:[[0,26]]}
 ];
-const HYMAP=MAPS.findIndex(m=>m.hy), nonHy=i=>MAPS[i]&&!MAPS[i].hy?i:0;
+const HYMAP=MAPS.findIndex(m=>m.hy), PRMAP=MAPS.findIndex(m=>m.pr), nonHy=i=>MAPS[i]&&!MAPS[i].hy&&!MAPS[i].pr?i:0;
 const PK_RESPAWN={hp:15,ult:30};
 const obstacles=[], crystals=[], pointVis=[];
 const PK={list:[],local:[],group:null};
@@ -1451,6 +1469,7 @@ const THEME={
   crash:{sky:['#26324b','#c48a68','#5d5652','rgba(255,190,130,.55)'],fog:0x7a6d66,hemi:[0xdfe4f5,0x4a3f36,.72],sun:[0xffd2a0,1.05,[-26,30,18]],ground:0x505255,low:'sandbag'},
   refinery:{sky:['#5f6c78','#b8bcbb','#8d8f8c',null],fog:0x9fa3a2,hemi:[0xe2e7ec,0x4e4b44,.72],sun:[0xfff3e0,.78,[18,40,-12]],ground:0x78766f,low:'jersey'},
   garden:{sky:['#060a19','#233258','#1a2238','rgba(160,190,255,.35)'],fog:0x1b2440,hemi:[0x8aa2ff,0x18131f,.62],sun:[0xb9ccff,.62,[14,36,20]],ground:0x343b4c,low:'planter',night:true},
+  range:{sky:['#6fa6dc','#cfe3f2','#9ab0c0',null],fog:0xb8c8d6,hemi:[0xf0f4ff,0x5a5a50,.82],sun:[0xfff4e0,.85,[20,40,10]],ground:0x7a7a74,low:'jersey'},
   oldtown:{sky:['#050b14','#173546','#0f1b26','rgba(110,210,230,.32)'],fog:0x142230,hemi:[0x9cbfe0,0x2b2118,.66],sun:[0xc8dcff,.58,[-20,34,16]],ground:0x2d2f36,low:'planter',night:true}
 };
 const SKY=new THREE.Mesh(new THREE.SphereGeometry(165,24,12),new THREE.MeshBasicMaterial({color:0xffffff,side:THREE.BackSide,fog:false,depthWrite:false}));
@@ -1477,6 +1496,16 @@ function floorTexture(mp){
     for(let i=0;i<22;i++)blot(g,R()*F,R()*F,(1+R()*2.5)*k,'rgba(8,8,10,.4)');                  // oil and scorch
     for(let i=0;i<6;i++){const x=X(R()*48-24),y=X(R()*48-24);g.fillStyle='#262728';g.beginPath();g.arc(x,y,.45*k,0,TAU);g.fill();g.strokeStyle='#555';g.lineWidth=.08*k;g.stroke()}
     for(let i=0;i<8;i++){g.strokeStyle='rgba(5,5,5,.35)';g.lineWidth=.22*k;g.beginPath();const x=X(R()*40-20),y=X(R()*40-20),r=(4+R()*8)*k,a=R()*TAU;g.arc(x,y,r,a,a+1+R());g.stroke();g.beginPath();g.arc(x,y,r+.5*k,a,a+1+R());g.stroke()}
+  }else if(mp.id==='range'){
+    g.fillStyle='#8d8c86';g.fillRect(0,0,F,F);grain(g,F,F,R,F*F/26,.12,2);
+    for(let x=-28;x<=28;x+=4)line(x,-28,x,28,'rgba(60,58,54,.25)',.05);for(let z=-28;z<=28;z+=4)line(-28,z,28,z,'rgba(60,58,54,.25)',.05);
+    for(const x of [-14,-7,0,7,14])line(x,-12,x,21,'rgba(255,255,255,.5)',.08,[1,1]);
+    g.textAlign='center';g.textBaseline='middle';
+    for(const [z,t] of [[18,'5 م'],[13,'10 م'],[3,'20 م'],[-7,'30 م']]){line(-15,z,15,z,'rgba(230,180,40,.9)',.16);g.fillStyle='rgba(30,30,30,.75)';g.font='800 '+(1.1*k|0)+'px Changa, Tahoma, sans-serif';g.fillText(t,X(-17),X(z));g.fillText(t,X(17),X(z))}
+    g.strokeStyle='rgba(230,180,40,.95)';g.lineWidth=.2*k;g.beginPath();g.arc(X(0),X(23),3*k,0,TAU);g.stroke();
+    rect(-26,4,-19,21,'rgba(94,227,138,.18)');rect(-23.2,10.5,-21.8,15.5,'rgba(94,227,138,.6)');rect(-25,12.3,-20,13.7,'rgba(94,227,138,.6)');
+    rect(19.5,0,28,20,'rgba(255,90,90,.12)');
+    for(let i=0;i<24;i++)blot(g,R()*F,R()*F,(.6+R()*1.8)*k,'rgba(40,38,34,.18)');
   }else if(mp.id==='oldtown'){
     g.fillStyle='#34353b';g.fillRect(0,0,F,F);
     const cs=.42*k; for(let y=0;y<F;y+=cs)for(let x=(Math.round(y/cs)%2)*cs/2;x<F;x+=cs){const v=40+R()*30|0;g.fillStyle=`rgb(${v},${v+1},${v+6})`;g.beginPath();g.ellipse(x,y,cs*.45,cs*.4,0,0,TAU);g.fill()}
@@ -1599,6 +1628,9 @@ function buildMap(i){
       box(.1,.3,d*.7,amb,fx-.05,h*.8,z); box(.3,h,1,MATC(0x2f333b),fx,h/2,z-d*.36); box(.3,h,1,MATC(0x2f333b),fx,h/2,z+d*.36)}
     else if(style==='arch'){                               // a stone pillar of the old arch over the street
       box(w,h,d,MATC(0x7a6c5c,TX.concrete),x,h/2,z,.4); box(w+.3,.4,d+.3,MATC(0x5a4e42),x,.2,z); box(w+.3,.3,d+.3,MATC(0x8d7f6c),x,h-.6,z)}
+    else if(style==='plat'){                               // a raised target platform
+      box(w,h,d,MATC(0xb9b5ad,TX.concrete),x,h/2,z,.4); box(w+.06,.14,d+.06,haz,x,h-.07,z,1);
+      for(let y=.35;y<h;y+=.35)box(.6,.06,.06,steel,x,y,z+d/2+.05); box(.05,h,.05,steel,x-.3,h/2,z+d/2+.05); box(.05,h,.05,steel,x+.3,h/2,z+d/2+.05)}
     else if(style==='fount'){                              // a round stone fountain with a lit basin
       const st=MATC(0x8a7f70,TX.concrete),b=shadowy(add(new THREE.Mesh(new THREE.CylinderGeometry(w*.62,w*.68,h,18),st)));b.position.set(x,h/2,z);
       const wtr=add(new THREE.Mesh(new THREE.CircleGeometry(w*.55,18),basic(0x3f8fb0,{transparent:true,opacity:.75})));wtr.rotation.x=-Math.PI/2;wtr.position.set(x,h-.05,z);
@@ -1689,6 +1721,14 @@ function buildDecor(mp,mi,add,th){
       put(new THREE.CylinderGeometry(.32,.32,.88,12),MATC(R()<.5?0xa8372a:0x2f5a8a,TX.metal),x,.44,z);put(new THREE.CylinderGeometry(.33,.33,.05,12),MATC(0x1a1a18),x,.86,z)}
     for(let k=0;k<12;k++){const x=rr(-25,25),z=rr(-25,25);if(!clearSpot(x,z,.9))continue;const ry=rr(0,3);for(let j=0;j<3;j++)box(1.2,.04,.2,MATC(0xffffff,TX.wood),x+Math.cos(ry)*(j-1)*.4,.1,z-Math.sin(ry)*(j-1)*.4,ry);box(1.2,.08,1.1,MATC(0x5e4630),x,.04,z,ry)}
     for(let k=0;k<6;k++){const x=rr(-22,22),z=rr(-22,22);if(!clearSpot(x,z,1))continue;ENV.emitters.push({x,z,c:0xd8dde4,rate:.12,up:3.2,size:.35})}
+  }else if(mp.id==='range'){
+    ring(10,ARENA+14,ARENA+24,(x,z,a)=>{const w=rr(14,22),d=rr(10,14),h=rr(7,10),geo=new THREE.BoxGeometry(w,h,d);worldUV(geo,.25);put(geo,MATC(0xd0d6dc,TX.metal),x,h/2,z,-a+Math.PI/2);
+      box(w+.6,.5,d+.6,0x6c7a88,x,h+.25,z,-a+Math.PI/2)});
+    {const o=mkCanvas(1024,256);if(o){const g=o.g;g.fillStyle='#1d2430';g.fillRect(0,0,1024,256);g.fillStyle='#ffd23a';g.fillRect(0,0,1024,14);g.fillRect(0,242,1024,14);
+      g.fillStyle='#fff';g.textAlign='center';g.textBaseline='middle';g.font='800 120px Changa, Tahoma, sans-serif';g.fillText('ساحة التدريب',512,130);
+      const sg=put(new THREE.PlaneGeometry(16,4),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(o.c)}),0,7,-14.6,0,true);
+      box(16.6,4.6,.3,0x2a2f38,0,7,-14.8,0);box(.4,5,.4,0x2a2f38,-7.5,2.5,-14.8,0);box(.4,5,.4,0x2a2f38,7.5,2.5,-14.8,0)}}
+    for(const [x,z] of [[-26,26],[26,26],[-26,-26],[26,-26]]){put(new THREE.CylinderGeometry(.06,.08,6,6),pole,x,3,z);box(1.6,.9,.04,R()<.5?0xff5d8f:0x58d8ff,x+.8,5.4,z,0)}
   }else if(mp.id==='oldtown'){
     ring(22,ARENA+12,ARENA+26,(x,z,a)=>building(x,z,a,rr(12,26),false));
     // a stone clock tower over the rooftops to the south-west
@@ -1760,7 +1800,7 @@ function mapThumb(i){
   }catch(e){return ''}
 }
 const THUMBS=MAPS.map((m,i)=>mapThumb(i));
-try{const mi=+localStorage.getItem('slMap');if(mi>=0&&mi<MAPS.length&&!MAPS[mi].hy)S.map=mi}catch(e){}
+try{const mi=+localStorage.getItem('slMap');if(mi>=0&&mi<MAPS.length&&!MAPS[mi].hy&&!MAPS[mi].pr)S.map=mi}catch(e){}
 S.map=S.map|0;
 
 function pushOut(o){
@@ -2012,7 +2052,7 @@ let amHost=false, myMatchId=null;
 let M=freshMatch(0);
 let feed=[];
 
-function freshMatch(id){return {id,ph:'sel',selT:SELT,preT:PRE,tl:RULES[S.match].time,v:[0,0,0],own:[-1,-1,-1],sc:[0,0],win:null,endT:0,acc:0,pk:PK.list.map(()=>0),hy:{st:0,cap:0,d:0,cp:0,idle:0,ot:0,otT:0,cc:[0,0]}}}
+function freshMatch(id){return {id,ph:S.match==='prac'?'live':'sel',selT:SELT,preT:PRE,tl:RULES[S.match].time,v:[0,0,0],own:[-1,-1,-1],sc:[0,0],win:null,endT:0,acc:0,pk:PK.list.map(()=>0),hy:{st:0,cap:0,d:0,cp:0,idle:0,ot:0,otT:0,cc:[0,0]}}}
 
 function newActor(o){
   return Object.assign({id:'',name:'',h:'zizo',team:0,x:0,z:0,y:0,vy:0,r:.5,ax:0,az:-1,hp:200,maxHp:200,dead:true,k:0,d:0,
@@ -2033,7 +2073,7 @@ function bitsOf(a){
 function ensureVis(a){
   if(a.vis&&a.vis.h===a.h)return;
   dropVis(a);
-  const mesh=heroMesh(a.h);
+  let mesh; if(a.dummy){const sk=mat(a.team===0?0xbfe8cf:0xd8dce4,{emissive:0x000000,shininess:20});mesh=heroMesh(a.h,sk);mesh.mats=[sk]}else mesh=heroMesh(a.h);
   if(HQ)mesh.g.traverse(o=>{if(o.isMesh)o.castShadow=true});
   const ring=new THREE.Mesh(G.ring,basic(COL.ally,{transparent:true,opacity:.85,depthWrite:false})); ring.position.y=.03;
   const blob=new THREE.Mesh(G.blob,blobM); blob.position.y=.02;
@@ -2251,6 +2291,7 @@ function dealDamage(att,tgt,d,f,o={}){
   const dd=d*m;
   if(isAuth(att)&&dd>0&&!(b&64))att.dmg=(att.dmg||0)+dd;
   if(isAuth(att)&&LIFESTEAL[att.h]&&dd>0&&!(b&64))applyHeal(att,dd*LIFESTEAL[att.h]);
+  if(att===P&&dd>0&&!(b&64)&&S.match==='prac'){PR.log.push([performance.now(),dd]);PR.tot+=dd;if(!o.quiet||o.crit){PR.hits++;if(o.crit)PR.heads++}}
   if(att===P&&dd>0&&!(b&64)){
     if(P.ultT<=0&&!ultLive())P.ults[P.h]=Math.min(1,P.ults[P.h]+dd/HEROES[P.h].ult.cost);
     if(!o.quiet){SFX.hit();tgt.flash=1}
@@ -2293,12 +2334,13 @@ function buffTarget(src,t,f){if(isAuth(t))applyBuff(t,f);else pushEv({k:'bf',to:
 function applyHeal(a,amt){if(!a||a.dead||a.ah>0)return;a.hp=Math.min(a.maxHp,a.hp+clamp(num(amt),0,200))}
 function healTarget(src,t,amt){
   if(src&&isAuth(src)&&t!==src&&!t.dead)src.heal=(src.heal||0)+Math.max(0,Math.min(amt,t.maxHp-t.hp));
+  if(src===P&&S.match==='prac'&&t!==P&&!t.dead)PR.heal+=Math.max(0,Math.min(amt,t.maxHp-t.hp));
   if(src&&src.h==='shamikh'&&t!==src&&isAuth(src))applyHeal(src,amt*.25);
   if(isAuth(t))applyHeal(t,amt); else pushEv({k:'hl',to:t.id,by:src.id,a:amt});
   if(src===P&&!ultLive())P.ults[P.h]=Math.min(1,P.ults[P.h]+amt/HEROES[P.h].ult.cost*.8);
 }
 function kill(a,by){
-  a.dead=true;a.hp=0;a.d++;a.respawnT=a===P?4:5;
+  a.dead=true;a.hp=0;a.d++;a.respawnT=a===P?4:a.dummy?2:5;
   a.burn=a.lift=a.root=a.slow=a.mark=a.gr=0;a.pull=null;a.liftH=0;a.stun=a.ah=a.em=a.dr=a.ovh=0;a.leap=null;a.tether=null;a.y=0;
   burst(a.x,1,a.z,HEROES[a.h].color,26,7,8); burst(a.x,1,a.z,0xffffff,6,5,6);
   const now=performance.now(), as=Object.keys(a.hitBy||{}).filter(id=>id!==by&&id!==a.id&&now-a.hitBy[id]<6000).slice(0,5); a.hitBy={};
@@ -3112,6 +3154,7 @@ function pickBotHero(team){
 }
 function removeBot(b){dropVis(b);bots.splice(bots.indexOf(b),1)}
 function manageBots(){
+  if(S.match==='prac'){pracBots();return}
   if(S.match!=='dm'&&P&&(P.team===null||P.team===undefined))return;   // wait until you have a team, or your side briefly gets an extra bot
   const humans=[P,...[...remotes.values()].filter(a=>!a.bot)];
   if(S.match==='dm'){
@@ -3128,6 +3171,7 @@ function manageBots(){
   }
 }
 function botThink(b,dt){
+  if(b.dummy){dummyTick(b,dt);return}
   if(b.dead){b.respawnT-=dt;if(b.respawnT<=0&&M.ph==='live'){if(!b.fixH&&Math.random()<.4){b.h='';b.h=pickBotHero(b.team)}spawnActor(b)}return}
   if(HEROES[b.h].cls==='sup'){b.healCd=(b.healCd||3)-dt;if(b.healCd<=0){const hurt=alliesOf(b,10,true).filter(e=>e.hp<e.maxHp*.75);if(hurt.length){b.healCd=7;hurt.forEach(e=>healTarget(b,e,50));fxOut({t:'heal',x:r2(b.x),z:r2(b.z),r:3})}else b.healCd=1}}
   updateStatus(b,dt); if(b.dead)return;
@@ -3479,7 +3523,8 @@ function resetForMatch(id){
   P.k=0;P.d=0;P.cp=0;P.as=0;P.dmg=0;P.heal=0;P.objT=0;S.prevOwn=[];
   if(!first||!P.dead){P.dead=true;P.respawnT=first?0:.4}
   $('#over').hidden=true; overShown=false; endKillcam(); resetHL();
-  if(M.ph==='live')banner(RULES[S.match].name,S.match==='hyb'?((P.team|0)===0?'استولوا على النقطة أ ثم ادفعوا الحمولة':'دافعوا عن النقطة أ ثم أوقفوا الحمولة'):S.match==='dm'?'أول من يصل إلى '+RULES.dm.goal+' إقصاءً':S.match==='tdm'?'أول فريق يصل إلى '+RULES.tdm.goal+' إقصاءً':'سيطروا على النقاط');
+  if(S.match==='prac')banner('ساحة التدريب',isTouch?'زر الإيقاف: تبديل الشخصية والخيارات':'Esc: تبديل الشخصية والخيارات');
+  else if(M.ph==='live')banner(RULES[S.match].name,S.match==='hyb'?((P.team|0)===0?'استولوا على النقطة أ ثم ادفعوا الحمولة':'دافعوا عن النقطة أ ثم أوقفوا الحمولة'):S.match==='dm'?'أول من يصل إلى '+RULES.dm.goal+' إقصاءً':S.match==='tdm'?'أول فريق يصل إلى '+RULES.tdm.goal+' إقصاءً':'سيطروا على النقاط');
   SFX.wave();
 }
 function hostTick(dt){
@@ -3501,6 +3546,8 @@ function hostTick(dt){
       });
       M.acc+=dt; while(M.acc>=1){M.acc-=1;M.own.forEach(o=>{if(o>=0)M.sc[o]++})}
       if(M.sc[0]>=RULES.dom.goal||M.sc[1]>=RULES.dom.goal||M.tl<=0){M.ph='end';M.endT=END_T;M.win=M.sc[0]===M.sc[1]?-1:(M.sc[0]>M.sc[1]?0:1)}
+    }else if(S.match==='prac'){
+      M.tl=RULES.prac.time;
     }else if(S.match==='hyb'){
       hybHost(dt,all);
     }else if(S.match==='tdm'){
@@ -3555,6 +3602,7 @@ function update(dt){
   for(const id of HERO_IDS){const c=P.cds[id];c.c1=Math.max(0,c.c1-dt);c.c2=Math.max(0,c.c2-dt)}
   P.fireCd-=dt; P.kick=Math.max(0,P.kick-dt*6); P.bloom=Math.max(0,(P.bloom||0)-dt*.12); if(MZL)MZL.intensity*=Math.exp(-dt*28);
   recTick(dt); sndTick(dt);
+  if(S.match==='prac'&&PR.ult&&P.ultT<=0&&!ultLive())P.ults[P.h]=1;
   if(P.ultT>0){P.ultT-=dt;if(P.ultT<=0){P.ultT=0;if(P.h==='juno')endGhost();if(P.h==='kael')P.heat=0}}
 
   if(P.dead){
@@ -3793,12 +3841,59 @@ function introTick(on){
 function pickTeam(){
   P.teamPending=false;
   if(S.lobbyCfg){P.team=S.lobbyCfg.team;return}
-  if(S.match==='dm'){P.team=0;return}
+  if(S.match==='dm'||S.match==='prac'){P.team=0;return}
   const humans=[...remotes.values()].filter(a=>!a.bot);
   const c0=humans.filter(a=>a.team===0).length,c1=humans.filter(a=>a.team===1).length;
   P.team=c0<c1?0:c1<c0?1:(Math.random()<.5?0:1);
 }
 
+
+/* ================= PRACTICE RANGE ================= */
+// dummies: enemy targets (static, raised, moving) to shoot, and hurt allies in the clinic to heal
+const DUMMIES=[
+  {h:'zizo',t:1,x:-6,z:18,n:'هدف مدرّع'},{h:'jathab',t:1,x:0,z:13,n:'هدف هجومي'},{h:'osama',t:1,x:6,z:18,n:'هدف مُعالِج'},
+  {h:'leo',t:1,x:-7,z:3,n:'هدف 20 م'},{h:'naheef',t:1,x:7,z:3,n:'هدف مدرّع 20 م'},{h:'shamikh',t:1,x:0,z:-7,n:'هدف 30 م'},
+  {h:'illa',t:1,x:-16,z:-2,y:2.4,n:'هدف مرتفع'},{h:'barraq',t:1,x:16,z:-6,y:3.5,n:'هدف مرتفع'},
+  {h:'thabih',t:1,x:0,z:7,mv:[7,.8],n:'هدف متحرك'},{h:'hakim',t:1,x:0,z:-2,mv:[9,1.15],n:'هدف متحرك'},
+  {h:'sabit',t:0,x:-23,z:18,n:'حليف مصاب',ally:1},{h:'rayan',t:0,x:-23,z:13,n:'حليف مصاب',ally:1},{h:'jathab',t:0,x:-23,z:8,n:'حليف مصاب',ally:1}
+];
+const PR={log:[],tot:0,hits:0,heads:0,heal:0,ult:false,move:true,spar:false,t0:0};
+function pracReset(){Object.assign(PR,{log:[],tot:0,hits:0,heads:0,heal:0,t0:performance.now()});if(P){P.cds[P.h].c1=0;P.blk=2}}
+function pracBots(){
+  if(!bots.some(b=>b.dummy)){
+    DUMMIES.forEach((d,i)=>{const b=newActor({id:'dum'+i+Math.random().toString(36).slice(2,5),name:d.n,h:d.h,team:d.t,bot:true,localBot:true,dummy:d,r:HEROES[d.h].cls==='tank'?.62:.5,think:0,tgt:null,strafe:1,react:1});
+      b.respawnT=.3; b.dead=true; bots.push(b)})}
+  const spar=bots.filter(b=>!b.dummy);
+  if(PR.spar&&spar.length<2){while(bots.filter(b=>!b.dummy).length<2){const b=addBot(1);b.spar=1}}
+  if(!PR.spar&&spar.length)spar.forEach(removeBot);
+}
+function dummyTick(b,dt){
+  const d=b.dummy;
+  if(b.dead){b.respawnT-=dt;if(b.respawnT<=0){const H=HEROES[b.h];b.maxHp=H.hp;b.hp=d.ally?H.hp*.4:H.hp;b.dead=false;b.sp=0;b.inv=0;b.x=d.x;b.z=d.z;b.y=d.y||0;b.vy=0;b.liftH=0;
+    b.burn=b.lift=b.root=b.slow=b.mark=b.gr=b.stun=b.ovh=b.ovhT=b.armor=b.bar=0;b.pull=null;b.kx=b.kz=0;b.lastHurt=9}return}
+  updateStatus(b,dt); if(b.dead)return;
+  b.y=d.y||0; b.vy=0; b.kx=b.kz=0;
+  if(d.mv&&PR.move){b.x=d.x+Math.sin(performance.now()/1000*d.mv[1])*d.mv[0];b.z=d.z}else if(!d.mv){b.x=d.x;b.z=d.z}
+  if(d.ally){b.lastHurt=0; if(b.hp>b.maxHp*.35)b.hp=Math.max(b.maxHp*.35,b.hp-14*dt)}   // keeps getting hurt so there is always something to heal
+  else if(b.lastHurt>3&&b.hp<b.maxHp)b.hp=Math.min(b.maxHp,b.hp+b.maxHp*.5*dt);           // full health again a few seconds after you stop
+  if(P){const dx=P.x-b.x,dz=P.z-b.z,l=Math.hypot(dx,dz)||1;b.ax=dx/l;b.az=dz/l}
+}
+function pracStats(){
+  const now=performance.now(); PR.log=PR.log.filter(e=>now-e[0]<3000);
+  const dps=PR.log.reduce((n,e)=>n+e[1],0)/3;
+  return {dps:Math.round(dps),tot:Math.round(PR.tot),hs:PR.hits?Math.round(PR.heads/PR.hits*100):0,heal:Math.round(PR.heal)};
+}
+function pracHero(id){
+  if(!HEROES[id]||!P)return; selectHero(id); P.nextHero=id; P.ultT=0; P.deadeye=null; P.tether=null; P.breath=0; P.wraith=0;
+  if(P.dead)return; respawnMe(); P.sp=0; pracReset(); renderPracBox();
+}
+function renderPracBox(){
+  const box=$('#pracBox'); box.hidden=S.match!=='prac'; if(box.hidden)return;
+  rosterPicker($('#pracHeroes'),P.h,id=>{pracHero(id);togglePause()});
+  $('#prUlt').textContent='الخارقة جاهزة دائمًا: '+(PR.ult?'مفعّل':'متوقف');
+  $('#prMove').textContent='الأهداف المتحركة: '+(PR.move?'تتحرك':'متوقفة');
+  $('#prSpar').textContent='روبوتان للقتال: '+(PR.spar?'مفعّل':'متوقف');
+}
 /* ================= HYBRID: take point أ, then escort the payload ================= */
 // team 0 (فريق الفجر) attacks from the north spawn, team 1 defends. The route is found on a 1 m grid around the map's cover.
 const HY={A:{x:0,z:11},path:[],cum:[],len:1,cpD:1,end:{x:0,z:-19},map:-1};
@@ -4018,6 +4113,9 @@ function updateHud(){
     let lead=0;for(const a of combatants())lead=Math.max(lead,a.k);
     key='dm'+Math.ceil(M.tl)+'|'+P.k+'|'+lead;
     html=`<div class="clock num">${fmtT(M.tl)}</div><div class="dmrow"><span>أنت<b class="num">${P.k}</b></span><span>المتصدر<b class="num">${lead}</b></span><span>الهدف<b class="num">${RULES.dm.goal}</b></span></div>`;
+  }else if(S.match==='prac'){
+    const st=pracStats(); key='prac'+st.dps+'|'+st.tot+'|'+st.hs+'|'+st.heal;
+    html=`<div class="clock">ساحة التدريب</div><div class="prrow"><span>الضرر في الثانية<b class="num">${st.dps}</b></span><span>إجمالي الضرر<b class="num">${st.tot}</b></span><span>إصابات الرأس<b class="num">${st.hs}%</b></span><span>العلاج<b class="num">${st.heal}</b></span></div>`;
   }else if(S.match==='hyb'){
     const H=M.hy, me=P.team|0, att=me===0, pr=Math.round(hyProgress()*1000)/10, cpP=(30+70*.5).toFixed(1), clock=H.ot?'وقت إضافي':fmtT(M.tl);
     const st=H.st===0?'النقطة أ':'الحمولة', stat=(H.cc[0]&&H.cc[1])?'متنازع عليها':H.st===1&&H.cc[0]?'تتقدّم':H.st===0&&H.cc[0]?'جارٍ الاستيلاء':'';
@@ -4059,7 +4157,7 @@ function updateHud(){
       $('#capFill').style.width=pct+'%';cb.style.setProperty('--cc',col);cb.classList.toggle('live',live)}}
   const myS=score(P); if(hudCache.my!==myS){hudCache.my=myS;$('#myScore').textContent=myS}
   const humans=1+[...remotes.values()].filter(a=>!a.bot).length;
-  const nt=NET.nr?('الغرفة '+(L?L.code:'')+' · '+(humans===1?'لاعب واحد':humans===2?'لاعبان':humans+' لاعبين')):'لعبة سريعة · روبوتات';
+  const nt=NET.nr?('الغرفة '+(L?L.code:'')+' · '+(humans===1?'لاعب واحد':humans===2?'لاعبان':humans+' لاعبين')):S.match==='prac'?'ساحة التدريب':'لعبة سريعة · روبوتات';
   if(hudCache.net!==nt){hudCache.net=nt;const n=$('#net');n.textContent=nt;n.classList.toggle('on',!!NET.nr)}
   let st='';
   if(P.deadeye)st='ساعة الحسم · '+Math.max(0,2.5-P.deadeye.t).toFixed(1);
@@ -4295,7 +4393,7 @@ function selectHero(id){if(S.hero!==id)SFX.select(id);
   S.hero=id;try{localStorage.setItem('slHero',id)}catch(e){}
   renderMenu(); if(S.mode==='lobby')renderLobby(null,null,true);
 }
-function nextMap(i){let j=i;do{j=(j+1)%MAPS.length}while(MAPS[j].hy&&j!==i);return j}
+function nextMap(i){let j=i;do{j=(j+1)%MAPS.length}while((MAPS[j].hy||MAPS[j].pr)&&j!==i);return j}
 function setMap(i){S.map=nonHy(clamp(i|0,0,MAPS.length-1));try{localStorage.setItem('slMap',S.map)}catch(e){}if(S.mode!=='play')buildMap(S.map)}
 function renderMenu(){
   renderHome();
@@ -4382,6 +4480,8 @@ function togglePause(){
     boardRows($('#pauseBoard'));
     $('#pauseHint').textContent=NET.nr?'تستمر المباراة وهذه القائمة مفتوحة.':'المباراة متوقفة مؤقتًا.';
     $('#quitBtn').textContent=L?'مغادرة الغرفة':'العودة إلى القائمة';
+    if(S.match==='prac'){$('#pauseMode').textContent='ساحة التدريب · '+HEROES[P.h].name;$('#pauseHint').textContent='الأهداف لا تردّ النار، وتعود بعد ثانيتين من إقصائها.'}
+    $('#pause').classList.toggle('prac',S.match==='prac'); renderPracBox();
   }
 }
 $('#pauseBtn').addEventListener('pointerdown',e=>{e.stopPropagation();e.preventDefault();togglePause()});
@@ -4399,6 +4499,10 @@ $('#musicBtn').textContent='الموسيقى: '+(S.music?'مفعّلة':'متو�
  document.addEventListener('pointerdown',e=>{audioOn();const b=e.target.closest&&e.target.closest('button');if(skip(b))return;
    if(b.classList.contains('vbtn'))return; (b.classList.contains('primary')||b.id==='playBtn'||b.id==='quickBtn'||b.id==='startBtn'?SFX.confirm:SFX.click)()},true);
  addEventListener('keydown',()=>audioOn(),{once:true});}
+$('#prUlt').onclick=()=>{PR.ult=!PR.ult;if(!PR.ult&&P)P.ults[P.h]=0;renderPracBox()};
+$('#prMove').onclick=()=>{PR.move=!PR.move;renderPracBox()};
+$('#prSpar').onclick=()=>{PR.spar=!PR.spar;renderPracBox()};
+$('#prReset').onclick=()=>{pracReset();renderPracBox()};
 $('#musicBtn').onclick=()=>{S.music=!S.music;try{localStorage.setItem('slMusic',S.music?'1':'0')}catch(_){}$('#musicBtn').textContent='الموسيقى: '+(S.music?'مفعّلة':'متوقفة')};
 $('#quickBtn').onclick=()=>{goHome();showQuickModes()};
 $('#mpBtn').onclick=()=>{audioOn();$('#mpMsg').textContent='';show('#mp')};
@@ -4586,7 +4690,7 @@ function renderLobby(mem,inMatch,force){
   rosterPicker($('#lbHeroes'),S.hero,selectHero);
   const ms=$('#lbMaps'); ms.innerHTML='';
   MAPS.forEach((m,i)=>{
-    if(L.md==='hyb'?!m.hy:m.hy)return;
+    if(m.pr||(L.md==='hyb'?!m.hy:m.hy))return;
     const b=document.createElement('button'); b.className='mapopt'; b.setAttribute('aria-pressed',i===L.mp); b.disabled=!L.isHost; b.dataset.i=i; b.title=m.d;
     if(THUMBS[i]){const im=document.createElement('img');im.src=THUMBS[i];im.alt='';b.append(im)}
     const nm=document.createElement('span');nm.textContent=m.name;b.append(nm);
@@ -4701,7 +4805,7 @@ function renderHome(){
   $('#rMapTip').textContent='الخريطة: '+MAPS[S.map].name; $('#kMapName').textContent=MAPS[S.map].name;
   $('#mSound').classList.toggle('off',!S.sound);
   const pm=$('#pMaps'); pm.innerHTML='';
-  MAPS.forEach((m,i)=>{if(m.hy)return;const b=document.createElement('button');b.className='mapopt';b.setAttribute('aria-pressed',i===S.map);
+  MAPS.forEach((m,i)=>{if(m.hy||m.pr)return;const b=document.createElement('button');b.className='mapopt';b.setAttribute('aria-pressed',i===S.map);
     if(THUMBS[i]){const im=document.createElement('img');im.src=THUMBS[i];im.alt='';b.append(im)}
     b.append(document.createTextNode(m.name)); b.onclick=()=>{setMap(i);renderMenu()}; pm.append(b)});
   if(HOME.key!==S.hero)homeLayout();
@@ -4712,7 +4816,8 @@ $('#mHeroes').onclick=goHeroes; $('#rHero').onclick=goHeroes; $('#kHeroes').oncl
 $('#mMp').onclick=openMp; $('#rMp').onclick=openMp; $('#pMp').onclick=openMp;
 $('#mMaps').onclick=openPlay; $('#mPlay').onclick=openPlay; $('#kPlay').onclick=openPlay;
 $('#pClose').onclick=()=>{$('#playSheet').hidden=true};
-$('#pQuick').onclick=showQuickModes; $('#mJoin').onclick=()=>{audioOn();showQuickModes()};
+$('#pQuick').onclick=showQuickModes;
+$('#pPrac').onclick=()=>{audioOn();PR.ult=false;PR.move=true;PR.spar=false;startMatch({mode:'prac',map:PRMAP,online:false});pracReset()}; $('#mJoin').onclick=()=>{audioOn();showQuickModes()};
 document.querySelectorAll('.pmode').forEach(b=>b.onclick=()=>quickGame(b.dataset.q));
 const cycleMap=()=>{setMap(nextMap(S.map));renderMenu()};
 $('#rMap').onclick=cycleMap; $('#kMap').onclick=cycleMap;
