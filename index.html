@@ -834,7 +834,7 @@ body.no-ink #comicFx{display:none}
       <button id="mAvatar" class="mavatar" aria-label="تغيير البطل"><img alt=""></button>
     </div>
   </nav>
-  <div class="mver">شاترلاين · الإصدار 3.3</div>
+  <div class="mver">شاترلاين · الإصدار 3.4</div>
   <section class="mevent">
     <span class="mtag">حدث</span>
     <h1>المواجهة</h1>
@@ -1004,51 +1004,51 @@ const num=(v,d=0)=>{v=+v;return Number.isFinite(v)?v:d};
 /* ================= DATA ================= */
 const HEROES={
   zizo:{id:'zizo',name:'أبو زيزو',full:'أبو زيزو',color:0xc9a36b,css:'#c9a36b',cls:'tank',role:'الحدّاد · المطرقة',
-    weapon:'المطرقة الصاعقة',weaponD:'ضربة قريبة واسعة تدفع الأعداء',hp:450,rate:.85,speed:6,aimLen:3.4,range:3.4,
+    weapon:'المطرقة الصاعقة',weaponD:'ضربة قريبة واسعة تدفع الأعداء',hp:700,arm:300,shd:0,rate:.85,speed:6.6,aimLen:3.4,range:3.4,
     a1:{name:'رمية اللهب',d:'موجة نار تخترق كل الأعداء في طريقها',short:'لهب',cd:6},
     ult:{name:'زلزلة المطرقة',d:'يضرب الأرض فيُسقط كل من أمامه ويشلّ حركته',short:'زلزلة',cost:900}},
   naheef:{id:'naheef',name:'النحيف',full:'النحيف',color:0xff6b8b,css:'#ff6b8b',cls:'tank',role:'الضخم · الخردة',
-    weapon:'مدفع الخردة',weaponD:'رشقة شظايا مدمّرة من مسافة قريبة',hp:550,rate:.85,speed:6.2,aimLen:6,range:8,
+    weapon:'مدفع الخردة',weaponD:'رشقة شظايا مدمّرة من مسافة قريبة',hp:750,arm:0,shd:0,rate:.85,speed:6.6,aimLen:6,range:8,
     a1:{name:'استراحة محارب',d:'يستعيد 250 نقطة صحة خلال ثانيتين ويتلقى نصف الضرر',short:'صحة',cd:8},
     ult:{name:'الإعصار الحديدي',d:'وابل خردة متواصل يدفع الأعداء بعيدًا مدة 6 ثوانٍ',short:'إعصار',cost:1000}},
   sabit:{id:'sabit',name:'أبو سابت',full:'أبو سابت',color:0x9b5cff,css:'#9b5cff',cls:'tank',role:'المهندس · البرق',
-    weapon:'مدفع التسلا',weaponD:'قوس كهربائي قصير يصيب كل من أمامه دون تصويب',hp:450,rate:.1,speed:6.4,aimLen:6.5,range:6.5,
+    weapon:'مدفع التسلا',weaponD:'قوس كهربائي قصير يصيب كل من أمامه دون تصويب',hp:625,arm:200,shd:0,rate:.1,speed:6.6,aimLen:6.5,range:6.5,
     a1:{name:'الدرع الدائري',d:'قبة تحجب نيران الأعداء عنك وعن فريقك مدة 6 ثوانٍ',short:'قبة',cd:11},
     ult:{name:'ثورة الغضب',d:'صحة إضافية كبيرة ولكمات تطرح الأعداء أرضًا مدة 9 ثوانٍ',short:'غضب',cost:900}},
   jathab:{id:'jathab',name:'الجذاب',full:'الجذاب',color:0xff4b3e,css:'#ff4b3e',cls:'dps',role:'الأنيق · المسدس',
-    weapon:'المسدس الدوّار',weaponD:'طلقات دقيقة بضرر عالٍ من بعيد',hp:225,rate:.5,speed:7.6,aimLen:24,range:24,
+    weapon:'المسدس الدوّار',weaponD:'طلقات دقيقة بضرر عالٍ من بعيد',hp:275,arm:0,shd:0,rate:.5,speed:6.6,aimLen:24,range:24,
     a1:{name:'القنبلة الصوتية',d:'انفجار يصعق الأعداء القريبين لحظةً',short:'صوتية',cd:10},
     ult:{name:'ساعة الحسم',d:'يثبّت التصويب على كل الأعداء الظاهرين ثم يطلق النار عليهم دفعة واحدة',short:'حسم',cost:850}},
   illa:{id:'illa',name:'أبو علة',full:'أبو علة',color:0xffd23a,css:'#ffd23a',cls:'dps',role:'الميكانيكي · المسامير',
-    weapon:'بندقية المسامير',weaponD:'مسامير ثقيلة متوسطة المدى',hp:225,rate:.6,speed:7.4,aimLen:16,range:16,
+    weapon:'بندقية المسامير',weaponD:'مسامير ثقيلة متوسطة المدى',hp:300,arm:50,shd:0,rate:.6,speed:6.6,aimLen:16,range:16,
     a1:{name:'البرج الآلي',d:'برج آلي يطلق النار على الأعداء مدة 15 ثانية',short:'برج',cd:12},
     ult:{name:'فوهة الحمم',d:'برك حمم تحت الأعداء وصحة إضافية لك',short:'حمم',cost:850}},
   leo:{id:'leo',name:'ليو',full:'ليو',color:0x2fe0e6,css:'#2fe0e6',cls:'dps',role:'الظل · الرشّاشان',
-    weapon:'رشّاشا الظل',weaponD:'شظايا قصيرة المدى، ويعود جزء من ضررك إليك صحةً',hp:250,rate:.55,speed:7.8,aimLen:7,range:8,
+    weapon:'رشّاشا الظل',weaponD:'شظايا قصيرة المدى، ويعود جزء من ضررك إليك صحةً',hp:300,arm:0,shd:0,rate:.55,speed:6.6,aimLen:7,range:8,
     a1:{name:'الاختفاء',d:'يختفي مدة 3 ثوانٍ فلا يتأثر بالضرر ويتحرك أسرع',short:'اختفاء',cd:8},
     ult:{name:'عاصفة الظلال',d:'يدور مدة 3 ثوانٍ ويضرّ كل من حوله',short:'عاصفة',cost:800}},
   thabih:{id:'thabih',name:'الذابح',full:'الذابح',color:0xb7f04a,css:'#b7f04a',cls:'sup',role:'العالِم · الطاقة الحيوية',
-    weapon:'القبضة الحيوية',weaponD:'شعاع قصير يمتص صحة العدو لك',hp:225,rate:.1,speed:7.6,aimLen:8,range:8,
+    weapon:'القبضة الحيوية',weaponD:'شعاع قصير يمتص صحة العدو لك',hp:250,arm:0,shd:0,rate:.1,speed:6.6,aimLen:8,range:8,
     a1:{name:'الكرة المزدوجة',d:'كرة ترتدّ عن الجدران فتضرّ الأعداء وتعالج الحلفاء معًا',short:'كرة',cd:7},
     ult:{name:'التدفّق المزدوج',d:'شعاع طويل يخترق الجدران: يعالج الحلفاء ويضرّ الأعداء',short:'تدفّق',cost:900}},
   shamikh:{id:'shamikh',name:'الشامخ',full:'الشامخ',color:0xf3ead2,css:'#f3ead2',cls:'sup',role:'المسعف · النور',
-    weapon:'مسدس المسعف',weaponD:'طلقات خفيفة سريعة',hp:200,rate:.25,speed:7.8,aimLen:16,range:16,
+    weapon:'مسدس المسعف',weaponD:'طلقات خفيفة سريعة',hp:250,arm:0,shd:0,rate:.25,speed:6.6,aimLen:16,range:16,
     a1:{name:'شعاع العلاج',d:'يتصل بأشد الحلفاء إصابة ويعالجه مدة 5 ثوانٍ',short:'علاج',cd:2},
     ult:{name:'نوبة الإسعاف',d:'سرعة كبيرة وعلاج يصل إلى كل الحلفاء القريبين مدة 15 ثانية',short:'إسعاف',cost:1000}},
   osama:{id:'osama',name:'أسامة',full:'أسامة',color:0x5ee38a,css:'#5ee38a',cls:'sup',role:'الإيقاع · الصوت',
-    weapon:'مكبّر الصوت',weaponD:'أربع موجات صوتية متتالية',hp:200,rate:.9,speed:8,aimLen:14,range:14,
+    weapon:'مكبّر الصوت',weaponD:'أربع موجات صوتية متتالية',hp:250,arm:0,shd:0,rate:.9,speed:6.6,aimLen:14,range:14,
     a1:{name:'تسريع الفريق',d:'يسرّعك ويسرّع حلفاءك القريبين مدة 5 ثوانٍ',short:'تسريع',cd:8},
     ult:{name:'موجة الحماية',d:'درع مؤقت كبير لكل الحلفاء القريبين',short:'حماية',cost:1000}},
   rayan:{id:'rayan',name:'أبو ريان',full:'أبو ريان',color:0x5c7cff,css:'#5c7cff',cls:'tank',role:'الحارس · الطاقة',
-    weapon:'مدفع الجسيمات',weaponD:'شعاع قصير يلتصق بالعدو، وتزداد قوته مع الطاقة',hp:450,rate:.1,speed:6.2,aimLen:9,range:9,
+    weapon:'مدفع الجسيمات',weaponD:'شعاع قصير يلتصق بالعدو، وتزداد قوته مع الطاقة',hp:550,arm:0,shd:225,rate:.1,speed:6.6,aimLen:9,range:9,
     a1:{name:'الدرع الماصّ',d:'درع يمتص 200 ضرر مدة ثانيتين ونصف، ويحوّل ما يمتصه إلى طاقة',short:'درع',cd:9},
     ult:{name:'بئر الجاذبية',d:'كرة تجذب الأعداء القريبين إلى مركزها وتضرّهم مدة 4 ثوانٍ',short:'جاذبية',cost:1000}},
   barraq:{id:'barraq',name:'البرّاق',full:'البرّاق',color:0xff8a1f,css:'#ff8a1f',cls:'dps',role:'العدّاء · الوميض',
-    weapon:'مسدّسا الوميض',weaponD:'رشق سريع جدًا، أقوى من مسافة قريبة',hp:225,rate:.09,speed:8.2,aimLen:12,range:12,
+    weapon:'مسدّسا الوميض',weaponD:'رشق سريع جدًا، أقوى من مسافة قريبة',hp:175,arm:0,shd:0,rate:.09,speed:7.2,aimLen:12,range:12,
     a1:{name:'الوميض',d:'ينتقل فورًا 7 أمتار في اتجاه حركته، وله شحنتان',short:'وميض',cd:3.5},
     ult:{name:'قنبلة النبض',d:'قنبلة تلتصق بأول عدو تصيبه ثم تنفجر بعد ثانية ونصف',short:'نبض',cost:750}},
   hakim:{id:'hakim',name:'الحكيم',full:'الحكيم',color:0x3fb6a8,css:'#3fb6a8',cls:'sup',role:'القنّاص · الدواء',
-    weapon:'بندقية الدواء',weaponD:'طلقة بعيدة تضرّ العدو أو تعالج الحليف الذي تصيبه',hp:200,rate:.8,speed:7.6,aimLen:28,range:28,
+    weapon:'بندقية الدواء',weaponD:'طلقة بعيدة تضرّ العدو أو تعالج الحليف الذي تصيبه',hp:250,arm:0,shd:0,rate:.8,speed:6.6,aimLen:28,range:28,
     a1:{name:'سهم النوم',d:'سهم يُنيم أول عدو يصيبه مدة 3 ثوانٍ (نصفها للمدرّعين)',short:'نوم',cd:12},
     ult:{name:'جرعة البأس',d:'يعالج حليفًا ويمنحه ضررًا أكبر بنسبة 30% ونصف الضرر الواقع عليه مدة 8 ثوانٍ',short:'بأس',cost:900}}
 };
@@ -2739,12 +2739,22 @@ function applyDamage(a,d,f,by,quiet){
   if(a.bar>0&&a.barHp>0){const t=Math.min(a.barHp,d);a.barHp-=t;d-=t;a.en=Math.min(100,(a.en||0)+t*.45);if(a.barHp<=0)a.bar=0;if(d<=0){a.flash=1;return}}
   if(a.armor>0){const t=Math.min(a.armor,d*.8);a.armor-=t;d-=t}
   if(a.ovh>0){const t=Math.min(a.ovh,d);a.ovh-=t;d-=t;if(d<=0){a.flash=1;return}}
+  d=layerDmg(a,d);
   a.hp-=d; a.lastHurt=0; a.flinch=(Math.random()<.5?-1:1)*Math.min(1,d/60);
   if(by){(a.hitBy||(a.hitBy={}))[by]=performance.now()}
   if(a===P){P.hurtBy=by;if(!quiet||d>6){S.shake=Math.max(S.shake,.3);SFX.hurt();const h=$('#hurt');h.style.transition='none';h.style.opacity=1;requestAnimationFrame(()=>{h.style.transition='opacity .4s';h.style.opacity=0})}}
   else a.flash=1;
   if(a.hp<=0)kill(a,by);
 }
+// v3.4 health layers. hp counts all of them: health at the bottom, then armour, then shields on top.
+function layers(a){const H=HEROES[a.h]||{},sh=H.shd||0,ar=H.arm||0,top=a.maxHp;return {sB:top-sh,aB:top-sh-ar,sh,ar}}
+function layerDmg(a,d){const L=layers(a);let hp=a.hp,rem=d;
+  if(L.sh&&hp>L.sB){const t=Math.min(rem,hp-L.sB);hp-=t;rem-=t}
+  if(rem>0&&L.ar&&hp>L.aB){const t=Math.min(rem*.7,hp-L.aB);hp-=t;rem-=t/.7}
+  if(rem>0)hp-=rem; return a.hp-hp}
+// falloff: full damage up to s metres, down to f x damage at e metres (sheet distances x0.5 for our smaller maps)
+const FALLOFF={jathab:[12.5,17.5,.3],leo:[5,10,.3],barraq:[5,10,.3]};
+function falloff(h,dist){const f=FALLOFF[h];if(!f||dist<=f[0])return 1;return dist>=f[1]?f[2]:1-(1-f[2])*(dist-f[0])/(f[1]-f[0])}
 function applyBuff(a,f){if(!a||a.dead||!f)return;if(f.em)a.em=Math.max(a.em,clamp(num(f.em),0,10));if(f.dr)a.dr=Math.max(a.dr,clamp(num(f.dr),0,10));if(f.sb)a.sb=Math.max(a.sb||0,clamp(num(f.sb),0,8));if(f.ov){a.ovh=Math.max(a.ovh,clamp(num(f.ov),0,600));a.ovhT=Math.max(a.ovhT,clamp(num(f.ovt,5),0,15))}}
 function buffTarget(src,t,f){if(isAuth(t))applyBuff(t,f);else pushEv({k:'bf',to:t.id,by:src.id,f})}
 function applyHeal(a,amt){if(!a||a.dead||a.ah>0)return;a.hp=Math.min(a.maxHp,a.hp+clamp(num(amt),0,200))}
@@ -3150,7 +3160,7 @@ function fire(A){
   const R0=shotRay(A,an), pt=R0.p, pv=s2=>pt+rand(-s2,s2);
   switch(A.h){
   case 'zizo':
-    coneHit(A,an,3.4,1.0,70,(nx,nz)=>({kb:[r2(nx*5),r2(nz*5)]}));
+    coneHit(A,an,3.4,1.0,100,(nx,nz)=>({kb:[r2(nx*5),r2(nz*5)]}));
     arcParts(A.x,A.z,an,3.4,0xffb070); swooshFx(A.x,A.z,an,0xff8a3a); shotEv(A,{x:r2(A.x),z:r2(A.z),a:r2(an)}); snd('zizo');
     if(me)S.shake=Math.max(S.shake,.15); break;
   case 'naheef':{
@@ -3162,7 +3172,7 @@ function fire(A){
       coneHit(A,an,3.2,.8,40,(nx,nz)=>({kb:[r2(nx*10),r2(nz*10)]})); arcParts(A.x,A.z,an,3.2,0x9b5cff,18);
       shotEv(A,{x:r2(A.x),z:r2(A.z),a:r2(an),p:1}); snd('zizo'); S.shake=Math.max(S.shake,.18); break;
     }
-    const hits=coneHit(A,an,6.5,.55,6,null,{quiet:true}).slice(0,4);
+    const hits=coneHit(A,an,6.5,.55,7,null,{quiet:true}).slice(0,4);
     hits.forEach(e=>bolt(mz.x,mz.z,e.x,e.z,0xc49bff,mz.y));
     if(!hits.length&&Math.random()<.5){const q=an+rand(-.5,.5);bolt(mz.x,mz.z,A.x+Math.sin(q)*5,A.z+Math.cos(q)*5,0xc49bff,mz.y)}
     if(Math.random()<.35)shotEv(A,{x:r2(gx),z:r2(gz),a:r2(an),t:hits.map(e=>[r2(e.x),r2(e.z)])});
@@ -3170,46 +3180,46 @@ function fire(A){
   case 'jathab':{
     const sprd=me?.004+xs:.015, a=an+rand(-sprd,sprd), hr=ray3(A,R0,a,pv(sprd),24), hit=hr.e; let ex=hr.x,ez=hr.z,ey=hr.y;
     A.shotN=(A.shotN||0)+1; const fourth=A.shotN%4===0;
-    if(hit){dealDamage(A,hit,fourth?110:55,null,{crit:hr.head});if(fourth&&me)popText(hit.x,2,hit.z,'×2','#ffd27a',true)}
+    if(hit){const fo=falloff('jathab',Math.hypot(hit.x-A.x,hit.z-A.z));dealDamage(A,hit,Math.round((fourth?140:70)*fo),null,{crit:hr.head});if(fourth&&me)popText(hit.x,2,hit.z,'×2','#ffd27a',true)}
     else impact(ex,ey,ez);
     {const L=Math.hypot(ex-mz.x,ey-mz.y,ez-mz.z)||1, o=me?Math.min(2.2,L*.5)/L:0, sx=mz.x+(ex-mz.x)*o, sy=mz.y+(ey-mz.y)*o, sz=mz.z+(ez-mz.z)*o;   // your own tracer starts a little ahead of the barrel so it stays thin
       if(fourth)tracer3(sx,sy,sz,ex,ey,ez,0xffffff,me?1.1:2,.18);
       tracer3(sx,sy,sz,ex,ey,ez,0xffd27a,me?.6:1.2,.12)} recE=[ex,ez]; shotEv(A,{x:r2(gx),z:r2(gz),a:r2(an),ex:r2(ex),ez:r2(ez),ey:r2(ey)}); snd('jathab');
     if(me)S.shake=Math.max(S.shake,.12); break;}
   case 'illa':
-    {const sp2=me?.006+xs:0,a=an+rand(-1,1)*sp2;addProj(Object.assign({own:A,kind:'rivet',x:R0.x,z:R0.z,y:R0.y,life:.62,r:.22,dmg:48,g:5},V3(a,pv(sp2),26)))}
+    {const sp2=me?.006+xs:0,a=an+rand(-1,1)*sp2;addProj(Object.assign({own:A,kind:'rivet',x:R0.x,z:R0.z,y:R0.y,life:.62,r:.22,dmg:70,g:5},V3(a,pv(sp2),26)))}
     shotEv(A,{x:r2(gx),z:r2(gz),a:r2(an),pt:r2(pt)}); snd('illa'); if(me)S.shake=Math.max(S.shake,.08); break;
   case 'leo':
-    for(let i=0;i<12;i++){const a=an+rand(-.3-xs*.5,.3+xs*.5),sp=rand(30,34),side=i%2?.32:-.32;addProj(Object.assign({own:A,kind:'pellet',x:R0.x+Math.cos(an)*side,z:R0.z-Math.sin(an)*side,y:R0.y,life:.25,r:.18,dmg:6,dark:true},V3(a,pv(.18),sp)))}
+    for(let i=0;i<12;i++){const a=an+rand(-.3-xs*.5,.3+xs*.5),sp=rand(30,34),side=i%2?.32:-.32;addProj(Object.assign({own:A,kind:'pellet',x:R0.x+Math.cos(an)*side,z:R0.z-Math.sin(an)*side,y:R0.y,life:.25,r:.18,dmg:9.6,dark:true,fo:'leo',ox:A.x,oz:A.z},V3(a,pv(.18),sp)))}
     shotEv(A,{x:r2(gx),z:r2(gz),a:r2(an),pt:r2(pt)}); snd('naheef'); if(me)S.shake=Math.max(S.shake,.12); break;
   case 'thabih':{
     let best=null,bd=8.5;
     for(const e of combatants()){if(!isEnemy(A,e)||e.dead||(bitsOf(e)&8))continue;const dx=e.x-A.x,dz=e.z-A.z,d=Math.hypot(dx,dz);if(d<bd&&Math.abs(angDiff(an,Math.atan2(dx,dz)))<.8&&!lineBlocked(A.x,A.z,e.x,e.z)){bd=d;best=e}}
-    if(best){dealDamage(A,best,5,null,{quiet:true});tracer3(mz.x,mz.y,mz.z,best.x,1.15,best.z,0xc77dff,me?.6:1.2,.1);recE=[best.x,best.z];if(Math.random()<.3)shotEv(A,{x:r2(gx),z:r2(gz),a:r2(an),ex:r2(best.x),ez:r2(best.z)})}
+    if(best){dealDamage(A,best,6.5,null,{quiet:true});tracer3(mz.x,mz.y,mz.z,best.x,1.15,best.z,0xc77dff,me?.6:1.2,.1);recE=[best.x,best.z];if(Math.random()<.3)shotEv(A,{x:r2(gx),z:r2(gz),a:r2(an),ex:r2(best.x),ez:r2(best.z)})}
     if(best&&Math.random()<.3)snd('thabih'); break;}
   case 'shamikh':{
     const up=me&&P.ultT>0;
-    {const sp2=me?.004+xs:0,a=an+rand(-1,1)*sp2;addProj(Object.assign({own:A,kind:'bolt',x:R0.x,z:R0.z,y:R0.y,life:.45,r:.2,dmg:up?22:18},V3(a,pv(sp2),36)))}
+    {const sp2=me?.004+xs:0,a=an+rand(-1,1)*sp2;addProj(Object.assign({own:A,kind:'bolt',x:R0.x,z:R0.z,y:R0.y,life:.45,r:.2,dmg:up?24:20},V3(a,pv(sp2),36)))}
     shotEv(A,{x:r2(gx),z:r2(gz),a:r2(an),pt:r2(pt)}); snd('shamikh'); break;}
   case 'osama':
-    for(let i=0;i<4;i++){const a=an+rand(-.03-xs*.5,.03+xs*.5);addProj(Object.assign({own:A,kind:'sonic',x:R0.x,z:R0.z,y:R0.y,life:.47,r:.24,dmg:16,delay:i*.06},V3(a,pv(.02),30)))}
+    for(let i=0;i<4;i++){const a=an+rand(-.03-xs*.5,.03+xs*.5);addProj(Object.assign({own:A,kind:'sonic',x:R0.x,z:R0.z,y:R0.y,life:.47,r:.24,dmg:20,delay:i*.06},V3(a,pv(.02),30)))}
     shotEv(A,{x:r2(gx),z:r2(gz),a:r2(an),pt:r2(pt)}); snd('osama'); break;
   case 'rayan':{   // particle beam: locks onto the nearest enemy in front, stronger with energy
     let best=null,bd=9.5;
     for(const e of combatants()){if(!isEnemy(A,e)||e.dead||(bitsOf(e)&8))continue;const dx=e.x-A.x,dz=e.z-A.z,d=Math.hypot(dx,dz);if(d<bd&&Math.abs(angDiff(an,Math.atan2(dx,dz)))<.45&&!lineBlocked(A.x,A.z,e.x,e.z)){bd=d;best=e}}
     const en=A.en||0, w=1+en/100*.6;
-    if(best){dealDamage(A,best,8*(1+en/100*.8),null,{quiet:Math.random()<.6});tracer3(mz.x,mz.y,mz.z,best.x,1.15,best.z,0x9fb4ff,(me?.7:1.3)*w,.09);tracer3(mz.x,mz.y,mz.z,best.x,1.15,best.z,0xffffff,(me?.25:.5)*w,.09);recE=[best.x,best.z];if(Math.random()<.3)shotEv(A,{x:r2(gx),z:r2(gz),a:r2(an),ex:r2(best.x),ez:r2(best.z),e:Math.round(en)})}
+    if(best){dealDamage(A,best,9.5*(1+en/100),null,{quiet:Math.random()<.6});tracer3(mz.x,mz.y,mz.z,best.x,1.15,best.z,0x9fb4ff,(me?.7:1.3)*w,.09);tracer3(mz.x,mz.y,mz.z,best.x,1.15,best.z,0xffffff,(me?.25:.5)*w,.09);recE=[best.x,best.z];if(Math.random()<.3)shotEv(A,{x:r2(gx),z:r2(gz),a:r2(an),ex:r2(best.x),ez:r2(best.z),e:Math.round(en)})}
     else{const [ex,ez]=rayEnd(gx,gz,Math.sin(an),Math.cos(an),6,false,A);tracer3(mz.x,mz.y,mz.z,ex,1.15,ez,0x9fb4ff,(me?.4:.8)*w,.06)}
     if(Math.random()<.3)snd('rayan'); break;}
   case 'barraq':{  // twin pistols: hitscan, full damage to 7 m, half beyond
     const sprd=(me?.012+xs:.05), a=an+rand(-sprd,sprd), hr=ray3(A,R0,a,pv(sprd),12), hit=hr.e; const ex=hr.x,ez=hr.z,ey=hr.y;
-    if(hit){const d=Math.hypot(hit.x-A.x,hit.z-A.z);dealDamage(A,hit,d>7?5:10,null,{quiet:Math.random()<.5,crit:hr.head})}else impact(ex,ey,ez);
+    if(hit){const d=Math.hypot(hit.x-A.x,hit.z-A.z);dealDamage(A,hit,Math.round(12*falloff('barraq',d)*10)/10,null,{quiet:Math.random()<.5,crit:hr.head})}else impact(ex,ey,ez);
     tracer3(mz.x,mz.y,mz.z,ex,ey,ez,0xffc36a,me?.4:.9,.06); recE=[ex,ez];
     if(Math.random()<.35)shotEv(A,{x:r2(gx),z:r2(gz),a:r2(an),ex:r2(ex),ez:r2(ez),ey:r2(ey)}); snd('barraq'); break;}
   case 'hakim':{   // healing rifle: the first player in line, enemy or ally, takes the shot
     const sprd=me?.002+xs:.012, a=an+rand(-sprd,sprd), hr=ray3(A,R0,a,pv(sprd),28,true), hit=hr.e; let ex=hr.x,ez=hr.z,ey=hr.y;
     if(hit){
-      if(isEnemy(A,hit))dealDamage(A,hit,70,null,{crit:hr.head});
+      if(isEnemy(A,hit))dealDamage(A,hit,75,null,{crit:hr.head});
       else if(hit.hp<hit.maxHp){healTarget(A,hit,hit.hp<hit.maxHp*.5?94:75);burst(hit.x,1.3,hit.z,0x3fb6a8,8,2,3);if(me)popText(hit.x,2,hit.z,'+'+(hit.hp<hit.maxHp*.5?94:75),'#7af0d8')}}
     else impact(ex,ey,ez);
     tracer3(mz.x,mz.y,mz.z,ex,ey,ez,0x9ff5e6,me?.6:1.2,.16); recE=[ex,ez];
@@ -3536,6 +3546,7 @@ function updateStatus(a,dt){
     else if(a.h==='sabit'&&a.lastHurt>2)applyHeal(a,22*dt);
     else if(a.lastHurt>5)applyHeal(a,12*dt);
     if(a.h==='illa'&&a.lastHurt>3&&(a.armor||0)<75)a.armor=Math.min(75,(a.armor||0)+8*dt);
+    {const L=layers(a);if(L.sh&&a.lastHurt>3&&a.hp>=L.sB-.5&&a.hp<a.maxHp)a.hp=Math.min(a.maxHp,a.hp+30*dt)}
   }
 }
 
@@ -4150,7 +4161,7 @@ function update(dt){
           if(!p.cos){
             if(ally){healTarget(own,e,p.heal||0);burst(e.x,1.2,e.z,0xb7f04a,6,2,3)}
             else if(p.kind==='orb'){dealDamage(own,e,p.dmg,null);makeWell(own,p.x,p.z)}
-            else dealDamage(own,e,p.dmg,p.f||null,{quiet:p.kind==='pellet'&&Math.random()<.5||p.kind==='pellet'&&head,crit:head});
+            else dealDamage(own,e,p.fo?p.dmg*falloff(p.fo,Math.hypot(e.x-p.ox,e.z-p.oz)):p.dmg,p.f||null,{quiet:p.kind==='pellet'&&Math.random()<.5||p.kind==='pellet'&&head,crit:head});
           }
           dead=true;break;
         }
@@ -4523,10 +4534,11 @@ function setHeroHud(){
 const fmtT=s=>{s=Math.max(0,Math.ceil(s));return (s/60|0)+':'+String(s%60).padStart(2,'0')};
 function updateHud(){
   const hp=Math.ceil(Math.max(0,P.hp));
-  {const sh=Math.ceil((P.ovh||0)+(P.bar>0?P.barHp||0:0)), ar=Math.ceil(P.armor||0), key=hp+'|'+sh+'|'+ar+'|'+P.maxHp;
+  {const Ly=layers(P), cur=Math.max(0,P.hp), hl=Math.min(cur,Ly.aB), baseAr=Math.max(0,Math.min(cur,Ly.sB)-Ly.aB), baseSh=Math.max(0,cur-Ly.sB);
+   const sh=Math.ceil((P.ovh||0)+(P.bar>0?P.barHp||0:0)), ar=Math.ceil(P.armor||0), key=hp+'|'+sh+'|'+ar+'|'+P.maxHp;
    if(hudCache.hp!==key){hudCache.hp=key;const tot=P.maxHp+sh+ar, b=$('#hpBar');
-     b.style.setProperty('--seg',Math.max(4,Math.round(tot/25)));b.style.setProperty('--hp',(Math.max(0,P.hp)/tot*100).toFixed(2)+'%');
-     b.style.setProperty('--sh',((Math.max(0,P.hp)+sh)/tot*100).toFixed(2)+'%');b.style.setProperty('--ar',((Math.max(0,P.hp)+sh+ar)/tot*100).toFixed(2)+'%');
+     b.style.setProperty('--seg',Math.max(4,Math.round(tot/25)));b.style.setProperty('--hp',(hl/tot*100).toFixed(2)+'%');
+     b.style.setProperty('--sh',((hl+baseSh+sh)/tot*100).toFixed(2)+'%');b.style.setProperty('--ar',((hl+baseSh+sh+baseAr+ar)/tot*100).toFixed(2)+'%');
      $('#hpNum').textContent=hp+sh+ar;$('#hpMax').textContent=P.maxHp;b.classList.toggle('low',P.hp<P.maxHp*.3)}}
   if(P.h==='kael'){
     const hv=Math.round(P.ultT>0?100:P.heat);
