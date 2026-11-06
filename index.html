@@ -834,7 +834,7 @@ body.no-ink #comicFx{display:none}
       <button id="mAvatar" class="mavatar" aria-label="تغيير البطل"><img alt=""></button>
     </div>
   </nav>
-  <div class="mver">شاترلاين · الإصدار 3.2</div>
+  <div class="mver">شاترلاين · الإصدار 3.3</div>
   <section class="mevent">
     <span class="mtag">حدث</span>
     <h1>المواجهة</h1>
@@ -2073,7 +2073,7 @@ const pMats={}; const pmat=c=>pMats[c]||(pMats[c]=basic(c));
 // v3.2: hero-shooter armour kits. ar armour colour, tr glowing trim, paul [left,right,tiers] pauldron sizes,
 // chest/belt/collar styles, gaunt 2 both / 1 right / -1 left, ua upper-arm plates, thigh/knee/shin/toe leg armour, glove colour
 const GEAR={
-  zizo:  {ar:0x9a6a3a,tr:0xff7a2a,paul:[.25,.25,3],chest:'core',belt:'buckle',gaunt:2,ua:1,thigh:1,knee:1,shin:1,toe:1,glove:0x3a2416},
+  zizo:  {ar:0x7a5434,tr:0xff7a2a,paul:[.27,.27,3],chest:'forge',belt:'tasset',collar:'gorget',gaunt:2,ua:1,thigh:1,knee:1,shin:1,toe:1,glove:0x3a3530,big:1},
   naheef:{ar:0x6e5a4a,tr:0xff6b8b,paul:[.29,0,2],chest:'scrap',belt:'chain',collar:'tire',gaunt:1,ua:1,knee:1,shin:1,toe:1,glove:0x1b1d22},
   sabit: {ar:0xf2f3f7,tr:0x9b5cff,paul:[.22,.22,2],chest:'core',belt:'buckle',gaunt:2,ua:1,thigh:1,knee:1,shin:1,toe:1,glove:0x2a2d36},
   rayan: {ar:0xa7b2cc,tr:0x5c7cff,paul:[.3,.3,3],chest:'plate',belt:'tasset',collar:'high',gaunt:2,ua:1,thigh:1,knee:1,shin:1,toe:1,glove:0x2b3f8c},
@@ -2089,7 +2089,7 @@ const GEAR={
 const TWIN_GRIP={leo:[0,-.08,-.17],barraq:[0,-.1,-.08]};
 const BUILD={slim:{tw:.6,td:.34,leg:.17,arm:.14},med:{tw:.72,td:.4,leg:.2,arm:.16},stocky:{tw:.8,td:.46,leg:.21,arm:.18},heavy:{tw:.9,td:.5,leg:.24,arm:.2},huge:{tw:1.04,td:.62,leg:.27,arm:.23}};
 const LOOK={
-  zizo:  {b:'heavy',skin:0xb47b54,hair:0x2b1b12,hs:'bald',top:0x6b4a2a,pants:0x3a3028,boots:0x1e1712,acc:0xc9a36b,beard:'mustache',x:['apron','pads','forearms']},
+  zizo:  {b:'heavy',skin:0xb47b54,hair:0x2b1b12,hs:'bald',top:0x3a3530,pants:0x34302b,boots:0x2a2420,acc:0xc9a36b,beard:'mustache',x:['scar']},
   naheef:{b:'huge', skin:0xc58e64,hair:0x15161c,hs:'hood',top:0x2a2d36,pants:0x2a2d36,boots:0x111318,acc:0xff6b8b,x:['shades','tracklines','gascan']},
   sabit: {b:'heavy',skin:0xd9a882,hair:0x9aa0a8,hs:'short',top:0xe6e8ef,pants:0xc9ccd6,boots:0x2a2d36,acc:0x9b5cff,beard:'full',x:['generator','pads','chestrig']},
   jathab:{b:'med',  skin:0xc89573,hair:0x1a120e,hs:'shemagh',scarf:0xf2f2f2,top:0xf4f2ec,pants:0xf4f2ec,boots:0x2a1d14,acc:0xff4b3e,beard:'trim',x:['shades','robe','agal']},
@@ -2235,11 +2235,12 @@ function heroMesh(id,skin){
   if(has('glasses')){[-1,1].forEach(s=>{const r=add(new THREE.TorusGeometry(.026,.005,5,14),dark,s*.046,.022,.135,head);ell(.024,.02,.004,SM(0xdff6ff,{transparent:true,opacity:.35,shininess:120}),s*.046,.022,.134,head)});ell(.02,.004,.004,dark,0,.026,.136,head)}
   if(has('shades')){ell(.11,.026,.03,SM(0x0d0e12,{shininess:120,specular:0x666666}),0,.024,.118,head)}
   if(has('mask'))ell(.112,.07,.105,SM(0x0f1a20),0,-.06,.035,head);
+  if(has('scar')){const o=ell(.006,.05,.004,SM(0x7a3a2a),.06,.05,.12,head,false,6);o.rotation.z=.5}
   if(has('phones')){[-1,1].forEach(s=>{const c=cyl(.05,.05,.04,accM,s*.135,0,0,head);c.rotation.z=Math.PI/2});add(new THREE.TorusGeometry(.14,.012,6,20,Math.PI),dark,0,0,0,head)}
   if(has('circlet'))add(new THREE.TorusGeometry(.136,.01,6,22),accM,0,.06,0,head).rotation.x=Math.PI/2;
   // arms reach to where the weapon is held (both hands, or one per gun for twin weapons)
-  const gp=V(.12,1.1,id==='zizo'?.35:.5), twin=id==='leo'||id==='barraq';
-  const hands=twin?[V(.27,1.2,.6),V(-.27,1.2,.6)]:id==='thabih'?[V(.12,1.06,.5),V(-.35,1.06,.5)]:id==='zizo'?[V(gp.x,gp.y-.03,gp.z-.28),V(gp.x-.02,gp.y,gp.z+.06)]:[V(gp.x+.03,gp.y-.04,gp.z-.16),V(gp.x-.06,gp.y-.02,gp.z+.14)];
+  const gp=V(id==='zizo'?.3:.12,1.1,id==='zizo'?.35:.5), twin=id==='leo'||id==='barraq';
+  const hands=twin?[V(.27,1.2,.6),V(-.27,1.2,.6)]:id==='thabih'?[V(.12,1.06,.5),V(-.35,1.06,.5)]:id==='zizo'?[[0,-.03,-.3],[-.02,0,.08]].map(([x,y,z])=>{const c=Math.cos(.5),sn=Math.sin(.5);return V(gp.x+x,gp.y+y*c-z*sn,gp.z+y*sn+z*c)}):[V(gp.x+.03,gp.y-.04,gp.z-.16),V(gp.x-.06,gp.y-.02,gp.z+.14)];
   [1,-1].forEach((s,k)=>{
     const S2=V(s*(sw-.02),1.42,0), Hd=hands[k], E=S2.clone().lerp(Hd,.5).add(twin?V(s*.06,-.07,-.02):V(s*.1,-.13,-.06)), sl=has('bare')?skinM:top;
     limb(S2,E,armR*1.12,armR*.92,sl,g,true,armStat);
@@ -2268,10 +2269,18 @@ function heroMesh(id,skin){
     const paul=(s,r,n)=>{if(!r)return;const x0=s*sw;
       ell(r,r*.62,r*1.05,armorM,x0,1.5,0,null,false,12);
       for(let t=0;t<n;t++){const o=ell(r*1.0-t*.012,.042,r*1.08-t*.015,armorM,x0+s*(.045+t*.04),1.45-t*.065,0,null,false,14);o.rotation.z=s*(-.55-t*.14)}
-      {const o=ell(r*.98,.016,r*1.06,trimM,x0+s*.05,1.47,0,null,false,14);o.rotation.z=s*-.55}};
+      {const o=ell(r*.98,.016,r*1.06,trimM,x0+s*.05,1.47,0,null,false,14);o.rotation.z=s*-.55}
+      if(GR.big)for(let q=0;q<5;q++){const a=(q-2)*.5;ell(.018,.018,.018,SM(0xd9a650,{shininess:100}),x0+s*r*.35,1.5+r*.5*Math.cos(a)*.6,r*.95*Math.sin(a),null,false,6)}};
     paul(-1,GR.paul[0],GR.paul[2]); paul(1,GR.paul[1],GR.paul[2]);
     const c=GR.chest;
-    if(c==='core'){{const o=ell(B.tw*0.4,0.17,fz*.5,armorM,0,1.34,fz*0.6,null,false,16);o.rotation.x=-.1};cyl(.07,.07,.03,armorM,0,1.34,fz+.06).rotation.x=Math.PI/2;cyl(.047,.047,.04,trimM,0,1.34,fz+.07).rotation.x=Math.PI/2;ell(B.tw*.3,.05,fz*.4,armorM,0,1.14,fz*.62,null,false,12)}
+    if(c==='forge'){{const o=ell(B.tw*.46,.21,fz*.52,armorM,0,1.34,fz*.6,null,false,18);o.rotation.x=-.1}
+      const iron=SM(0x3a3530,{shininess:60}); PL(.2,.11,.04,iron,0,1.31,fz+.045,-.1); for(let k=0;k<4;k++)PL(.16,.012,.01,trimM,0,1.275+k*.022,fz+.068,-.1);
+      PL(.2,.035,.05,SM(0xd9a650,{shininess:100}),0,1.405,fz+.05,-.1); PL(.07,.05,.045,SM(0xd9a650,{shininess:100}),0,1.375,fz+.05,-.1); PL(.13,.03,.05,SM(0xd9a650,{shininess:100}),0,1.345,fz+.05,-.1);
+      ell(B.tw*.34,.06,fz*.42,armorM,0,1.13,fz*.6,null,false,12); ell(B.tw*.31,.055,fz*.4,iron,0,1.05,fz*.58,null,false,12);
+      [-1,1].forEach(k=>{const v=cyl(.055,.07,.34,iron,k*.15,1.47,-fz-.1);v.rotation.x=-.35;cyl(.058,.058,.03,trimM,k*.15,1.63,-fz-.16).rotation.x=-.35;
+        ell(.06,.03,.06,MB(0xffb347),k*.15,1.645,-fz-.165,null,false,8);for(let q=0;q<2;q++)add(new THREE.TorusGeometry(.068,.01,6,14),SM(0xd9a650,{shininess:100}),k*.15,1.36+q*.12,-fz-.06-q*.04).rotation.x=Math.PI/2-.35});
+      PL(B.tw*.6,.3,.08,iron,0,1.3,-fz-.02,.1)}
+    else if(c==='core'){{const o=ell(B.tw*0.4,0.17,fz*.5,armorM,0,1.34,fz*0.6,null,false,16);o.rotation.x=-.1};cyl(.07,.07,.03,armorM,0,1.34,fz+.06).rotation.x=Math.PI/2;cyl(.047,.047,.04,trimM,0,1.34,fz+.07).rotation.x=Math.PI/2;ell(B.tw*.3,.05,fz*.4,armorM,0,1.14,fz*.62,null,false,12)}
     else if(c==='plate'){{const o=ell(B.tw*0.45,0.2,fz*.5,armorM,0,1.33,fz*0.62,null,false,16);o.rotation.x=-.1};ell(B.tw*.34,.055,fz*.42,armorM,0,1.13,fz*.6,null,false,12);ell(B.tw*.31,.055,fz*.42,armorM,0,1.04,fz*.6,null,false,12);{const o=ell(B.tw*.42,.012,fz*.5,trimM,0,1.21,fz*.6,null,false,16)}}
     else if(c==='scrap'){{const o=ell(B.tw*.22,.13,fz*.45,armorM,-B.tw*.13,1.35,fz*.62,null,false,12);o.rotation.set(-.1,0,.2)}{const o=ell(B.tw*.19,.1,fz*.45,SM(0x5a5f6a,{shininess:60}),B.tw*.16,1.24,fz*.6,null,false,12);o.rotation.set(-.05,0,-.15)}
       [[-.2,1.43],[-.06,1.27],[.1,1.3],[.24,1.18]].forEach(([x,y])=>ell(.014,.014,.01,brassM,x*B.tw/1.04,y,fz+.045,null,false,6))}
@@ -2283,7 +2292,8 @@ function heroMesh(id,skin){
     else if(c==='speaker'){add(new THREE.TorusGeometry(.07,.016,8,20),dark,0,1.3,fz+.01);cyl(.06,.035,.03,dark,0,1.3,fz+.005).rotation.x=Math.PI/2;add(new THREE.TorusGeometry(.046,.008,6,18),trimM,0,1.3,fz+.03)}
     else if(c==='vials'){PL(B.tw*.6,.06,.03,SM(0x4a3a22),0,1.27,fz+.01);[-1,0,1].forEach(k=>{cyl(.018,.018,.075,trimM,k*.08,1.28,fz+.035);cyl(.02,.02,.015,brassM,k*.08,1.325,fz+.035)})}
     const co=GR.collar;
-    if(co==='high')cyl(.1,.118,.13,armorM,0,1.52,0,null,false,true);
+    if(co==='gorget'){cyl(.13,.17,.15,armorM,0,1.5,0,null,false,true);add(new THREE.TorusGeometry(.13,.012,6,22),trimM,0,1.575,0).rotation.x=Math.PI/2;add(new THREE.TorusGeometry(.165,.016,6,22),SM(0xd9a650,{shininess:100}),0,1.43,0).rotation.x=Math.PI/2}
+    else if(co==='high')cyl(.1,.118,.13,armorM,0,1.52,0,null,false,true);
     else if(co==='flare')[-1,1].forEach(k=>PL(.13,.17,.02,armorM,k*.09,1.56,-.07,.35,k*.55,0));
     else if(co==='tire')add(new THREE.TorusGeometry(.15,.045,8,20),dark,0,1.46,0).rotation.x=Math.PI/2;
     else if(co==='mantle'){ell(B.tw*.56,.1,B.tw*.56*dz*1.2,armorM,0,1.46,0,null,false,14);const t=add(new THREE.TorusGeometry(B.tw*.5,.012,6,24),trimM,0,1.42,0);t.rotation.x=Math.PI/2;t.scale.y=dz*1.2}
@@ -2330,11 +2340,17 @@ function heroMesh(id,skin){
   const TG=(x,y,z,r)=>W(new THREE.TorusGeometry(r||.032,.007,5,12,PI),dk,x,y,z,PI,PI/2,0);              // trigger guard
   const TRG=(x,y,z)=>RB(.012,.036,.016,steel,x,y,z,.3);
   const GRIP=(x,y,z,m,w)=>{RB(w||.055,.15,.08,m||rub,x,y,z,.32);for(let k=0;k<3;k++)RB((w||.055)+.004,.008,.07,dk,x,y-.04+k*.035,z-.012*k+.012,.32)};
-  if(id==='zizo'){                                   // forge hammer
-    TB(.03,.026,1.12,wood,0,0,0,12); [-.42,-.36,-.3,-.24,-.18,.08,.14].forEach(z=>RG(.032,.007,SM(0x3a2416),0,0,z));
-    SP(.046,brass,0,0,-.57); TB(.05,.036,.1,brass,0,0,.42,12);
-    RB(.34,.3,.34,dk,0,0,.62); [-1,1].forEach(k=>{TX(.16,.07,steel,k*.2,0,.62,20);TX(.12,.02,dk,k*.24,0,.62,20);RB(.36,.045,.36,brass,0,k*.11,.62)});
-    RB(.345,.03,.2,MB(0xff7a2a),0,0,.62); for(let k=0;k<4;k++)SP(.014,brass,(k-1.5)*.08,.14,.79);
+  if(id==='zizo'){                                   // forge hammer (original design)
+    const iron=SM(0x3a3530,{shininess:60}), bronze=SM(0x8a5a30,{shininess:90,specular:0x8a6a40}), ember=MB(0xff7a2a), hot=MB(0xffb347);
+    TB(.034,.03,1.2,iron,0,0,0,12); for(let z=-.46;z<=-.16;z+=.06)RG(.037,.008,SM(0x3a2416),0,0,z); [.0,.2].forEach(z=>RG(.04,.01,brass,0,0,z));
+    TB(.06,.05,.12,bronze,0,0,-.62,10); SP(.06,bronze,0,0,-.7); RG(.062,.01,ember,0,0,-.64);
+    TB(.07,.055,.14,bronze,0,0,.45,12);
+    RB(.5,.36,.4,iron,0,0,.68); [-1,1].forEach(k=>{RB(.1,.42,.46,bronze,k*.27,0,.68);TX(.17,.05,steel,k*.33,0,.68,20);TX(.12,.02,dk,k*.36,0,.68,20);
+      for(let q=0;q<6;q++){const a=q/6*PI*2;RB(.04,.05,.05,bronze,k*.33,Math.cos(a)*.17,.68+Math.sin(a)*.17,a)}});
+    RB(.3,.1,.3,ember,0,.13,.68); RB(.26,.04,.26,hot,0,.185,.68); RB(.52,.03,.42,brass,0,-.12,.68); RB(.52,.03,.42,brass,0,.08,.68);
+    TB(.05,.06,.2,iron,0,-.16,.62,10); TB(.035,.035,.08,ember,0,-.16,.5,8);
+    [-1,1].forEach(k=>{RB(.06,.12,.06,bronze,0,k*.2,.88);SP(.03,ember,0,k*.2,.92)});
+    for(let q=0;q<4;q++)SP(.016,brass,(q-1.5)*.1,.19,.86);
   }else if(id==='naheef'){                           // scrap cannon
     RB(.2,.2,.44,dk,0,.03,-.02); TB(.085,.075,.44,steel,0,.05,.37,18); RG(.084,.012,rust,0,.05,.22); RG(.08,.012,rust,0,.05,.5);
     RB(.2,.09,.11,dk,0,.05,.6); for(let k=-1;k<=1;k+=2)RB(.06,.05,.12,rub,k*.075,.05,.6);
@@ -2404,7 +2420,7 @@ function heroMesh(id,skin){
   }
   else{RB(.16,.2,.9,dk,0,0,0)}
   if(wp.length)mergeStatic(gun,wp);
-  gun.position.set(.12,1.1,id==='zizo'?.35:.5); g.add(gun);
+  gun.position.copy(gp); if(id==='zizo')gun.rotation.x=.5; g.add(gun);   // the hammer is carried low on the right, head forward
   // the Vantite shard every Shard carries
   const shard=add(new THREE.OctahedronGeometry(.09,0),MB(h.color),-(B.tw*.5+.02),1.6,-.04); shard.scale.y=1.8;
   const torso=new THREE.Group(); torso.position.y=.72; g.add(torso);
@@ -2559,7 +2575,7 @@ const ANIM={
   thabih:{f:.16,ab:.5,ul:.6}, shamikh:{f:.2,ab:.4,ul:.8}, osama:{f:.32,ab:.55,ul:.9},
   rayan:{f:.16,ab:.6,ul:.7}, barraq:{f:.12,ab:.3,ul:.55}, hakim:{f:.4,ab:.45,ul:.7}
 };
-function playAnim(a,kind){const d=(ANIM[a.h]||{})[kind];if(!d)return;a.anK=kind;a.anD=d;a.anT=d}
+function playAnim(a,kind){const d=(ANIM[a.h]||{})[kind];if(!d)return;a.anK=kind;a.anD=d;a.anT=d;if(a.h==='zizo'&&kind==='f')a.swDir=-(a.swDir||-1)}
 const easeOut=k=>1-Math.pow(1-k,3), tri=(k,a,b)=>k<a?k/a:k<b?1:Math.max(0,1-(k-b)/(1-b));
 function animateRig(a,m,dt,move,ult,now,v){
   if(!m.torso)return;
@@ -2572,7 +2588,7 @@ function animateRig(a,m,dt,move,ult,now,v){
   if(on){
     if(H==='zizo'&&K==='f'){                       // wide hammer swing: wind up to the right, sweep through to the left
       const w=k<.3?easeOut(k/.3):1, sw=k<.3?0:easeOut(Math.min(1,(k-.3)/.4)), back=k>.75?(k-.75)/.25:0;
-      ay=(1.25*w-2.5*sw)*(1-back); ty=ay*.45; ax=-.35*w*(1-back); tx+=.1*sw*(1-back);
+      const dr=a.swDir||1; ay=dr*(1.3*w-2.6*sw)*(1-back); ty=ay*.5; ax=-.3*w*(1-back)+.15*sw*(1-back); tx+=.14*sw*(1-back); tz+=dr*-.12*sw*(1-back);
     }else if(H==='zizo'&&K==='ab'){                // overhead throw of the fire wave
       ax=k<.35?-2.2*easeOut(k/.35):-2.2+2.8*easeOut(Math.min(1,(k-.35)/.3)); if(k>.75)ax*=1-(k-.75)/.25; tx+=k>.35&&k<.8?.25:0;
     }else if(H==='zizo'&&K==='ul'){                // leap, raise the hammer, crash it into the ground
@@ -2784,6 +2800,11 @@ function bolt(x0,z0,x1,z1,c=0xffd23a,y=1.1){
     const nx=x0+(x1-x0)*k+jx, nz=z0+(z1-z0)*k+jz; tracer(px,y,pz,nx,nz,c,1.2,.14); px=nx;pz=nz;
   }
 }
+function swooshFx(x,z,an,col){const st=an-Math.PI/2-1.25;
+  const m=new THREE.Mesh(new THREE.RingGeometry(1.1,3.3,28,1,st,2.5),basic(col,{transparent:true,depthWrite:false,side:THREE.DoubleSide,blending:THREE.AdditiveBlending}));
+  m.rotation.x=-Math.PI/2; m.position.set(x,1.15,z); scene.add(m);
+  fx.push({m,t:.24,max:.24,upd(f){const k=1-f.t/f.max;f.m.material.opacity=.55*(1-k);f.m.position.y=1.15-k*.15},dispose:true});
+}
 function ringFx(x,z,rad,col,dur=.3){
   const m=new THREE.Mesh(new THREE.RingGeometry(.2,.5,24),basic(col,{transparent:true,depthWrite:false,side:THREE.DoubleSide}));
   m.rotation.x=-Math.PI/2; m.position.set(x,.1,z); scene.add(m);
@@ -2986,7 +3007,7 @@ function weaponFx(A,mz,an){
   if(me){
     if(MZL&&A.h!=='zizo'&&A.h!=='thabih'){MZL.position.set(mz.x,mz.y,mz.z);MZL.color.setHex(A.h==='osama'?0x9affc0:0xffc477);MZL.intensity=A.h==='sabit'?.6:1.6}
     FP.rec=(FP.rec||0)+(RECOIL[A.h]||0); FP.recY=(FP.recY||0)+rand(-1,1)*(RECOIL[A.h]||0)*.35;
-    if(A.h==='zizo')FP.roll=(FP.roll||0)+(A.alt=-(A.alt||1))*.09;
+    if(A.h==='zizo')FP.roll=(FP.roll||0)+(A.swDir||1)*.07;
     P.bloom=Math.min(.07,(P.bloom||0)+(BLOOM[A.h]||0));
   }
 }
@@ -3130,7 +3151,7 @@ function fire(A){
   switch(A.h){
   case 'zizo':
     coneHit(A,an,3.4,1.0,70,(nx,nz)=>({kb:[r2(nx*5),r2(nz*5)]}));
-    arcParts(A.x,A.z,an,3.4,0xe8d3a8); shotEv(A,{x:r2(A.x),z:r2(A.z),a:r2(an)}); snd('zizo');
+    arcParts(A.x,A.z,an,3.4,0xffb070); swooshFx(A.x,A.z,an,0xff8a3a); shotEv(A,{x:r2(A.x),z:r2(A.z),a:r2(an)}); snd('zizo');
     if(me)S.shake=Math.max(S.shake,.15); break;
   case 'naheef':{
     const hog=me&&P.ultT>0, n=hog?5:10, spr=hog?.4:.17;   // v2.9: tighter cone so the gun is reliable at its 6–8 m range
@@ -3204,7 +3225,7 @@ function cosShot(e){
   const mz=A?muzzle(A,e.w==='leo'||e.w==='barraq'?(A.alt||1):0):{x,y,z}; MZ_NOW=mz;
   recShot(A,a,e.w==='jathab'||e.w==='thabih'||e.w==='rayan'||e.w==='barraq'||e.w==='hakim'?ex:undefined,ez);
   switch(e.w){
-    case 'zizo':arcParts(x,z,a,3.4,0xe8d3a8);playAt('zizo',x,z);break;
+    case 'zizo':arcParts(x,z,a,3.4,0xffb070);swooshFx(x,z,a,0xff8a3a);playAt('zizo',x,z);break;
     case 'zizo_w':P2('wave',{vx:Math.sin(a)*20,vz:Math.cos(a)*20,life:.85,r:.9,pierceE:true});playAt('flame',x,z);break;
     case 'naheef':for(let i=0;i<(e.h?5:10);i++){const q=a+rand(-.28,.28);P2('pellet',Object.assign({y:ry,life:.26,r:.18},V3(q,pt+rand(-.15,.15),32)))}playAt('naheef',x,z);break;
     case 'sabit':if(e.p){arcParts(x,z,a,3.2,0x9b5cff,18);playAt('zizo',x,z)}else{(Array.isArray(e.t)?e.t:[]).slice(0,4).forEach(t=>bolt(x,z,clamp(num(t[0]),-LIM,LIM),clamp(num(t[1]),-LIM,LIM),0xc49bff));playAt('sabit',x,z)}break;
@@ -5380,7 +5401,7 @@ function buildViewModel(h){
     [sleeve,hand]=armAt(0,1); armAt(-.6,-1);
   }else{const a=lift(m.gun),k=(HEROES[h].cls==='tank'?.5:.4)/(Math.max(a.sz.x,a.sz.y,a.sz.z)||1);
     a.o.scale.multiplyScalar(k); a.o.position.set(-a.c.x*k,-a.c.y*k,-a.c.z*k);
-    const pivot=new THREE.Group(); pivot.add(a.o); pivot.rotation.y=Math.PI; hold.add(pivot);   // rig weapons point +z; the view looks down -z
+    const pivot=new THREE.Group(); pivot.add(a.o); pivot.rotation.y=Math.PI; if(h==='zizo'){pivot.rotation.x=.75;pivot.position.set(.04,.1,-.02)} hold.add(pivot);   // rig weapons point +z; the view looks down -z
     [sleeve,hand]=armAt(0,1)}
   root.position.set(.3,-.27,-.8);
   // the off hand, raised for ability casts
@@ -5413,6 +5434,9 @@ function fpCamera(dt,t){
     FP.kick+=(P.kick-FP.kick)*Math.min(1,dt*30);
     vm.root.position.set(vm.base.x+bobX+CP.x,vm.base.y+bobY*.6-FP.kick*.03+CP.y,vm.base.z+FP.kick*.11+CP.z);
     vm.root.rotation.set(FP.kick*.22+CP.rx,CP.ry,CP.rz); vm.root.scale.setScalar(CP.s);
+    if(P.h==='zizo'&&P.anK==='f'&&P.anT>0){const k=1-P.anT/P.anD,dr=P.swDir||1,w=k<.25?easeOut(k/.25):1,sw=k<.25?0:easeOut(Math.min(1,(k-.25)/.35)),bk=k>.7?(k-.7)/.3:0,f=1-bk;
+      const yaw=dr*(.95*w-2.1*sw)*f; vm.root.rotation.y+=yaw; vm.root.rotation.z+=dr*(.35*w-1.15*sw)*f; vm.root.rotation.x+=(-.25*w+.35*sw)*f;
+      vm.root.position.x+=dr*(.12*w-.5*sw)*f; vm.root.position.y+=(.06*w-.04*sw)*f; vm.root.position.z+=-.12*sw*f}
     if(vm.lh){vm.lh.visible=CP.lh>.02; if(vm.lh.visible){vm.lh.position.set(-.4+CP.lx*.6+bobX*.6,-.62+.34*easeOut(Math.min(1,CP.lh))+CP.ly*.55,-.86+CP.z*.4+CP.lz*.45);vm.lh.rotation.set(-.05+CP.lrx*.35,.32,.18);
       vm.orb.visible=CP.orb>.03; vm.orb.material.opacity=Math.min(.95,CP.orb); vm.orb.scale.setScalar(.6+CP.orb*.6+Math.sin(t/70)*.05)}}
     VML.color.setHex(HEROES[P.h].color); VML.intensity=CP.glow*(FP.cast&&FP.cast.k==='ul'?2.6:1.6);
