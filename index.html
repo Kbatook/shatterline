@@ -137,6 +137,13 @@ body.hp-bl #hpw{top:auto;bottom:calc(20px + env(safe-area-inset-bottom,0px));tra
 #pauseBtn{pointer-events:auto;width:36px;height:36px;border:1px solid var(--line);background:rgba(19,22,29,.6);font-weight:800;font-size:13px}
 #fsBtn{pointer-events:auto;width:36px;height:36px;border:1px solid var(--line);background:rgba(19,22,29,.6);display:grid;place-items:center;padding:0}
 #fsBtn.on{border-color:var(--ally)}
+body.standalone #fsBtn{display:none}
+#fsHelp{position:fixed;inset:0;z-index:60;display:grid;place-items:center;background:rgba(8,9,13,.72);pointer-events:auto}
+#fsHelp[hidden]{display:none}
+#fsHelp .card{width:min(460px,92vw);max-height:88vh;overflow:auto;background:#151922;border:2px solid #0b0a12;box-shadow:4px 4px 0 #0b0a12;padding:16px 18px;display:grid;gap:10px}
+#fsHelp h3{margin:0;font-size:17px} #fsHelp p{margin:0;font-size:13px;color:var(--mute);line-height:1.7}
+#fsHelp ol{margin:0;padding-inline-start:20px;font-size:13.5px;line-height:1.9} #fsHelp b{color:var(--ally)}
+#fsHelp button{justify-self:start;padding:8px 18px;font-weight:800;background:var(--ally);color:#0b0a12;border:2px solid #0b0a12}
 #feed{zoom:var(--hudS,1);opacity:var(--hudO,1);position:absolute;right:max(14px,env(safe-area-inset-right,0px));top:calc(48px + env(safe-area-inset-top,0px));display:grid;gap:3px;justify-items:end}
 #feed div{font-size:11px;background:rgba(19,22,29,.7);padding:3px 7px;white-space:nowrap}
 #feed .x{color:var(--mute);margin:0 5px}
@@ -781,6 +788,11 @@ body.no-ink #comicFx{display:none}
 
 <canvas id="game"></canvas>
 <div id="comicFx"></div>
+<div id="fsHelp" hidden><div class="card" role="dialog" aria-label="اللعب بملء الشاشة على الآيفون">
+  <h3>اللعب بملء الشاشة على الآيفون</h3>
+  <p>متصفحات الآيفون لا تسمح لأي صفحة ويب بإخفاء شريط العنوان. الحل: ثبّت اللعبة على الشاشة الرئيسية، فتفتح منها كتطبيق بكامل الشاشة.</p>
+  <ol id="fsSteps"></ol>
+  <button id="fsOk">حسنًا</button></div></div>
 <div id="touch"></div>
 
 <div id="hud" hidden>
@@ -836,7 +848,7 @@ body.no-ink #comicFx{display:none}
       <button id="mAvatar" class="mavatar" aria-label="تغيير البطل"><img alt=""></button>
     </div>
   </nav>
-  <div class="mver">شاترلاين · الإصدار 3.6</div>
+  <div class="mver">شاترلاين · الإصدار 3.7</div>
   <section class="mevent">
     <span class="mtag">حدث</span>
     <h1>المواجهة</h1>
@@ -1035,7 +1047,7 @@ const HEROES={
     ult:{name:'التدفّق المزدوج',d:'شعاع طويل يخترق الجدران: يعالج الحلفاء ويضرّ الأعداء',short:'تدفّق',cost:900}},
   shamikh:{id:'shamikh',name:'الشامخ',full:'الشامخ',color:0xf3ead2,css:'#f3ead2',cls:'sup',role:'المسعف · النور',
     weapon:'مسدس المسعف',weaponD:'طلقات خفيفة سريعة',hp:250,arm:0,shd:0,rate:.25,speed:6.6,aimLen:16,range:16,
-    a1:{name:'شعاع العلاج',d:'يتصل بأشد الحلفاء إصابة ويعالجه مدة 5 ثوانٍ',short:'علاج',cd:2},
+    a1:{name:'شعاع العلاج',d:'يتصل بالحليف الذي تصوّب عليه (أو الأشد إصابة) ويعالجه باستمرار؛ اضغط مرة أخرى للتبديل إلى حليف آخر',short:'علاج',cd:.5},
     ult:{name:'نوبة الإسعاف',d:'سرعة كبيرة وعلاج يصل إلى كل الحلفاء القريبين مدة 15 ثانية',short:'إسعاف',cost:1000}},
   osama:{id:'osama',name:'أسامة',full:'أسامة',color:0x5ee38a,css:'#5ee38a',cls:'sup',role:'الإيقاع · الصوت',
     weapon:'مكبّر الصوت',weaponD:'أربع موجات صوتية متتالية',hp:250,arm:0,shd:0,rate:.9,speed:6.6,aimLen:14,range:14,
@@ -3310,8 +3322,11 @@ function useAbility(slot){
   case 'leo': P.wraith=3; P.inv=3; fxOut({t:'ring',x:r2(P.x),z:r2(P.z),r:1.4,c:0x2fe0e6}); break;
   case 'thabih':{const o={k:'orb2',x:P.x+P.ax,z:P.z+P.az,a:aimA(),t:7,tick:0,r:.4};addObj(o);break}
   case 'shamikh':{
-    const al=alliesOf(P,14).sort((a,b)=>a.hp/a.maxHp-b.hp/b.maxHp);
-    if(al.length)P.tether={id:al[0].id,t:5,acc:0}; else{cds.c1=.5}
+    const cur=P.tether&&P.tether.id, al=alliesOf(P,16).filter(e=>e.id!==cur);
+    // prefer the ally under the crosshair, else the most hurt one
+    let pick=null,bd=.3;for(const e of al){const da=Math.abs(angDiff(FP.yaw,Math.atan2(e.x-P.x,e.z-P.z)));if(da<bd&&!lineBlocked(P.x,P.z,e.x,e.z)){bd=da;pick=e}}
+    if(!pick)pick=al.sort((a,b)=>a.hp/a.maxHp-b.hp/b.maxHp)[0];
+    if(pick){P.tether={id:pick.id,acc:0};banner('شعاع العلاج',pick.name||'')} else if(cur){P.tether=null} else{cds.c1=.5}
     break;}
   case 'osama':
     for(const e of alliesOf(P,9,true))buffTarget(P,e,{sb:5});
@@ -3396,8 +3411,8 @@ function heroTick(dt){
   }
   if(P.h==='osama'){P.auraT=(P.auraT||0)-dt;if(P.auraT<=0){P.auraT=.5;for(const e of alliesOf(P,8,true)){if(e.hp<e.maxHp){if(e===P)applyHeal(P,8);else healTarget(P,e,8)}}}}
   // healing beam
-  if(P.tether){const tg=findActor(P.tether.id);P.tether.t-=dt;
-    if(!tg||tg.dead||P.tether.t<=0||Math.hypot(tg.x-P.x,tg.z-P.z)>16)P.tether=null;
+  if(P.tether){const tg=findActor(P.tether.id);
+    if(!tg||tg.dead||Math.hypot(tg.x-P.x,tg.z-P.z)>20)P.tether=null;
     else{P.tether.acc+=55*dt;if(P.tether.acc>=11){healTarget(P,tg,P.tether.acc);P.tether.acc=0}tracer(P.x+P.ax,1.2,P.z+P.az,tg.x,tg.z,0xf2c14e,1.4,.06)}}
 }
 function speedMul(){
@@ -3538,7 +3553,9 @@ function readInput(){
 }
 function crossTarget(mul){
   const H=HEROES[P.h], range=Math.max(H.range*1.15,6), yaw=FP.yaw; let best=null,bs=1e9;
-  for(const e of visibleEnemies(P,Math.max(range*1.6,20))){
+  const cands=visibleEnemies(P,Math.max(range*1.6,20));
+  if(P.h==='hakim')for(const e of combatants())if(e!==P&&!e.dead&&!isEnemy(P,e)&&e.hp<e.maxHp-1&&Math.hypot(e.x-P.x,e.z-P.z)<=range*1.6)cands.push(e);   // the healing rifle locks onto hurt allies too
+  for(const e of cands){
     const dx=e.x-P.x,dz=e.z-P.z,d=Math.hypot(dx,dz); if(d<.2)continue;
     const da=Math.abs(angDiff(yaw,Math.atan2(dx,dz))), w=Math.atan2((e.r||.5)+.25,d);   // angular half-width of the body
     const cone=(w+.0125)*mul; if(da>cone*2.2)continue;   // aim-assist margin around the body: .0125 rad (was .05)
@@ -4917,12 +4934,28 @@ function showDead(by){
 const FS_OUT='<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg>', FS_IN=$('#fsBtn').innerHTML;
 const fsEl=()=>document.fullscreenElement||document.webkitFullscreenElement;
 function fsSync(){const on=!!fsEl();$('#fsBtn').classList.toggle('on',on);$('#fsBtn').innerHTML=on?FS_OUT:FS_IN;$('#fsBtn').setAttribute('aria-label',on?'الخروج من ملء الشاشة':'ملء الشاشة');setTimeout(resize,120)}
+const isIOS=/iP(hone|od|ad)/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+const isStandalone=()=>!!(navigator.standalone||matchMedia('(display-mode: standalone)').matches||matchMedia('(display-mode: fullscreen)').matches);
+function fsHelp(){const chrome=/CriOS|FxiOS|EdgiOS/.test(navigator.userAgent);
+  $('#fsSteps').innerHTML=chrome
+    ?'<li>اضغط زر <b>المشاركة</b> في شريط العنوان أعلى الشاشة.</li><li>اختر <b>«إضافة إلى الشاشة الرئيسية»</b> (قد تحتاج «عرض المزيد»).</li><li>افتح اللعبة من أيقونتها على الشاشة الرئيسية: ستعمل بكامل الشاشة.</li>'
+    :'<li>اضغط زر <b>المشاركة</b> في Safari (المربع والسهم).</li><li>اختر <b>«إضافة إلى الشاشة الرئيسية»</b> ثم «إضافة».</li><li>افتح اللعبة من أيقونتها على الشاشة الرئيسية: ستعمل بكامل الشاشة.</li>';
+  $('#fsHelp').hidden=false; if(!S.paused&&S.mode==='play')togglePause()}
 function toggleFull(){const d=document.documentElement;
   try{if(fsEl()){(document.exitFullscreen||document.webkitExitFullscreen).call(document);return}
     const req=d.requestFullscreen||d.webkitRequestFullscreen;
-    if(!req){banner('ملء الشاشة غير متاح هنا','على الآيفون: شارك ← «إضافة إلى الشاشة الرئيسية» ثم افتح اللعبة منها');return}
+    if(!req||(isIOS&&!/iPad/.test(navigator.userAgent)&&!(navigator.platform==='MacIntel'))){fsHelp();return}
     Promise.resolve(req.call(d,{navigationUI:'hide'})).then(()=>{try{screen.orientation&&screen.orientation.lock&&screen.orientation.lock('landscape').catch(()=>{})}catch(e){}})
-      .catch(()=>banner('تعذّر ملء الشاشة','افتح اللعبة في نافذة مستقلة ثم جرّب مرة أخرى'))}catch(e){banner('تعذّر ملء الشاشة','')}}
+      .catch(()=>isIOS?fsHelp():banner('تعذّر ملء الشاشة','افتح اللعبة في نافذة مستقلة ثم جرّب مرة أخرى'))}catch(e){isIOS?fsHelp():banner('تعذّر ملء الشاشة','')}}
+$('#fsOk').addEventListener('pointerup',e=>{e.stopPropagation();$('#fsHelp').hidden=true});
+$('#fsHelp').addEventListener('pointerdown',e=>e.stopPropagation());
+if(isStandalone())document.body.classList.add('standalone');
+// a home-screen icon and web-app manifest, so "Add to Home Screen" opens the game full screen in landscape
+try{const c=document.createElement('canvas');c.width=c.height=180;const g=c.getContext('2d');const gr=g.createLinearGradient(0,0,180,180);gr.addColorStop(0,'#1d2433');gr.addColorStop(1,'#0e1118');g.fillStyle=gr;g.fillRect(0,0,180,180);
+  g.fillStyle='#6fd3ff';g.beginPath();g.moveTo(90,22);g.lineTo(132,90);g.lineTo(90,158);g.lineTo(48,90);g.closePath();g.fill();g.fillStyle='#ff8a3a';g.beginPath();g.moveTo(90,22);g.lineTo(108,90);g.lineTo(90,158);g.closePath();g.fill();
+  const icon=c.toDataURL('image/png');const L=document.createElement('link');L.rel='apple-touch-icon';L.href=icon;document.head.appendChild(L);
+  const man={name:'شاترلاين',short_name:'شاترلاين',display:'fullscreen',orientation:'landscape',start_url:location.href.split('#')[0],background_color:'#13161d',theme_color:'#13161d',dir:'rtl',lang:'ar',icons:[{src:icon,sizes:'180x180',type:'image/png'}]};
+  const ml=document.createElement('link');ml.rel='manifest';ml.href='data:application/manifest+json,'+encodeURIComponent(JSON.stringify(man));document.head.appendChild(ml)}catch(e){}
 document.addEventListener('fullscreenchange',fsSync); document.addEventListener('webkitfullscreenchange',fsSync);
 function goLandscape(){
   if(!isTouch)return;
@@ -4995,7 +5028,7 @@ function togglePause(){
   }
 }
 $('#pauseBtn').addEventListener('pointerdown',e=>{e.stopPropagation();e.preventDefault();togglePause()});
-$('#fsBtn').addEventListener('pointerdown',e=>{e.stopPropagation()});$('#fsBtn').addEventListener('click',e=>{e.stopPropagation();e.preventDefault();toggleFull()});
+$('#fsBtn').addEventListener('pointerdown',e=>{e.stopPropagation()});$('#fsBtn').addEventListener('pointerup',e=>{e.stopPropagation();e.preventDefault();toggleFull()});
 $('#resumeBtn').onclick=()=>{togglePause();if(S.mode==='play'&&!S.paused)requestLock()};
 $('#quitBtn').onclick=leaveMatch;
 $('#overLeave').onclick=leaveMatch;
