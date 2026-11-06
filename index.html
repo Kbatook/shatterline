@@ -834,7 +834,7 @@ body.no-ink #comicFx{display:none}
       <button id="mAvatar" class="mavatar" aria-label="تغيير البطل"><img alt=""></button>
     </div>
   </nav>
-  <div class="mver">شاترلاين · الإصدار 3.4</div>
+  <div class="mver">شاترلاين · الإصدار 3.5</div>
   <section class="mevent">
     <span class="mtag">حدث</span>
     <h1>المواجهة</h1>
@@ -857,7 +857,7 @@ body.no-ink #comicFx{display:none}
     <div class="pmodes" id="pModes" hidden>
       <button class="pmode" data-q="dom"><b>السيطرة</b><small>سيطروا على النقاط أ وب وج</small></button>
       <button class="pmode" data-q="tdm"><b>قتال الفرق</b><small>أول فريق يصل إلى 20 إقصاءً</small></button>
-      <button class="pmode" data-q="hyb"><b>الهجين</b><small>النقطة أ ثم الحمولة · شارع الساعة</small></button>
+      <button class="pmode" data-q="hyb"><b>الهجين</b><small>النقطة أ ثم الحمولة · حارة المآذن</small></button>
       <button class="pmode" data-q="dm"><b>قتال حتى الموت</b><small>الكل ضد الكل · 15 إقصاءً</small></button>
     </div>
     <div class="pcards" id="pCards">
@@ -1573,21 +1573,19 @@ const MAPS=[
         [-26,-20,2.4,2.4,3.4,'crys'],[26,20,2.4,2.4,3.4,'crys']],
    crys:[[-26,-26,.9],[26,26,.9],[-26,26,.7],[26,-26,.7]],
    pts:[[-17,-8],[0,0],[17,8]], hp:[[-13,2],[13,-2],[-8,-21],[8,21],[-22,8],[22,-8]], ult:[[0,-8],[0,8]]},
-  {id:'oldtown',hy:true,size:40,name:'شارع الساعة',d:'حيّ حجري قديم ليلًا: ساحة النقطة أ أمام الفندق الكبير، ثم شوارع ضيقة وقوس حجري، وصولًا إلى ساحة المصنع وبوابته',bg:0x0f141c,floor:0x2c2e34,line:0x3a3d45,wall:0x4a4c52,cap:0x5a5c62,
-   // attackers enter from the south-east, defenders hold the north; the route runs corner to corner
-   spawn:[[-2.86,28.57,34.29],[-5.71,22.86,-34.29]],
-   obs:[[31.43,10,11.43,22.86,12.65,'bldg'],[0,14.29,11.43,11.43,9.2,'bldg'],[-4.29,31.43,14.29,4.29,6.9,'bldg'],[34.29,30,5.71,11.43,6.9,'bldg'],
-        [28.57,-14.29,14.29,14.29,9.2,'bldg'],[11.43,-15.71,11.43,8.57,9.2,'bldg'],[-17.14,8.57,14.29,14.29,9.2,'bldg'],[-34.29,11.43,5.71,17.14,8.05,'bldg'],
-        [-2.86,-10.57,1.4,1.4,7,'arch'],[-2.86,2.29,1.4,1.4,7,'arch'],[-25.71,-5.71,11.43,11.43,9.2,'bldg'],[-8.57,27.14,5.71,2.86,4.6,'bldg'],
-        [-32.86,-31.43,8.57,11.43,11.5,'gate'],[-15.71,-35.71,6,2,2.6,'crate',0x6b4a35],[0,-20,8.57,7.14,9.2,'bldg'],[22.86,-25,6,2.2,3,'tram'],[-34.29,-15.71,2,5,2.6,'crate',0x2f5a5a],[-12.86,-34.29,4,2,3.4,'tank'],
-        [5.71,-28.57,6,1,1.4],[20,-27.14,1,4,1.4],[34.29,-28.57,3,3,4,'tank'],
-        [14.29,24.29,2.4,2.4,1.1,'fount'],[7.86,8.57,1,3,1.3],[21.43,17.14,3,1,1.2],[18.57,-5,1,3,1.3],[7.14,-8.57,3,1,1.3],[-10,-1.43,1,3,1.3],
-        [-7.14,-17.14,3,1,1.3],[-21.43,-21.43,1,3,1.3],[2.86,21.43,2,1,1.2],[-20,21.43,3,1,1.2],[37.14,-1.43,2,1,1.2],
-        [20,2,3,1,1.2],[20,20,3,1,1.2],[7,13,1,3,1.3],[4,1.5,3,1,1.3],[-8,-20,3,1,1.3],[10,28,6,1,1.4],
-        [6,-31,6,1,1.4],[-26,27,3,1,1.2],[24,-28,3,1,1.3],[-24,-20,2,2,1.4,'crate',0x2f5a5a],[-8,-13,1,3,1.3],[-20,-14,1,3,1.3],[0,-12,3,1,1.3]],
+  {id:'oldtown',hy:true,size:40,name:'حارة المآذن',d:'حيّ عربي قديم عند الغروب: النقطة أ في فناء السوق قرب ساحة النافورة، ثم شارع حجري متعرّج تحت قوس مدبّب بين البيوت والمآذن، وصولًا إلى بوابة القلعة',bg:0x2a1c18,floor:0x6a5844,line:0x7a6650,wall:0x8a7458,cap:0x9a8468,
+   // original layout: attackers enter from the south-east, defenders hold the citadel in the north-west
+   spawn:[[12,30,35],[-16,0,-36]],
+   obs:[[27,12,10,14,10,'bldg'],[3,15,8,10,8,'bldg'],[24,-4,12,8,9,'bldg'],[-4,5,8,5,8,'bldg'],[6,-14,10,8,9,'bldg'],[-3,-25,8,8,9,'bldg'],[13,-27,12,10,10,'bldg'],
+        [29,-23,14,14,11,'bldg'],[30,-36,12,6,8,'bldg'],[-18,6,10,10,9,'bldg'],[-30,18,12,14,10,'bldg'],[-14,25,10,8,8,'bldg'],[-33,1,8,10,9,'bldg'],[-22,-12,10,8,9,'bldg'],
+        [-35,-16,8,10,9,'bldg'],[-37,-36,6,8,12,'gate'],[-25,-38,6,4,8,'bldg'],[36,8,6,12,8,'bldg'],[36,28,6,10,7,'bldg'],[-2,31,10,6,7,'bldg'],[-15,-13,1.4,1.4,7,'arch'],
+        [-6,-13,1.4,1.4,7,'arch'],[21,25,3,3,1.1,'fount'],[9,8,1,3,1.3],[19,8,1,3,1.3],[14,19,3,1,1.2],[8,4,3,1,1.3],[20,3,3,1,1.3],
+        [1,-7.5,3,1,1.3],[2,1,3,1,1.2],[-9,-1,1,3,1.3],[-2,-10,3,1,1.3],[-15,-7,1,3,1.3],[-6.5,-18.5,1,3,1.3],[-20,-29,3,1,1.3],
+        [-24,-19,1,3,1.3],[-31,-25,3,1,1.3],[16,28,6,1,1.4],[-8,-31,6,1,1.4],[26,-12,3,1,1.2],[-26,-3,3,1,1.2],[-24,28,1,3,1.3],
+        [4,24,3,1,1.2]],
    crys:[],
-   hyA:[14.29,12.86], hyRoute:[[14.29,-2.14],[-5.71,-4.29],[-12.86,-10],[-14.29,-18.57],[-26.29,-30]],
-   pts:[[14.29,12.86],[-5.71,-4.29],[-24.29,-24.29]], hp:[[22.86,24.29],[2.86,-1.43],[-11.43,-24.29],[-28.6,2.5],[20,-20],[-31.43,22.86],[35.71,-5.71]], ult:[[-8.57,12.86],[22.86,-4.29]]},
+   hyA:[14,13], hyRoute:[[14,3],[6,-3],[-4,-3],[-10,-9],[-11,-18],[-19,-24],[-27,-27],[-30,-31]],
+   pts:[[14,13],[-4,-3],[-30,-31]], hp:[[19,5],[-1,-13],[-28,-8],[6,22],[-14,-28],[32,-12]], ult:[[-2,12],[20,-14]]},
   {id:'range',pr:true,name:'ساحة التدريب',d:'منشأة تدريب نهارية: أهداف على 5 و10 و20 و30 مترًا، ومنصّات مرتفعة، وأهداف متحركة، وعيادة لتجربة العلاج',bg:0x1a1d22,floor:0x8a8a84,line:0x9a9a94,wall:0xb0b0aa,cap:0xc0c0b8,
    spawn:[[-3,3,23],[-3,3,-24]],
    obs:[[-16,-2,3,3,2.4,'plat'],[16,-6,3,3,3.5,'plat'],[0,-13,36,1,4],[-12,20,1,4,1.1],[12,20,1,4,1.1],
@@ -1653,7 +1651,7 @@ const THEME={
   refinery:{sky:['#5f6c78','#b8bcbb','#8d8f8c',null],fog:0x9fa3a2,hemi:[0xe2e7ec,0x4e4b44,.72],sun:[0xfff3e0,.78,[18,40,-12]],ground:0x78766f,low:'jersey'},
   garden:{sky:['#060a19','#233258','#1a2238','rgba(160,190,255,.35)'],fog:0x1b2440,hemi:[0x8aa2ff,0x18131f,.62],sun:[0xb9ccff,.62,[14,36,20]],ground:0x343b4c,low:'planter',night:true},
   range:{sky:['#6fa6dc','#cfe3f2','#9ab0c0',null],fog:0xb8c8d6,hemi:[0xf0f4ff,0x5a5a50,.82],sun:[0xfff4e0,.85,[20,40,10]],ground:0x7a7a74,low:'jersey'},
-  oldtown:{sky:['#050b14','#173546','#0f1b26','rgba(110,210,230,.32)'],fog:0x142230,hemi:[0x9cbfe0,0x2b2118,.66],sun:[0xc8dcff,.58,[-20,34,16]],ground:0x2d2f36,low:'planter',night:true}
+  oldtown:{sky:['#241a44','#e58a4e','#5a3828','rgba(255,196,120,.45)'],fog:0x4a3036,hemi:[0xffd2a0,0x4a3020,.72],sun:[0xffb070,.85,[-30,22,18]],ground:0x6a5844,low:'planter',night:true},
 };
 const SKY=new THREE.Mesh(new THREE.SphereGeometry(165,24,12),new THREE.MeshBasicMaterial({color:0xffffff,side:THREE.BackSide,fog:false,depthWrite:false}));
 SKY.renderOrder=-10; scene.add(SKY);
@@ -1690,19 +1688,18 @@ function floorTexture(mp){
     rect(19.5,0,28,20,'rgba(255,90,90,.12)');
     for(let i=0;i<24;i++)blot(g,R()*F,R()*F,(.6+R()*1.8)*k,'rgba(40,38,34,.18)');
   }else if(mp.id==='oldtown'){
-    g.fillStyle='#34353b';g.fillRect(0,0,F,F);
-    const cs=.42*k; for(let y=0;y<F;y+=cs)for(let x=(Math.round(y/cs)%2)*cs/2;x<F;x+=cs){const v=40+R()*30|0;g.fillStyle=`rgb(${v},${v+1},${v+6})`;g.beginPath();g.ellipse(x,y,cs*.45,cs*.4,0,0,TAU);g.fill()}
-    grain(g,F,F,R,F*F/30,.12,2);
-    {g.save();g.beginPath();g.rect(X(-40),X(-40),28.6*k,25.7*k);g.clip();g.fillStyle='#2b2724';g.fillRect(0,0,F,F);
-      for(let x=-40;x<-11.4;x+=2)for(let z=-40;z<-14.3;z+=2){g.fillStyle=R()<.5?'#36302b':'#2f2a26';g.fillRect(X(x)+1,X(z)+1,2*k-2,2*k-2)}
-      for(let i=0;i<20;i++)blot(g,X(-40+R()*28.6),X(-40+R()*25.7),(1+R()*2)*k,'rgba(120,40,20,.25)');g.restore()}
-    for(const [x,z,w,d,h,st] of mp.obs){if(st!=='bldg'&&st!=='gate'&&st!=='arch')continue;const m=1.6;rect(x-w/2-m,z-d/2-m,x+w/2+m,z+d/2+m,'#5a5650');
-      for(let q=x-w/2-m;q<x+w/2+m;q+=1.2)line(q,z-d/2-m,q,z+d/2+m,'rgba(0,0,0,.22)',.04);for(let q=z-d/2-m;q<z+d/2+m;q+=1.2)line(x-w/2-m,q,x+w/2+m,q,'rgba(0,0,0,.22)',.04);
-      g.strokeStyle='#8c877c';g.lineWidth=.18*k;g.strokeRect(X(x-w/2-m),X(z-d/2-m),(w+2*m)*k,(d+2*m)*k)}
-    for(const xx of [13.3,15.3])line(xx,-8.6,xx,38,'rgba(150,155,165,.75)',.09);                 // tram rails up the main street
-    for(let i=0;i<26;i++)blot(g,R()*F,R()*F,(1+R()*2.6)*k,'rgba(90,140,170,.16)');               // puddles catching the light
-    for(let i=0;i<9;i++){const x=X(R()*44-22),y=X(R()*44-22);g.fillStyle='#202125';g.beginPath();g.arc(x,y,.5*k,0,TAU);g.fill();g.strokeStyle='#5c5d62';g.lineWidth=.08*k;g.stroke()}
-    for(let i=0;i<30;i++)crack(g,R()*F,R()*F,40+R()*90,R,'rgba(8,8,10,.4)',1.2);
+    g.fillStyle='#7a6450';g.fillRect(0,0,F,F);
+    const cs=.9*k; for(let y=0;y<F;y+=cs*.62)for(let x=(Math.round(y/cs/.62)%2)*cs/2;x<F;x+=cs){const v=R()*26|0;g.fillStyle=`rgb(${120+v},${98+v},${74+v*.8|0})`;g.fillRect(x+1,y+1,cs-2,cs*.62-2)}
+    grain(g,F,F,R,F*F/30,.1,2);
+    {const hr=MAPS[MAPI].hyRoute,pts=[MAPS[MAPI].hyA,...hr];g.lineCap='round';g.lineJoin='round';g.strokeStyle='#5e4a3a';g.lineWidth=4.2*k;g.beginPath();pts.forEach(([x,z],n)=>n?g.lineTo(X(x),X(z)):g.moveTo(X(x),X(z)));g.stroke();
+      g.strokeStyle='#8a7258';g.lineWidth=.25*k;g.setLineDash([.8*k,.6*k]);g.beginPath();pts.forEach(([x,z],n)=>n?g.lineTo(X(x),X(z)):g.moveTo(X(x),X(z)));g.stroke();g.setLineDash([])}
+    {g.save();g.beginPath();g.rect(X(-40),X(-40),18*k,16*k);g.clip();g.fillStyle='#5a4636';g.fillRect(0,0,F,F);
+      for(let x=-40;x<-22;x+=2)for(let z=-40;z<-24;z+=2){g.fillStyle=R()<.5?'#6a5440':'#62503c';g.fillRect(X(x)+1,X(z)+1,2*k-2,2*k-2)}g.restore()}
+    for(const [x,z,w,d,h,st] of mp.obs){if(st!=='bldg'&&st!=='gate')continue;const m=1.2;rect(x-w/2-m,z-d/2-m,x+w/2+m,z+d/2+m,'#9a8064');
+      g.strokeStyle='#b89a78';g.lineWidth=.16*k;g.strokeRect(X(x-w/2-m),X(z-d/2-m),(w+2*m)*k,(d+2*m)*k)}
+    {const [fx,fz]=[21,25];for(let r=6;r>1;r-=1.2){g.strokeStyle=r%2.4<1.2?'#a88a68':'#8a6e52';g.lineWidth=.6*k;g.beginPath();g.arc(X(fx),X(fz),r*k,0,TAU);g.stroke()}}
+    for(let i=0;i<30;i++)blot(g,R()*F,R()*F,(1+R()*2.6)*k,'rgba(60,40,25,.14)');
+    for(let i=0;i<24;i++)crack(g,R()*F,R()*F,40+R()*90,R,'rgba(40,28,18,.35)',1.2);
   }else if(mp.id==='refinery'){
     g.fillStyle='#77756f';g.fillRect(0,0,F,F);grain(g,F,F,R,F*F/22,.15,2);
     for(let i=0;i<30;i++){const x=R()*52-26,z=R()*52-26;rect(x,z,x+4,z+4,R()<.5?'rgba(255,255,255,.04)':'rgba(0,0,0,.05)')}
@@ -1799,12 +1796,21 @@ function buildMap(i){
       for(let k=0;k<5;k++){const m=add(new THREE.Mesh(cg,cm));const sc=rand(.45,.75);m.scale.set(sc*.6,h*rand(.36,.55),sc*.6);
         m.position.set(x+rand(-.6,.6),m.scale.y*.9,z+rand(-.6,.6));m.rotation.set(rand(-.25,.25),rand(0,TAU),rand(-.25,.25));shadowy(m);crystals.push(m)}
       if(TX.glow){const gl=add(new THREE.Mesh(new THREE.PlaneGeometry(w*2.4,d*2.4),new THREE.MeshBasicMaterial({map:TX.glow,transparent:true,opacity:th.night?.55:.3,depthWrite:false,blending:THREE.AdditiveBlending})));gl.rotation.x=-Math.PI/2;gl.position.set(x,.02,z)}}
+    else if(style==='bldg'&&mp.id==='oldtown'){            // sandstone house (arches, parapets, domes and minarets come with the decor)
+      const geo=new THREE.BoxGeometry(w,h,d);worldUV(geo,1/8);const b=shadowy(add(new THREE.Mesh(geo,BLDA||(BLDA=tmat(TX.concrete,0xe8c898)))));b.position.set(x,h/2,z);
+      box(w+.14,.6,d+.14,MATC(0x8a6a4a),x,.3,z)}
     else if(style==='bldg'){                               // a stone town house: facade, cornice, roof and chimneys
       const sm=BLDM||(BLDM=tmat(TX.stone,0xffffff,TX.stoneE?{emissive:0xffffff,emissiveMap:TX.stoneE,emissiveIntensity:.6}:{}));
       const geo=new THREE.BoxGeometry(w,h,d);worldUV(geo,1/8);const b=shadowy(add(new THREE.Mesh(geo,sm)));b.position.set(x,h/2,z);
       box(w+.5,.35,d+.5,MATC(0x7d7163),x,h+.1,z); box(w-.6,1.2,d-.6,MATC(0x3c3a40),x,h+.85,z);
       for(let k=0;k<2;k++)box(.7,1.4,.7,MATC(0x5a4c40),x+rand(-w/3,w/3),h+1.6,z+rand(-d/3,d/3));
       box(w+.12,.5,d+.12,MATC(0x2b2621),x,.25,z)}
+    else if(style==='gate'&&mp.id==='oldtown'){          // the citadel gate where the payload ends
+      const sm=MATC(0xc9a676,TX.concrete),fs=x<0?1:-1,fx=x+fs*(w/2+.05);box(w,h,d,sm,x,h/2,z,.4);
+      for(const s2 of [-1,1]){const t=shadowy(add(new THREE.Mesh(new THREE.CylinderGeometry(1.7,1.9,h+2.5,16),sm)));t.position.set(fx-fs*.6,(h+2.5)/2,z+s2*(d/2-.4));
+        const c=add(new THREE.Mesh(new THREE.CylinderGeometry(2,2,.5,16),MATC(0xb08a62)));c.position.set(fx-fs*.6,h+2.75,z+s2*(d/2-.4))}
+      box(.2,5.2,3.4,MATC(0x5a3a22,TX.wood),fx,2.6,z); const ar=add(new THREE.Mesh(new THREE.CircleGeometry(1.7,16,0,Math.PI),MATC(0x5a3a22,TX.wood)));ar.rotation.y=fs*Math.PI/2;ar.position.set(fx+fs*.11,5.2,z);
+      for(let k=-1;k<=1;k++)box(.24,5,.12,MATC(0x2a1c12),fx+fs*.02,2.5,z+k*1.1); box(.3,.3,4.6,basic(0xffb347),fx+fs*.05,7.4,z)}
     else if(style==='gate'){                               // the factory gate where the payload ends: steel doors with amber light strips
       box(w,h,d,MATC(0x434852,TX.metal),x,h/2,z,.4); box(w+.6,.8,d+.6,MATC(0x2a2e35),x,h+.3,z);
       const fs=x<0?1:-1, fx=x+fs*(w/2+.06), amb=basic(0xffb347);
@@ -1915,32 +1921,53 @@ function buildDecor(mp,mi,add,th){
       box(16.6,4.6,.3,0x2a2f38,0,7,-14.8,0);box(.4,5,.4,0x2a2f38,-7.5,2.5,-14.8,0);box(.4,5,.4,0x2a2f38,7.5,2.5,-14.8,0)}}
     for(const [x,z] of [[-26,26],[26,26],[-26,-26],[26,-26]]){put(new THREE.CylinderGeometry(.06,.08,6,6),pole,x,3,z);box(1.6,.9,.04,R()<.5?0xff5d8f:0x58d8ff,x+.8,5.4,z,0)}
   }else if(mp.id==='oldtown'){
-    ring(22,ARENA+12,ARENA+26,(x,z,a)=>building(x,z,a,rr(12,26),false));
-    // a stone clock tower over the rooftops to the south-west
-    {const tx=-14,tz=-ARENA-22,stoneM=MATC(0x6f6455,TX.concrete);box(8,34,8,stoneM,tx,17,tz);box(9,1.2,9,MATC(0x4f463c),tx,34.4,tz);box(6.4,9,6.4,stoneM,tx,39.5,tz);
-      for(const [fx,fz,ry] of [[0,3.25,0],[0,-3.25,Math.PI],[3.25,0,Math.PI/2],[-3.25,0,-Math.PI/2]]){const c=put(new THREE.CircleGeometry(2.3,24),basic(0xffe6b0),tx+fx,39.5,tz+fz,ry,true);
-        const r=put(new THREE.RingGeometry(2.3,2.6,24),basic(0xc8a050),tx+fx*1.01,39.5,tz+fz*1.01,ry,true);
-        const h1=put(new THREE.PlaneGeometry(.18,1.6),basic(0x1a1612),tx+fx*1.02,40.1,tz+fz*1.02,ry,true);const h2=put(new THREE.PlaneGeometry(.14,2.1),basic(0x1a1612),tx+fx*1.02,39.5,tz+fz*1.02,ry,true);h2.rotation.z=1.1}
-      const sp=put(new THREE.ConeGeometry(4.8,12,4),MATC(0x3a3f48),tx,50,tz,Math.PI/4)}
-    // glassy towers of the new city further out, with teal light strips
-    ring(9,ARENA+40,ARENA+60,(x,z)=>{const h=rr(40,75),w=rr(5,9);put(new THREE.BoxGeometry(w,h,w),MATC(0x1b2a38),x,h/2,z);
-      for(let k=0;k<3;k++)put(new THREE.BoxGeometry(w+.1,.3,w+.1),basic(0x5fe6e8),x,h*(.35+k*.22),z,0,true);put(new THREE.BoxGeometry(.25,h,.25),basic(0x7ff2ff),x+w/2,h/2,z+w/2,0,true)});
-    // lamp posts along the streets, trees in the squares, benches, steam from the drains
+    // the old quarter beyond the fence: flat-roofed sandstone houses, a few domes and distant minarets
+    const sandC=[0xcaa978,0xd6b88c,0xbf9d6c,0xd9c09a];
+    ring(30,ARENA+8,ARENA+26,(x,z,a)=>{const h=rr(7,16),w=rr(6,11),c=sandC[R()*4|0];box(w,h,w*rr(.8,1.2),MATC(c,TX.concrete),x,h/2,z,a);box(w+.3,.6,w*1.2+.3,MATC(0xb08a62),x,h+.2,z,a)});
+    const minaret=(x,z,y0,hgt,r)=>{const sm=MATC(0xe2cba4,TX.concrete),trim=MATC(0x3f8f8a);put(new THREE.CylinderGeometry(r*.9,r,hgt,12),sm,x,y0+hgt/2,z);
+      put(new THREE.CylinderGeometry(r*1.45,r*1.2,.4,14),MATC(0xb08a62),x,y0+hgt*.78,z);put(new THREE.CylinderGeometry(r*1.48,r*1.48,.5,14,1,true),MATC(0x8a6a4a),x,y0+hgt*.78+.45,z);
+      put(new THREE.CylinderGeometry(r*.7,r*.8,hgt*.22,12),sm,x,y0+hgt*.89,z);put(new THREE.CylinderGeometry(r*.72,r*.72,.25,12),trim,x,y0+hgt*.62,z);
+      put(new THREE.SphereGeometry(r*.78,14,8,0,TAU,0,Math.PI/2),trim,x,y0+hgt,z);put(new THREE.ConeGeometry(r*.12,r*1.6,6),MATC(0xd9a650),x,y0+hgt+r*1.4,z);
+      const l=put(new THREE.TorusGeometry(r*1.3,.06,6,20),basic(0xffd08a),x,y0+hgt*.78+.75,z,0,true);l.rotation.x=Math.PI/2;ENV.lights.push({m:l,ph:rr(0,6)})};
+    const dome=(x,z,y0,r,c)=>{put(new THREE.CylinderGeometry(r*1.02,r*1.05,r*.45,18),MATC(0xd6b88c,TX.concrete),x,y0+r*.22,z);put(new THREE.SphereGeometry(r,18,10,0,TAU,0,Math.PI/2),MATC(c),x,y0+r*.45,z);
+      put(new THREE.ConeGeometry(r*.08,r*.5,6),MATC(0xd9a650),x,y0+r*1.6,z)};
+    minaret(-12,-ARENA-20,0,34,1.6); minaret(30,-ARENA-16,0,28,1.4); minaret(-ARENA-18,10,0,30,1.5); dome(0,-ARENA-22,10,9,0x3f8f8a); box(24,10,18,MATC(0xd6b88c,TX.concrete),0,5,-ARENA-22);
+    // every house: cornice, crenellated parapet, arched windows (some lit), an arched door, wooden mashrabiya, roof domes and minarets
+    const recess=MATC(0x2a1c16), lit=basic(0xffc070), wood=MATC(0x6a4a2a,TX.wood), woodL=MATC(0x8a6a44), merlonM=MATC(0xd6b88c), corn=MATC(0xb08a62);
+    const semi=r=>new THREE.CircleGeometry(r,10,0,Math.PI);
+    const faceItem=(cx,cz,ry,u,y,geo,m)=>{const ox=Math.cos(ry)*u,oz=-Math.sin(ry)*u;return put(geo,m,cx+ox,y,cz+oz,ry)};
+    const MIN=[[27,12],[29,-23],[-30,18]];
+    for(const [x,z,w,d,h,st] of mp.obs){if(st!=='bldg')continue;
+      box(w+.4,.3,d+.4,corn,x,h-.1,z);
+      for(const [len,cx,cz,ry,along] of [[w,x,z+d/2+.03,0,'x'],[w,x,z-d/2-.03,Math.PI,'x'],[d,x+w/2+.03,z,Math.PI/2,'z'],[d,x-w/2-.03,z,-Math.PI/2,'z']]){
+        const n=Math.max(1,Math.floor((len-1)/1.3));for(let k=0;k<=n;k++){const u=-len/2+.3+k*(len-.6)/n;box(.6,.75,.45,merlonM,along==='x'?x+u:cx,h+.37,along==='x'?cz:z+u)}
+        const nw=Math.max(1,Math.floor((len-1.5)/2.6));
+        for(let y=3.2;y<h-1.6;y+=3)for(let k=0;k<nw;k++){const u=-len/2+(k+.5)*len/nw;if(y<4&&Math.abs(u)<1.3)continue;const m=R()<.22?lit:recess;
+          faceItem(cx,cz,ry,u,y,new THREE.PlaneGeometry(.9,1.2),m);faceItem(cx,cz,ry,u,y+.6,semi(.45),m);faceItem(cx,cz,ry,u,y-.66,new THREE.PlaneGeometry(1.1,.12),corn)}
+        faceItem(cx,cz,ry,0,1.1,new THREE.PlaneGeometry(1.6,2.2),wood);faceItem(cx,cz,ry,0,2.2,semi(.8),wood);
+        const fr=faceItem(cx,cz,ry,0,1.3,new THREE.PlaneGeometry(2.1,2.9),corn);fr.position.x-=Math.sin(ry)*.01;fr.position.z-=Math.cos(ry)*.01;
+        if(len>=8&&h>=8&&(ry===0||ry===Math.PI)){const yy=h*.55,u=len/4,zz=cz+(ry===0?.28:-.28);box(2.2,1.7,.55,wood,x+u,yy,zz);for(let q=-2;q<=2;q++)box(.06,1.5,.58,woodL,x+u+q*.4,yy,zz);for(let q=-1;q<=1;q++)box(2.1,.06,.58,woodL,x+u,yy+q*.45,zz);box(2.4,.18,.75,corn,x+u,yy+.95,zz)}
+      }
+      const isMin=MIN.some(([a,b])=>a===x&&b===z);
+      if(isMin)minaret(x+w/4,z-d/4,h,9,.9);
+      if(Math.min(w,d)>=10)dome(isMin?x-w/5:x,isMin?z+d/5:z,h,Math.min(w,d)*.2,R()<.5?0x3f8f8a:0xc9a46c);
+    }
+    // the pointed arch over the street, spanning its two pillars
+    {const P2=mp.obs.filter(o=>o[5]==='arch');if(P2.length===2){const [a,b]=P2,dx=b[0]-a[0],dz=b[1]-a[1],L=Math.hypot(dx,dz),ry=-Math.atan2(dz,dx),mx=(a[0]+b[0])/2,mz=(a[1]+b[1])/2,am=MATC(0xd6b88c,TX.concrete);
+      box(L+1.6,1.4,1.7,am,mx,7.2,mz,ry);box(L+2,.35,2,MATC(0xb08a62),mx,8.05,mz,ry);box(L+1.7,.35,1.75,MATC(0x3f8f8a),mx,6.6,mz,ry);
+      for(let k=0;k<=12;k++){const t=k/12,u=(t-.5)*L,yy=4.9+1.6*(1-Math.pow(Math.abs(2*t-1),1.6));box(.75,.5,1.6,MATC(k%2?0xc9a676:0xb89466),mx+Math.cos(ry)*u,yy,mz-Math.sin(ry)*u,ry)}}}
+    // lanterns along the route, palms in the squares, market awnings by the courtyard
     const lampM=basic(0xffd9a0);
-    for(const [x,z] of [[8.57,19.29],[20.71,5.71],[9.29,0],[20.71,-8.57],[2.86,-10],[-8.57,-9.29],[-17.86,-13.57],[-9.29,-21.43],[-20.71,-17.14],[25.71,27.14],[-27.14,2.14],[5.71,27.86],[-6.43,-27.14]]){if(inBox(x,z,.5))continue;
-      put(new THREE.CylinderGeometry(.07,.11,4.2,6),pole,x,2.1,z);put(new THREE.CylinderGeometry(.24,.12,.5,6),MATC(0x2a2d32),x,4.35,z);const l=put(new THREE.BoxGeometry(.3,.36,.3),lampM,x,4.2,z,0,true);ENV.lights.push({m:l,ph:rr(0,6)})}
-    for(const [x,z] of [[20.71,23.57],[7.86,24.29],[-27.14,20],[-8.57,21.43],[35,-4.29],[11.43,-29.29]]){if(inBox(x,z,.8))continue;put(new THREE.CylinderGeometry(.13,.2,2.6,6),MATC(0x3a2a1e),x,1.3,z);
-      put(new THREE.IcosahedronGeometry(rr(1.2,1.6),0),MATC(R()<.5?0x2d5a3a:0x3c6a3f),x,3.2,z);put(new THREE.IcosahedronGeometry(rr(.8,1.1),0),MATC(0x355f3c),x+.6,3.9,z-.3)}
-    for(const [x,z,ry] of [[19.29,22.14,0],[4.29,-10.86,0],[-12.14,-3.57,Math.PI/2],[-22.86,20.71,0]]){if(inBox(x,z,.6))continue;box(1.6,.08,.5,MATC(0x6a4a2a,TX.wood),x,.48,z,ry);box(1.6,.5,.08,MATC(0x6a4a2a,TX.wood),x,.75,z-.2,ry);box(.08,.48,.4,MATC(0x222),x-.7,.24,z,ry);box(.08,.48,.4,MATC(0x222),x+.7,.24,z,ry)}
-    for(const [x,z] of [[8.57,4.29],[-8.57,-7.14],[-17.14,-20],[17.14,-2.86],[-28.57,-20]])ENV.emitters.push({x,z,c:0xd8e4ee,rate:.5,up:1.6,size:1,mist:true});
-    // the stone arch spanning the street between its two pillars
-    {const am=MATC(0x7a6c5c,TX.concrete),ax=-2.86,az=-4.14;box(1.8,1.6,14.9,am,ax,6.6,az);box(2.1,.35,15.3,MATC(0x8d7f6c),ax,7.5,az);for(let k=0;k<8;k++)box(1.9,.5,.8,MATC(0x655949),ax,5.65-Math.sin(k/7*Math.PI)*.8,az-5.6+k*1.6)}
-    // the factory yard: red work lights, overhead pipes, warning stripes
-    for(const [x,z] of [[-37.86,-20],[-20,-37.86],[-28.57,-37.86],[-37.86,-28.57]]){const l=put(new THREE.BoxGeometry(.4,.4,.4),basic(0xff3b2a),x,4.2,z,0,true);ENV.lights.push({m:l,ph:rr(0,6)})}
-    for(const z of [-38.3]){for(const [y,r,c] of [[4.6,.32,0x8a5a2a],[4,.24,0x6f7a86]]){const pp=put(new THREE.CylinderGeometry(r,r,28.6,10),MATC(c),-25.7,y,z);pp.rotation.z=Math.PI/2}}
-    {const pp=put(new THREE.CylinderGeometry(.3,.3,22.9,10),MATC(0x8a5a2a),-38.3,4.4,-25.7);pp.rotation.x=Math.PI/2}
-    // the hotel's lit name board
-    box(.2,1.2,10,basic(0xffc46a),25.57,9.6,10,0);
+    {const pts=[mp.hyA,...mp.hyRoute];for(let n=0;n<pts.length-1;n++){const [ax,az]=pts[n],[bx,bz]=pts[n+1],L=Math.hypot(bx-ax,bz-az),nx=-(bz-az)/L,nz=(bx-ax)/L;
+      for(const sd of [-1,1]){const x=(ax+bx)/2+nx*sd*3.6,z=(az+bz)/2+nz*sd*3.6;if(inBox(x,z,.6))continue;
+        put(new THREE.CylinderGeometry(.06,.1,3.6,6),MATC(0x2a2018),x,1.8,z);put(new THREE.BoxGeometry(.5,.08,.08),MATC(0x2a2018),x,3.55,z);
+        const l=put(new THREE.OctahedronGeometry(.26,0),lampM,x,3.25,z,0,true);l.scale.y=1.4;ENV.lights.push({m:l,ph:rr(0,6)});put(new THREE.ConeGeometry(.2,.25,6),MATC(0xb08a3a),x,3.6,z)}}}
+    const palm=(x,z)=>{if(inBox(x,z,.8))return;let px=x,pz=z;const lean=rr(-.3,.3),lz=rr(-.3,.3);for(let k=0;k<5;k++){put(new THREE.CylinderGeometry(.17-k*.015,.2-k*.015,1,7),MATC(k%2?0x6a5236:0x5a4430),px,k+.5,pz);px+=lean*.25;pz+=lz*.25}
+      for(let k=0;k<7;k++){const a=k/7*TAU,lf=put(new THREE.ConeGeometry(.35,2.4,4),MATC(k%2?0x3c6a3a:0x2f5a32),px+Math.sin(a)*1,4.9,pz+Math.cos(a)*1,a);lf.rotation.x=1.25;lf.rotation.order='YXZ';lf.rotation.y=a;lf.scale.z=.25}};
+    for(const [x,z] of [[17,22],[25,29],[8,28],[-22,-1],[-9,15],[20,-11],[-28,-20],[2,-4.5]])palm(x,z);
+    for(const [x,z,c] of [[9,8,0xb53a3a],[19,8,0x2f6a8a],[14,19,0xd9a650],[-24,28,0x3f8f8a]]){box(2.4,.06,1.8,MATC(c),x,2.4,z);for(const sx of [-1,1])put(new THREE.CylinderGeometry(.04,.04,2.4,5),MATC(0x4a3420),x+sx*1.1,1.2,z+.8)}
+    for(const [x,z] of [[-28,-28],[-34,-26],[-26,-34]]){const l=put(new THREE.BoxGeometry(.35,.5,.35),basic(0xff8a3a),x,3.8,z,0,true);ENV.lights.push({m:l,ph:rr(0,6)});put(new THREE.CylinderGeometry(.06,.08,3.8,6),MATC(0x2a2018),x,1.9,z)}
+    for(const [x,z] of [[21,25],[14,13]])ENV.emitters.push({x,z,c:0xffe0b0,rate:.25,up:1.2,size:.8,mist:true});
   }else{
     ring(26,ARENA+13,ARENA+30,(x,z,a)=>building(x,z,a,rr(14,40),false));
     ring(14,ARENA+10,ARENA+34,(x,z)=>{const h=rr(8,26);const m=put(new THREE.OctahedronGeometry(1,0),new THREE.MeshBasicMaterial({color:R()<.5?0x5f8fd6:0x7aa8ff,transparent:true,opacity:.9}),x,h*.45,z,rr(0,3),true);m.scale.set(rr(1.4,2.6),h*.55,rr(1.4,2.6))});
@@ -2102,7 +2129,7 @@ const LOOK={
   barraq:{b:'slim', skin:0xc08a62,hair:0x1a120e,hs:'fade',top:0xff8a1f,pants:0x2a2d36,boots:0xf2f2f2,acc:0xffe14d,x:['goggles','vest','bracers']},
   hakim: {b:'med',  skin:0xb98660,hair:0xd0d0d0,hs:'short',top:0x2e5a57,pants:0x3a3326,boots:0x2a1d14,acc:0x3fb6a8,beard:'full',x:['robe','sash','glasses']}
 };
-const _inv=new THREE.Matrix4(), _mm=new THREE.Matrix4(); let BLDM=null;
+const _inv=new THREE.Matrix4(), _mm=new THREE.Matrix4(); let BLDA=null, BLDM=null;
 function mergeStatic(root,meshes){
   root.updateMatrixWorld(true); _inv.copy(root.matrixWorld).invert();
   const byMat=new Map();
