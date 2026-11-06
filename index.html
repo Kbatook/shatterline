@@ -834,7 +834,7 @@ body.no-ink #comicFx{display:none}
       <button id="mAvatar" class="mavatar" aria-label="تغيير البطل"><img alt=""></button>
     </div>
   </nav>
-  <div class="mver">شاترلاين · الإصدار 3.1</div>
+  <div class="mver">شاترلاين · الإصدار 3.2</div>
   <section class="mevent">
     <span class="mtag">حدث</span>
     <h1>المواجهة</h1>
@@ -2070,6 +2070,23 @@ const pMats={}; const pmat=c=>pMats[c]||(pMats[c]=basic(c));
 
 /* ---------- character models ---------- */
 // Low-poly people: face, hair, clothes and body build per hero. Static parts are merged per material to keep draw calls low on phones.
+// v3.2: hero-shooter armour kits. ar armour colour, tr glowing trim, paul [left,right,tiers] pauldron sizes,
+// chest/belt/collar styles, gaunt 2 both / 1 right / -1 left, ua upper-arm plates, thigh/knee/shin/toe leg armour, glove colour
+const GEAR={
+  zizo:  {ar:0x9a6a3a,tr:0xff7a2a,paul:[.25,.25,3],chest:'core',belt:'buckle',gaunt:2,ua:1,thigh:1,knee:1,shin:1,toe:1,glove:0x3a2416},
+  naheef:{ar:0x6e5a4a,tr:0xff6b8b,paul:[.29,0,2],chest:'scrap',belt:'chain',collar:'tire',gaunt:1,ua:1,knee:1,shin:1,toe:1,glove:0x1b1d22},
+  sabit: {ar:0xf2f3f7,tr:0x9b5cff,paul:[.22,.22,2],chest:'core',belt:'buckle',gaunt:2,ua:1,thigh:1,knee:1,shin:1,toe:1,glove:0x2a2d36},
+  rayan: {ar:0xa7b2cc,tr:0x5c7cff,paul:[.3,.3,3],chest:'plate',belt:'tasset',collar:'high',gaunt:2,ua:1,thigh:1,knee:1,shin:1,toe:1,glove:0x2b3f8c},
+  jathab:{ar:0x7a4a2a,tr:0xff4b3e,paul:[.13,0,1],chest:'bandolier',belt:'holster',gaunt:-1,glove:0x4a2e1a},
+  illa:  {ar:0x4a505c,tr:0xffc23a,paul:[0,.16,2],chest:'harness',belt:'pouches',gaunt:1,knee:1,toe:1,glove:0x2a2d36},
+  leo:   {ar:0x8f97a6,tr:0x2fe0e6,paul:[.17,.17,2],chest:'tac',belt:'shells',collar:'high',gaunt:2,knee:1,shin:1,toe:1,glove:0x16181d},
+  barraq:{ar:0xf2f2f2,tr:0xffe14d,paul:[.12,.12,1],chest:'none',belt:'slim',gaunt:2,knee:1,shin:1,glove:0x2a2d36,stripes:1},
+  thabih:{ar:0x2e2440,tr:0xb7f04a,paul:[.18,0,2],chest:'tubes',belt:'straps',collar:'flare',shin:1,toe:1,glove:0x15141a},
+  shamikh:{ar:0xf3ead2,tr:0xf2c14e,paul:[.18,.18,2],chest:'medal',belt:'buckle',gaunt:2,thigh:1,knee:1,shin:1,toe:1,glove:0x8a6a3a},
+  osama: {ar:0x22262e,tr:0x5ee38a,paul:[0,0,0],chest:'speaker',belt:'slim',knee:1,glove:0x22262e,stripes:1},
+  hakim: {ar:0x4a3f2c,tr:0x3fb6a8,paul:[.15,.15,1],chest:'vials',belt:'pouches',collar:'mantle',gaunt:1,shin:1,toe:1,glove:0x2a1d14}
+};
+const TWIN_GRIP={leo:[0,-.08,-.17],barraq:[0,-.1,-.08]};
 const BUILD={slim:{tw:.6,td:.34,leg:.17,arm:.14},med:{tw:.72,td:.4,leg:.2,arm:.16},stocky:{tw:.8,td:.46,leg:.21,arm:.18},heavy:{tw:.9,td:.5,leg:.24,arm:.2},huge:{tw:1.04,td:.62,leg:.27,arm:.23}};
 const LOOK={
   zizo:  {b:'heavy',skin:0xb47b54,hair:0x2b1b12,hs:'bald',top:0x6b4a2a,pants:0x3a3028,boots:0x1e1712,acc:0xc9a36b,beard:'mustache',x:['apron','pads','forearms']},
@@ -2131,6 +2148,9 @@ function heroMesh(id,skin){
     o.quaternion.setFromUnitVectors(UP,d.normalize());if(list)list.push(o);else if(!keep)stat.push(o);
     const j0=add(new THREE.SphereGeometry(r0,10,8),m,a.x,a.y,a.z,par,true),j1=add(new THREE.SphereGeometry(r1,10,8),m,b.x,b.y,b.z,par,true);if(list){list.push(j0,j1)}else if(!keep){stat.push(j0,j1)};return o};
   const sw=B.tw*.5, hipX=B.tw*.19, legR=B.leg*.52, armR=B.arm*.52, dz=B.td/B.tw;
+  const GR=GEAR[id], armorM=SM(GR?GR.ar:0x888888,{shininess:80,specular:0x6a6a6a}), trimM=MB(GR?GR.tr:h.color), gloveM=SM(GR?GR.glove:0x222222,{shininess:30});
+  const PL=(w,hh,d,m,x,y,z,rx,ry,rz,par,list)=>{const o=add(rbox(w,hh,d),m,x,y,z,par,!!list);o.rotation.set(rx||0,ry||0,rz||0);if(list)list.push(o);return o};
+  const ringAt=(pt,dir,r,t,m,list)=>{const o=add(new THREE.TorusGeometry(r,t,6,16),m,pt.x,pt.y,pt.z,g,true);o.quaternion.setFromUnitVectors(V(0,0,1),dir.clone().normalize());list.push(o);return o};
   // legs: thigh from the hip, shin hangs from a knee pivot so the knee can bend
   const knees=[];
   const legParts=[];
@@ -2147,6 +2167,13 @@ function heroMesh(id,skin){
     sh.push(ell(legR*.95,.07,legR*1.1,bootM,0,-.34,-.01,kn,true,10));                                        // ankle
     sh.push(ell(legR*1.12,.022,legR*1.85,SM(0x17181b,{shininess:4}),0,-.465,.05,kn,true,10));                  // sole
     sh.push(ell(legR*.42,.012,legR*.6,SM(0xd8d8d8),0,-.335,legR*1.05,kn,true,6));                             // laces
+    if(GR){                                                                                                      // leg armour
+      if(GR.thigh){PL(legR*1.7,.2,.05,armorM,0,-.16,legR*1.02,-.06,0,0,p,th);PL(legR*1.5,.014,.02,trimM,0,-.055,legR*1.08,0,0,0,p,th)}
+      if(GR.knee){sh.push(ell(legR*.78,legR*.75,legR*.5,armorM,0,0,legR*.82,kn,true,10));sh.push(ell(legR*.28,legR*.28,legR*.1,trimM,0,0,legR*1.28,kn,true,8))}
+      if(GR.shin){PL(legR*1.5,.25,.06,armorM,0,-.19,legR*.8,.08,0,0,kn,sh);PL(.016,.2,.015,trimM,0,-.19,legR*.8+.035,.08,0,0,kn,sh)}
+      if(GR.toe)sh.push(ell(legR*1.0,.055,legR*.75,armorM,0,-.415,legR*1.45,kn,true,10));
+      if(GR.stripes){PL(.016,.36,.016,trimM,s*legR*1.12,-.2,0,0,0,0,p,th);PL(.016,.3,.016,trimM,s*legR*.95,-.17,0,0,0,0,kn,sh)}
+    }
     legParts.push([p,th],[kn,sh]);
     return p});
   // torso: pelvis, waist, chest, shoulders and neck
@@ -2212,18 +2239,24 @@ function heroMesh(id,skin){
   if(has('circlet'))add(new THREE.TorusGeometry(.136,.01,6,22),accM,0,.06,0,head).rotation.x=Math.PI/2;
   // arms reach to where the weapon is held (both hands, or one per gun for twin weapons)
   const gp=V(.12,1.1,id==='zizo'?.35:.5), twin=id==='leo'||id==='barraq';
-  const hands=twin?[V(.3,1.08,gp.z-.12),V(-.3,1.08,gp.z-.12)]:id==='thabih'?[V(.12,1.06,.5),V(-.35,1.06,.5)]:id==='zizo'?[V(gp.x,gp.y-.03,gp.z-.28),V(gp.x-.02,gp.y,gp.z+.06)]:[V(gp.x+.03,gp.y-.04,gp.z-.16),V(gp.x-.06,gp.y-.02,gp.z+.14)];
+  const hands=twin?[V(.27,1.2,.6),V(-.27,1.2,.6)]:id==='thabih'?[V(.12,1.06,.5),V(-.35,1.06,.5)]:id==='zizo'?[V(gp.x,gp.y-.03,gp.z-.28),V(gp.x-.02,gp.y,gp.z+.06)]:[V(gp.x+.03,gp.y-.04,gp.z-.16),V(gp.x-.06,gp.y-.02,gp.z+.14)];
   [1,-1].forEach((s,k)=>{
-    const S2=V(s*(sw-.02),1.42,0), Hd=hands[k], E=S2.clone().lerp(Hd,.5).add(V(s*.1,-.13,-.06)), sl=has('bare')?skinM:top;
+    const S2=V(s*(sw-.02),1.42,0), Hd=hands[k], E=S2.clone().lerp(Hd,.5).add(twin?V(s*.06,-.07,-.02):V(s*.1,-.13,-.06)), sl=has('bare')?skinM:top;
     limb(S2,E,armR*1.12,armR*.92,sl,g,true,armStat);
     limb(E,Hd,armR*.9,armR*.72,has('bare')||has('rolled')?skinM:sl,g,true,armStat);
-    const glove=has('bracers')||has('glowarm')?accM:skinM;
+    const glove=has('glowarm')&&s>0?accM:GR?gloveM:has('bracers')?accM:skinM;
     armStat.push(ell(armR*.72,armR*.6,armR*.95,glove,Hd.x,Hd.y,Hd.z,g,true,10));                                  // palm
     for(let f=0;f<4;f++)armStat.push(ell(.013,.03,.014,glove,Hd.x-s*.012+(f-1.5)*0,Hd.y-.035,Hd.z+.025-(f-1.5)*.021,g,true,6));  // fingers
     armStat.push(ell(.013,.013,.03,glove,Hd.x-s*.03,Hd.y+.01,Hd.z+.03,g,true,6));                                // thumb
     limb(Hd.clone().lerp(E,.1),Hd.clone().lerp(E,.18),armR*.8,armR*.8,dark,g,true,armStat);                      // cuff
     if(has('bracers')||has('forearms'))limb(E.clone().lerp(Hd,.35),Hd.clone().lerp(E,.12),armR*1.08,armR*.95,accM,g,true,armStat);
     if(has('glowarm')&&s>0)limb(E.clone().lerp(Hd,.2),Hd.clone().lerp(E,.15),armR*1.02,armR*.85,SM(L.acc,{emissive:L.acc,emissiveIntensity:.6}),g,true,armStat);
+    if(GR){
+      if(GR.ua)limb(S2.clone().lerp(E,.3),S2.clone().lerp(E,.88),armR*1.24,armR*1.14,armorM,g,true,armStat);
+      if(GR.gaunt===2||GR.gaunt===s){const a=E.clone().lerp(Hd,.2),b=Hd.clone().lerp(E,.17);limb(a,b,armR*1.22,armR*1.08,armorM,g,true,armStat);
+        ringAt(b,Hd.clone().sub(E),armR*1.1,.011,trimM,armStat);armStat.push(ell(armR*1.0,armR*1.0,armR*1.0,armorM,E.x,E.y,E.z,g,true,10));
+        armStat.push(ell(armR*.75,armR*.32,armR*.85,armorM,Hd.x,Hd.y+armR*.42,Hd.z+.01,g,true,8))}
+    }
   });
   // tailoring: chest, collar, placket and seams
   {const fz=B.tw*.49*dz*1.12;
@@ -2231,10 +2264,42 @@ function heroMesh(id,skin){
    if(!has('robe')&&L.hs!=='shemagh'){const c=add(new THREE.TorusGeometry(.082,.022,6,18),top,0,1.465,.005);c.rotation.x=Math.PI/2.15}
    }
   // clothing and gear
-  if(has('pads'))[-1,1].forEach(s=>ell(armR*1.6,armR*.95,armR*1.55,accM,s*(sw-.01),1.48,0));
+  if(GR){const fz=B.tw*.49*dz*1.12, bz=B.tw*.35*dz*1.18, brassM=SM(0xc9a24a,{shininess:90});
+    const paul=(s,r,n)=>{if(!r)return;const x0=s*sw;
+      ell(r,r*.62,r*1.05,armorM,x0,1.5,0,null,false,12);
+      for(let t=0;t<n;t++){const o=ell(r*1.0-t*.012,.042,r*1.08-t*.015,armorM,x0+s*(.045+t*.04),1.45-t*.065,0,null,false,14);o.rotation.z=s*(-.55-t*.14)}
+      {const o=ell(r*.98,.016,r*1.06,trimM,x0+s*.05,1.47,0,null,false,14);o.rotation.z=s*-.55}};
+    paul(-1,GR.paul[0],GR.paul[2]); paul(1,GR.paul[1],GR.paul[2]);
+    const c=GR.chest;
+    if(c==='core'){{const o=ell(B.tw*0.4,0.17,fz*.5,armorM,0,1.34,fz*0.6,null,false,16);o.rotation.x=-.1};cyl(.07,.07,.03,armorM,0,1.34,fz+.06).rotation.x=Math.PI/2;cyl(.047,.047,.04,trimM,0,1.34,fz+.07).rotation.x=Math.PI/2;ell(B.tw*.3,.05,fz*.4,armorM,0,1.14,fz*.62,null,false,12)}
+    else if(c==='plate'){{const o=ell(B.tw*0.45,0.2,fz*.5,armorM,0,1.33,fz*0.62,null,false,16);o.rotation.x=-.1};ell(B.tw*.34,.055,fz*.42,armorM,0,1.13,fz*.6,null,false,12);ell(B.tw*.31,.055,fz*.42,armorM,0,1.04,fz*.6,null,false,12);{const o=ell(B.tw*.42,.012,fz*.5,trimM,0,1.21,fz*.6,null,false,16)}}
+    else if(c==='scrap'){{const o=ell(B.tw*.22,.13,fz*.45,armorM,-B.tw*.13,1.35,fz*.62,null,false,12);o.rotation.set(-.1,0,.2)}{const o=ell(B.tw*.19,.1,fz*.45,SM(0x5a5f6a,{shininess:60}),B.tw*.16,1.24,fz*.6,null,false,12);o.rotation.set(-.05,0,-.15)}
+      [[-.2,1.43],[-.06,1.27],[.1,1.3],[.24,1.18]].forEach(([x,y])=>ell(.014,.014,.01,brassM,x*B.tw/1.04,y,fz+.045,null,false,6))}
+    else if(c==='bandolier'){const th=.62,bm=SM(0x5a3a22);PL(.07,.8,.03,bm,0,1.25,fz+.012,0,0,th);for(let k=0;k<7;k++){const t=-.27+k*.09;cyl(.011,.011,.05,brassM,-Math.sin(th)*t,1.25+Math.cos(th)*t,fz+.035).rotation.z=th}}
+    else if(c==='harness'){[-1,1].forEach(k=>PL(.05,.64,.022,SM(0x2a2d36),0,1.24,fz+.01,0,0,k*.5));add(new THREE.TorusGeometry(.04,.012,6,14),trimM,0,1.26,fz+.03)}
+    else if(c==='tac'){[-1,1].forEach(k=>{const o=ell(B.tw*.18,.11,fz*.45,armorM,k*B.tw*.15,1.34,fz*.62,null,false,12);o.rotation.x=-.1});PL(.014,.22,.016,trimM,0,1.34,fz+.03);ell(B.tw*.3,.04,fz*.4,armorM,0,1.15,fz*.62,null,false,12);PL(B.tw*.5,.012,.02,trimM,0,1.19,fz*.92+.02)}
+    else if(c==='tubes'){[-1,1].forEach(k=>{limb(V(k*.13,1.18,-fz-.05),V(k*.17,1.52,-.02),.018,.018,trimM);limb(V(k*.17,1.52,-.02),V(k*.09,1.26,fz+.02),.018,.018,trimM)});PL(.1,.16,.06,armorM,0,1.2,-fz-.04)}
+    else if(c==='medal'){[-1,1].forEach(k=>{const o=ell(B.tw*.17,.11,fz*.45,armorM,k*B.tw*.15,1.35,fz*.62,null,false,12);o.rotation.x=-.1});cyl(.08,.08,.025,brassM,0,1.32,fz+.03).rotation.x=Math.PI/2;cyl(.04,.04,.03,trimM,0,1.32,fz+.045).rotation.x=Math.PI/2}
+    else if(c==='speaker'){add(new THREE.TorusGeometry(.07,.016,8,20),dark,0,1.3,fz+.01);cyl(.06,.035,.03,dark,0,1.3,fz+.005).rotation.x=Math.PI/2;add(new THREE.TorusGeometry(.046,.008,6,18),trimM,0,1.3,fz+.03)}
+    else if(c==='vials'){PL(B.tw*.6,.06,.03,SM(0x4a3a22),0,1.27,fz+.01);[-1,0,1].forEach(k=>{cyl(.018,.018,.075,trimM,k*.08,1.28,fz+.035);cyl(.02,.02,.015,brassM,k*.08,1.325,fz+.035)})}
+    const co=GR.collar;
+    if(co==='high')cyl(.1,.118,.13,armorM,0,1.52,0,null,false,true);
+    else if(co==='flare')[-1,1].forEach(k=>PL(.13,.17,.02,armorM,k*.09,1.56,-.07,.35,k*.55,0));
+    else if(co==='tire')add(new THREE.TorusGeometry(.15,.045,8,20),dark,0,1.46,0).rotation.x=Math.PI/2;
+    else if(co==='mantle'){ell(B.tw*.56,.1,B.tw*.56*dz*1.2,armorM,0,1.46,0,null,false,14);const t=add(new THREE.TorusGeometry(B.tw*.5,.012,6,24),trimM,0,1.42,0);t.rotation.x=Math.PI/2;t.scale.y=dz*1.2}
+    const b=GR.belt;
+    if(b!=='slim'){PL(.13,.085,.03,armorM,0,1.01,bz+.01);PL(.06,.02,.01,trimM,0,1.01,bz+.03)}
+    if(b==='chain')for(let k=0;k<7;k++)add(new THREE.TorusGeometry(.022,.007,5,10),SM(0x9097a2,{shininess:90}),-.18+k*.06,.97,bz+.02);
+    else if(b==='holster'){PL(.08,.22,.11,SM(0x4a2e1a),sw*.82,.88,.02,0,0,.12);PL(.04,.07,.05,SM(0x5a3a22),sw*.82,1.02,.02)}
+    else if(b==='shells')for(let k=0;k<6;k++){if(k===2||k===3)continue;cyl(.012,.012,.05,SM(0xc23a2a),-.13+k*.052,1.01,bz+.02)}
+    else if(b==='pouches')[-1,1].forEach(k=>{PL(.08,.1,.06,armorM,k*B.tw*.3,.97,bz*.85);PL(.082,.025,.065,dark,k*B.tw*.3,1.02,bz*.85)});
+    else if(b==='tasset')[-1,0,1].forEach(k=>{PL(.17,.2,.03,armorM,k*.16,.87,bz+.03,-.15,0,k*.15);PL(.15,.012,.02,trimM,k*.16,.79,bz+.05,-.15,0,k*.15)});
+    else if(b==='straps')[-1,1].forEach(k=>PL(.035,.5,.02,dark,k*.04,1.2,fz+.012,0,0,k*.62));
+  }
+  if(has('pads')&&!(GR&&(GR.paul[0]||GR.paul[1])))[-1,1].forEach(s=>ell(armR*1.6,armR*.95,armR*1.55,accM,s*(sw-.01),1.48,0));
   if(has('apron'))ell(B.tw*.36,.42,.03,SM(0x4a2e1a),0,.92,B.tw*.36*dz*1.2);
-  if(has('chestrig')){ell(B.tw*.32,.15,.045,accM,0,1.2,B.tw*.5*dz*1.05);ell(.05,.05,.02,top,0,1.22,B.tw*.5*dz*1.05+.04)}
-  if(has('plate')){ell(B.tw*.42,.22,.07,accM,0,1.3,B.tw*.48*dz*1.0);ell(.065,.065,.03,MB(h.color),0,1.3,B.tw*.48*dz*1.0+.06)}
+  if(has('chestrig')&&!GR){ell(B.tw*.32,.15,.045,accM,0,1.2,B.tw*.5*dz*1.05);ell(.05,.05,.02,top,0,1.22,B.tw*.5*dz*1.05+.04)}
+  if(has('plate')&&!(GR&&GR.chest==='plate')){ell(B.tw*.42,.22,.07,accM,0,1.3,B.tw*.48*dz*1.0);ell(.065,.065,.03,MB(h.color),0,1.3,B.tw*.48*dz*1.0+.06)}
   if(has('vest')){ell(B.tw*.51,.27,B.tw*.51*dz*1.15,SM(0x2a2d36),0,1.29,.01);ell(.012,.24,.012,accM,0,1.27,B.tw*.51*dz*1.15)}
   if(has('robe'))cyl(B.tw*.37,B.tw*.52,.78,top,0,.62,0,null,false,true).scale.z=dz*1.2;
   if(has('coat')){cyl(B.tw*.37,B.tw*.5,.66,top,0,.68,0,null,false,true).scale.z=dz*1.2;ell(.012,.5,.012,accM,0,.95,B.tw*.36*dz*1.2)}
@@ -2253,7 +2318,9 @@ function heroMesh(id,skin){
   const gun=new THREE.Group(), wp=[], PI=Math.PI, dk=gunM;
   const steel=SM(0x9097a2,{shininess:100,specular:0x9a9a9a}), wood=SM(0x6b4423,{shininess:18}), brass=SM(0xc9a24a,{shininess:90,specular:0x8a7030}),
         rub=SM(0x1b1d22,{shininess:6}), rust=SM(0x7a4a2a,{shininess:10}), acc=SM(L.acc,{shininess:50}), glow=MB(h.color);
-  const W=(geo,m,x,y,z,rx,ry,rz)=>{const o=new THREE.Mesh(geo,m);o.position.set(x,y,z);o.rotation.set(rx||0,ry||0,rz||0);gun.add(o);wp.push(o);return o};
+  let WG=gun, WP=wp; const twinSubs=[];
+  const W=(geo,m,x,y,z,rx,ry,rz)=>{const o=new THREE.Mesh(geo,m);o.position.set(x,y,z);o.rotation.set(rx||0,ry||0,rz||0);WG.add(o);WP.push(o);return o};
+  const twinGun=build=>{const gr=TWIN_GRIP[id];[[.15,.1,.1],[-.39,.1,.1]].forEach(([x,y,z],k)=>{const sub=new THREE.Group();sub.position.set(x-gr[0],y-gr[1],z-gr[2]);gun.add(sub);WG=sub;WP=[];build(k);mergeStatic(sub,WP);twinSubs.push(sub)});WG=gun;WP=wp};
   const RB=(w,hh,d,m,x,y,z,rx,ry,rz)=>W(rbox(w,hh,d),m,x,y,z,rx,ry,rz);
   const TB=(r0,r1,len,m,x,y,z,seg)=>W(new THREE.CylinderGeometry(r1,r0,len,seg||16),m,x,y,z,PI/2);        // tube along +z (r0 back, r1 front)
   const TX=(r,len,m,x,y,z,seg)=>W(new THREE.CylinderGeometry(r,r,len,seg||16),m,x,y,z,0,0,PI/2);          // tube along x
@@ -2295,12 +2362,15 @@ function heroMesh(id,skin){
     TB(.05,.05,.3,SM(0xb53a3a,{shininess:50}),0,-.1,.1,14); SP(.05,SM(0xb53a3a),0,-.1,.25); SP(.05,SM(0xb53a3a),0,-.1,-.05);
     TY(.012,.05,dk,0,-.03,.03,8); GRIP(0,-.12,-.17); TG(0,-.07,-.1); TRG(0,-.08,-.1);
     W(new THREE.TorusGeometry(.08,.012,6,14,PI*1.2),rub,-.07,-.05,-.1,0,PI/2,0);
-  }else if(id==='leo'){                              // twin sawn-off shotguns
-    [.18,-.42].forEach(c=>{RB(.075,.075,.15,dk,c,0,-.06); [-1,1].forEach(k=>{TB(.022,.022,.34,steel,c+k*.024,.005,.18,14);TB(.012,.012,.342,rub,c+k*.024,.005,.18,8)});
-      RB(.02,.012,.34,dk,c,.03,.18); RB(.07,.04,.15,wood,c,-.035,.09); RB(.05,.13,.12,wood,c,-.08,-.17,.45); TG(c,-.045,-.06); TRG(c,-.05,-.06);
-      RB(.008,.008,.3,MB(L.acc),c+.04,.02,.16); RB(.016,.03,.03,steel,c,.04,-.13,-.4)});
-  }else if(id==='barraq'){                           // twin machine pistols
-    [.18,-.42].forEach(c=>{RB(.05,.06,.26,SM(0x2a2d36,{shininess:40}),c,.02,0); RB(.052,.012,.2,MB(L.acc),c,.045,.0); RB(.045,.04,.22,dk,c,-.03,.0);
+  }else if(id==='leo'){                              // twin heavy scatterguns, one in each hand
+    twinGun(()=>{const c=0; RB(.095,.1,.2,dk,c,0,-.04); RB(.1,.03,.16,steel,c,.06,-.03);
+      [-1,1].forEach(k=>{TB(.026,.026,.42,steel,c+k*.028,.008,.24,14);TB(.014,.014,.422,rub,c+k*.028,.008,.24,8)});
+      RB(.12,.075,.09,dk,c,.008,.44); RB(.124,.012,.06,MB(L.acc),c,.05,.44); RB(.022,.014,.4,dk,c,.044,.24);
+      RB(.09,.05,.17,SM(0x2a2d36),c,-.042,.13); RB(.105,.012,.3,MB(L.acc),c,.0,.12); [-1,1].forEach(k=>RB(.012,.05,.12,steel,c+k*.05,-.005,.02));
+      GRIP(c,-.09,-.17,rub,.055); TG(c,-.05,-.07); TRG(c,-.055,-.07); RB(.018,.035,.035,steel,c,.06,-.14,-.4);
+      for(let q=0;q<3;q++)TB(.012,.012,.04,SM(0xc23a2a),c+.055,-.03+q*.025,-.06,8)});
+  }else if(id==='barraq'){                           // twin machine pistols, one in each hand
+    twinGun(()=>{const c=0; RB(.05,.06,.26,SM(0x2a2d36,{shininess:40}),c,.02,0); RB(.052,.012,.2,MB(L.acc),c,.045,.0); RB(.045,.04,.22,dk,c,-.03,.0);
       TB(.013,.013,.07,steel,c,.02,.16,10); RG(.014,.004,dk,c,.02,.19); RB(.008,.016,.012,dk,c,.06,.11); RB(.03,.014,.012,dk,c,.058,-.11);
       for(let k=0;k<5;k++)RB(.052,.03,.006,dk,c,.03,-.1+k*.015);
       GRIP(c,-.1,-.08,rub,.045); RB(.048,.12,.05,acc,c,-.2,-.11,.32); TG(c,-.05,.01,.026); TRG(c,-.055,.01)});
@@ -2345,7 +2415,7 @@ function heroMesh(id,skin){
   armPivots.forEach(p=>g.remove(p));
   g.traverse(o=>{if(o.isMesh)o.receiveShadow=false});   // cel heroes: clean colour bands, no self-shadow speckle
   const base=h.cls==='tank'?1.15:1; g.scale.setScalar(base);
-  return {g,gun,gunM,gunZ:gun.position.z,gunY:gun.position.y,mats:skin?[skin]:mats,legs,knees,torso,arms,base,walk:0};
+  return {g,gun,gunM,gunZ:gun.position.z,gunY:gun.position.y,mats:skin?[skin]:mats,legs,knees,torso,arms,base,walk:0,twin:twinSubs.length?twinSubs:null};
 }
 
 /* ================= WORLD STATE ================= */
@@ -5293,23 +5363,31 @@ function eyeHeight(h){   // the camera sits at the model's eye line, so a level 
 function buildViewModel(h){
   if(FP.vm){vmScene.remove(FP.vm.root)}
   const m=heroMesh(h), root=new THREE.Group(), hold=new THREE.Group(); root.add(hold);
-  // the hero's own weapon, lifted out of the rig
-  const gun=m.gun; const ws=new THREE.Vector3(); m.g.updateMatrixWorld(true); gun.getWorldScale(ws);
-  gun.parent&&gun.parent.remove(gun); gun.position.set(0,0,0); gun.rotation.set(0,0,0); gun.scale.copy(ws); gun.updateMatrixWorld(true);
-  const bb=new THREE.Box3().setFromObject(gun), sz=new THREE.Vector3(); bb.getSize(sz); const c=new THREE.Vector3(); bb.getCenter(c);
-  const len=Math.max(sz.x,sz.y,sz.z)||1, k=(HEROES[h].cls==='tank'?.5:.4)/len;
-  gun.scale.multiplyScalar(k); gun.position.set(-c.x*k,-c.y*k,-c.z*k);
-  const pivot=new THREE.Group(); pivot.add(gun); pivot.rotation.y=Math.PI; hold.add(pivot);   // rig weapons point +z; the view looks down -z
-  // a sleeved forearm and hand in the hero's colours
-  const L=LOOK[h]||LOOK.zizo;
-  const sleeve=new THREE.Mesh(new THREE.CylinderGeometry(.062,.072,.44,14),new THREE.MeshPhongMaterial({color:L.top,shininess:14})); sleeve.rotation.x=Math.PI/2; sleeve.position.set(.04,-.1,.24); hold.add(sleeve);
-  const hand=new THREE.Mesh(new THREE.SphereGeometry(1,14,10),new THREE.MeshPhongMaterial({color:L.skin,shininess:22})); hand.scale.set(.055,.05,.07); hand.position.set(.02,-.07,-.03); hold.add(hand);
+  const L=LOOK[h]||LOOK.zizo, GR=GEAR[h];
+  const sleeveM=new THREE.MeshPhongMaterial({color:L.top,shininess:14}), handM=new THREE.MeshPhongMaterial({color:GR?GR.glove:L.skin,shininess:22});
+  const sleeveG=new THREE.CylinderGeometry(.062,.072,.44,14), handG=new THREE.SphereGeometry(1,14,10);
+  const armAt=(ox,mir)=>{const sl=new THREE.Mesh(sleeveG,sleeveM);sl.rotation.x=Math.PI/2;sl.position.set(ox+.04*mir,-.1,.24);hold.add(sl);
+    if(GR&&GR.gaunt){const ga=new THREE.Mesh(new THREE.CylinderGeometry(.074,.082,.2,14),new THREE.MeshPhongMaterial({color:GR.ar,shininess:80}));ga.rotation.x=Math.PI/2;ga.position.set(ox+.035*mir,-.095,.1);hold.add(ga);
+      const tr=new THREE.Mesh(new THREE.TorusGeometry(.076,.008,6,18),new THREE.MeshBasicMaterial({color:GR.tr}));tr.position.set(ox+.035*mir,-.095,.0);hold.add(tr)}
+    const hd=new THREE.Mesh(handG,handM);hd.scale.set(.055,.05,.07);hd.position.set(ox+.02*mir,-.07,-.03);hold.add(hd);return [sl,hd]};
+  // the hero's own weapon(s), lifted out of the rig
+  const lift=o=>{const ws=new THREE.Vector3();o.getWorldScale(ws);o.parent&&o.parent.remove(o);o.position.set(0,0,0);o.rotation.set(0,0,0);o.scale.copy(ws);o.updateMatrixWorld(true);
+    const bb=new THREE.Box3().setFromObject(o),sz=new THREE.Vector3(),c=new THREE.Vector3();bb.getSize(sz);bb.getCenter(c);return {o,sz,c}};
+  m.g.updateMatrixWorld(true);
+  let sleeve,hand;
+  if(m.twin){const a=lift(m.twin[0]),b=lift(m.twin[1]),k=.42/(Math.max(a.sz.x,a.sz.y,a.sz.z)||1);
+    [[a,0],[b,-.6]].forEach(([q,ox])=>{q.o.scale.multiplyScalar(k);q.o.position.set(-q.c.x*k,-q.c.y*k,-q.c.z*k);const pv=new THREE.Group();pv.add(q.o);pv.rotation.y=Math.PI;pv.position.x=ox;hold.add(pv)});
+    [sleeve,hand]=armAt(0,1); armAt(-.6,-1);
+  }else{const a=lift(m.gun),k=(HEROES[h].cls==='tank'?.5:.4)/(Math.max(a.sz.x,a.sz.y,a.sz.z)||1);
+    a.o.scale.multiplyScalar(k); a.o.position.set(-a.c.x*k,-a.c.y*k,-a.c.z*k);
+    const pivot=new THREE.Group(); pivot.add(a.o); pivot.rotation.y=Math.PI; hold.add(pivot);   // rig weapons point +z; the view looks down -z
+    [sleeve,hand]=armAt(0,1)}
   root.position.set(.3,-.27,-.8);
   // the off hand, raised for ability casts
-  const lh=new THREE.Group(); const ls=new THREE.Mesh(sleeve.geometry,sleeve.material); ls.rotation.x=Math.PI/2; ls.position.set(0,-.02,.2);
+  const lh=new THREE.Group(); const ls=new THREE.Mesh(sleeve.geometry,sleeve.material);  // (hidden for twin wielders: both hands hold guns) ls.rotation.x=Math.PI/2; ls.position.set(0,-.02,.2);
   const lp=new THREE.Mesh(hand.geometry,hand.material); lp.scale.copy(hand.scale); lp.position.set(0,0,-.04);
   const orb=new THREE.Mesh(new THREE.IcosahedronGeometry(.07,1),new THREE.MeshBasicMaterial({color:HEROES[h].color,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false}));
-  orb.position.set(0,.06,-.14); lh.add(ls,lp,orb); lh.scale.setScalar(.8); lh.visible=false; vmScene.add(lh);
+  orb.position.set(0,.06,-.14); lh.add(ls,lp,orb); lh.scale.setScalar(.8); lh.visible=false; lh.userData.twin=!!m.twin; vmScene.add(lh);
   if(FP.vm&&FP.vm.lh)vmScene.remove(FP.vm.lh);
   vmScene.add(root); FP.vm={root,hold,lh,orb,base:root.position.clone(),cls:HEROES[h].cls}; FP.vmHero=h;
 }
