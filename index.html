@@ -848,7 +848,7 @@ body.no-ink #comicFx{display:none}
       <button id="mAvatar" class="mavatar" aria-label="تغيير البطل"><img alt=""></button>
     </div>
   </nav>
-  <div class="mver">شاترلاين · الإصدار 3.9</div>
+  <div class="mver">شاترلاين · الإصدار 4.2</div>
   <section class="mevent">
     <span class="mtag">حدث</span>
     <h1>المواجهة</h1>
@@ -1064,11 +1064,15 @@ const HEROES={
   hakim:{id:'hakim',name:'الحكيم',full:'الحكيم',color:0x3fb6a8,css:'#3fb6a8',cls:'sup',role:'القنّاص · الدواء',
     weapon:'بندقية الدواء',weaponD:'طلقة بعيدة تضرّ العدو أو تعالج الحليف الذي تصيبه',hp:250,arm:0,shd:0,rate:.8,speed:6.6,aimLen:28,range:28,
     a1:{name:'سهم النوم',d:'سهم يُنيم أول عدو يصيبه مدة 3 ثوانٍ (نصفها للمدرّعين)',short:'نوم',cd:12},
-    ult:{name:'جرعة البأس',d:'يعالج حليفًا ويمنحه ضررًا أكبر بنسبة 30% ونصف الضرر الواقع عليه مدة 8 ثوانٍ',short:'بأس',cost:900}}
+    ult:{name:'جرعة البأس',d:'يعالج حليفًا ويمنحه ضررًا أكبر بنسبة 30% ونصف الضرر الواقع عليه مدة 8 ثوانٍ',short:'بأس',cost:900}},
+  amr:{id:'amr',name:'عمرو',full:'عمرو',color:0x8fbf5a,css:'#8fbf5a',cls:'dps',role:'الجندي · الصواريخ',
+    weapon:'رشّاش الكثبان',weaponD:'رشاش آلي دقيق: 19 للرصاصة، ويضعف ضرره من بعيد',hp:250,arm:0,shd:0,rate:.09,speed:6.6,aimLen:30,range:30,
+    a1:{name:'رشقة الصقر',d:'ثلاثة صواريخ صغيرة متتالية، كل صاروخ 40 ضررًا مباشرًا و40 انفجارًا حوله',short:'صواريخ',cd:6},
+    ult:{name:'عين الصقر',d:'مدة 6 ثوانٍ يقفل سلاحه تلقائيًا على أقرب عدو أمامه فلا تخطئ طلقاته',short:'قفل',cost:1000}}
 };
 const CLASSES=[
   {id:'tank',name:'مدرّع',d:'صحة أكبر وحركة أبطأ وأسلحة قصيرة إلى متوسطة المدى',ids:['zizo','naheef','sabit','rayan']},
-  {id:'dps',name:'هجومي',d:'صحة متوسطة وحركة أسرع وضرر أعلى من مدى متوسط إلى بعيد',ids:['jathab','illa','leo','barraq']},
+  {id:'dps',name:'هجومي',d:'صحة متوسطة وحركة أسرع وضرر أعلى من مدى متوسط إلى بعيد',ids:['jathab','illa','leo','barraq','amr']},
   {id:'sup',name:'مُعالِج',d:'يعالج الحلفاء ويضرّ الأعداء، بصحة متوسطة وحركة سريعة',ids:['thabih','shamikh','osama','hakim']}
 ];
 const CLS_NAME={tank:'مدرّع',dps:'هجومي',sup:'مُعالِج'};
@@ -1090,6 +1094,7 @@ Object.assign(HEROES.shamikh,{passive:{name:'نَفَس المسعف',d:'كل ع
 Object.assign(HEROES.osama,{passive:{name:'الإيقاع الشافي',d:'يعالج الحلفاء القريبين باستمرار'}});
 Object.assign(HEROES.rayan,{passive:{name:'المخزون',d:'ما يمتصه درعه يصير طاقة ترفع ضرر شعاعه حتى 80%، ثم تخبو ببطء'}});
 Object.assign(HEROES.barraq,{passive:{name:'الوثبة المنعشة',d:'كل وميض يعيد إليه 25 نقطة صحة'}});
+Object.assign(HEROES.amr,{passive:{name:'خطوة المتمرّس',d:'يتحرك أسرع بنسبة 10% عندما لا يطلق النار'}});
 Object.assign(HEROES.hakim,{passive:{name:'الجرعة المركّزة',d:'علاجه أقوى بنسبة 25% على الحلفاء الذين تقل صحتهم عن النصف'}});
 const HERO_IDS=CLASSES.flatMap(c=>c.ids);
 /* ---------- ability icons (original, drawn for Shatterline) ---------- */
@@ -1105,6 +1110,8 @@ const ICON={
   nade:'<circle cx="14" cy="19" r="9"/><path d="M11 6h6v4h-6zM18 5l7-3v3l-7 3z"/>',
   deadeye:'<path d="M15 1h2v9h-2zM15 22h2v9h-2zM1 15h9v2H1zM22 15h9v2h-9z"/><circle cx="16" cy="16" r="4"/><path d="M16 5a11 11 0 1 1 0 22 11 11 0 0 1 0-22zm0 2.5a8.5 8.5 0 1 0 0 17 8.5 8.5 0 0 0 0-17z" fill-rule="evenodd"/>',
   turret:'<path d="M9 9h10v6H9zM7 15h14v7H7zM21 17h9v3h-9zM10 22l-5 8h3l6-6 6 6h3l-5-8z"/>',
+  rockets:'<path d="M6 22l14-14 4 1 1 4-14 14zM8 26l-3 3M11 27l-2 4M5 23l-4 2"/><path d="M14 10l3-6 2 5M22 18l6-3-5-2"/>',
+  lock:'<circle cx="16" cy="16" r="9" fill="none" stroke="currentColor" stroke-width="2.6"/><path d="M16 3v7M16 22v7M3 16h7M22 16h7" stroke="currentColor" stroke-width="2.6"/><circle cx="16" cy="16" r="2.4"/>',
   lava:'<path d="M1 30l10-15h10l10 15z"/><path d="M13 13c-1-4 2-7 1-11 4 3 5 7 4 11zM8 9l2 3-3 1zM24 9l-2 3 3 1z"/>',
   ghost:'<path d="M16 2A11 11 0 0 0 5 13v17l3.5-3 3.5 3 4-3 4 3 3.5-3 3.5 3V13A11 11 0 0 0 16 2zM10 11h4v5h-4zM18 11h4v5h-4z" fill-rule="evenodd"/>',
   blades:'<path d="M16 1l3.5 12L16 16l-3.5-3zM31 16l-12 3.5-3-3.5 3-3.5zM16 31l-3.5-12L16 16l3.5 3zM1 16l12-3.5 3 3.5-3 3.5z"/>',
@@ -1122,11 +1129,11 @@ const ICON={
   arrow:'<path d="M2 13h20V7l9 9-9 9v-6H2z"/>'
 };
 const ABI={zizo:['flame','quake'],naheef:['heart','scrap'],sabit:['dome','bolt'],rayan:['bubble','grav'],jathab:['nade','deadeye'],illa:['turret','lava'],
-  leo:['ghost','blades'],barraq:['blink','pulse'],thabih:['orbs','beams'],shamikh:['tether','rescue'],osama:['speed','shield'],hakim:['sleep','dose']};
+  leo:['ghost','blades'],barraq:['blink','pulse'],thabih:['orbs','beams'],shamikh:['tether','rescue'],osama:['speed','shield'],hakim:['sleep','dose'],amr:['rockets','lock']};
 const svgI=(k,cls)=>'<svg viewBox="0 0 32 32"'+(cls?' class="'+cls+'"':'')+' aria-hidden="true">'+(ICON[k]||ICON.arrow)+'</svg>';
 const abIcon=(h,ul)=>svgI((ABI[h]||ABI.zizo)[ul?1:0]);
 
-const PREF={zizo:2.4,naheef:5,sabit:4.5,jathab:14,illa:11,leo:4,thabih:6,shamikh:10,osama:9,rayan:6,barraq:6,hakim:17};
+const PREF={zizo:2.4,naheef:5,sabit:4.5,jathab:14,illa:11,leo:4,thabih:6,shamikh:10,osama:9,rayan:6,barraq:6,hakim:17,amr:16};
 const LIFESTEAL={leo:.3,thabih:.6};
 let ARENA=28;      // half-size of the play area; set per map in buildMap (the hybrid map is bigger)
 let LIM=ARENA+2;
@@ -1283,6 +1290,9 @@ const SFX={
   c_barraq_ab(){nz({fq:800,fq2:5000,d:.18,v:.08,a:.02});syn({f:500,f2:1800,d:.15,w:'sine',v:.04})},
   c_barraq_ul(){syn({f:1200,d:.05,w:'square',v:.03});[.25,.5,.75,.95,1.12,1.27,1.38].forEach(a=>syn({f:1700,d:.05,w:'square',v:.03,at:a,lp:4000}))},
   c_hakim_ab(){nz({fq:1800,fq2:500,d:.18,v:.08});syn({f:900,f2:300,d:.3,w:'sine',v:.03,at:.05,vib:6,vd:30,rv:.4})},
+  amr(){noise(.06,.14,4200);tone(220,.05,'square',.03,110)},
+  c_amr_ab(){[0,.08,.16].forEach(a=>nz({fq:600,fq2:2400,d:.25,v:.06,ft:'bandpass',at:a}))},
+  c_amr_ul(){syn({f:880,f2:1760,d:.12,w:'square',v:.03});syn({f:1320,d:.1,w:'sine',v:.03,at:.14})},
   c_hakim_ul(){nz({fq:5000,ft:'highpass',d:.12,v:.05});syn({f:330,f2:660,d:.5,w:'triangle',v:.05,at:.1});chord([440,554,659,880],{d:1,w:'sawtooth',v:.022,lp:2400,at:.3,st:.05,rv:.5})},
   c_osama_ul(){nz({fq:200,fq2:2200,d:.5,v:.07,a:.15});chord([392,494,587,784],{d:1.1,w:'triangle',v:.04,a:.05,st:.05,rv:.55});syn({f:98,d:.7,w:'sine',v:.12})}
 };
@@ -1350,7 +1360,8 @@ const CAST={
   osama:{ab:{st:'brace',d:.55},ul:{st:'slam',d:.9}},
   rayan:{ab:{st:'brace',d:.6,hold:'bar'},ul:{st:'throw',d:.7}},
   barraq:{ab:{st:'dash',d:.32},ul:{st:'throw',d:.6}},
-  hakim:{ab:{st:'throw',d:.45},ul:{st:'channel',d:.8}}
+  hakim:{ab:{st:'throw',d:.45},ul:{st:'channel',d:.8}},
+  amr:{ab:{st:'throw',d:.4},ul:{st:'channel',d:.5}}
 };
 const HOLD={breath:()=>P.breath>0,ult:()=>P.ultT>0,deadeye:()=>!!P.deadeye,wraith:()=>P.wraith>0,tether:()=>!!P.tether,bar:()=>P.bar>0};
 function castMe(kind){
@@ -2117,6 +2128,7 @@ const GEAR={
   thabih:{ar:0x2e2440,tr:0xb7f04a,paul:[.18,0,2],chest:'tubes',belt:'straps',collar:'flare',shin:1,toe:1,glove:0x15141a},
   shamikh:{ar:0xf3ead2,tr:0xf2c14e,paul:[.18,.18,2],chest:'medal',belt:'buckle',gaunt:2,thigh:1,knee:1,shin:1,toe:1,glove:0x8a6a3a},
   osama: {ar:0x22262e,tr:0x5ee38a,paul:[0,0,0],chest:'speaker',belt:'slim',knee:1,glove:0x22262e,stripes:1},
+  amr:   {ar:0x5a6040,tr:0x8fff6a,paul:[.11,.11,1],chest:'carrier',belt:'pouches',collar:'high',gaunt:2,knee:1,shin:1,toe:1,glove:0x22252c},
   hakim: {ar:0x4a3f2c,tr:0x3fb6a8,paul:[.15,.15,1],chest:'vials',belt:'pouches',collar:'mantle',gaunt:1,shin:1,toe:1,glove:0x2a1d14}
 };
 const TWIN_GRIP={leo:[0,-.08,-.17],barraq:[0,-.1,-.08]};
@@ -2133,6 +2145,7 @@ const LOOK={
   osama: {b:'slim', skin:0x6b452e,hair:0x0f0b09,hs:'fade',top:0x5ee38a,pants:0x22262e,boots:0xf2f2f2,acc:0xffd23a,x:['phones','hoodie']},
   rayan: {b:'huge', skin:0xd2a07c,hair:0x1c1410,hs:'short',top:0x2b3f8c,pants:0x1e2433,boots:0x111318,acc:0x5c7cff,beard:'full',x:['plate','pads','glowarm']},
   barraq:{b:'slim', skin:0xc08a62,hair:0x1a120e,hs:'fade',top:0xff8a1f,pants:0x2a2d36,boots:0xf2f2f2,acc:0xffe14d,x:['goggles','vest','bracers']},
+  amr:   {b:'stocky',skin:0xa8724c,hair:0x16110d,hs:'short',top:0x4e5638,pants:0x6e6448,boots:0x2a2620,acc:0x8fbf5a,beard:'trim',x:['shades','chestrig']},
   hakim: {b:'med',  skin:0xb98660,hair:0xd0d0d0,hs:'short',top:0x2e5a57,pants:0x3a3326,boots:0x2a1d14,acc:0x3fb6a8,beard:'full',x:['robe','sash','glasses']}
 };
 const _inv=new THREE.Matrix4(), _mm=new THREE.Matrix4(); let BLDA=null, BLDM=null;
@@ -2319,6 +2332,12 @@ function heroMesh(id,skin){
       [[-.2,1.43],[-.06,1.27],[.1,1.3],[.24,1.18]].forEach(([x,y])=>ell(.014,.014,.01,brassM,x*B.tw/1.04,y,fz+.045,null,false,6))}
     else if(c==='bandolier'){const th=.62,bm=SM(0x5a3a22);PL(.07,.8,.03,bm,0,1.25,fz+.012,0,0,th);for(let k=0;k<7;k++){const t=-.27+k*.09;cyl(.011,.011,.05,brassM,-Math.sin(th)*t,1.25+Math.cos(th)*t,fz+.035).rotation.z=th}}
     else if(c==='harness'){[-1,1].forEach(k=>PL(.05,.64,.022,SM(0x2a2d36),0,1.24,fz+.01,0,0,k*.5));add(new THREE.TorusGeometry(.04,.012,6,14),trimM,0,1.26,fz+.03)}
+    else if(c==='carrier'){                              // flat plate carrier: one front plate, magazine pouches, straps and side cummerbund
+      const tanM=SM(0x8a7f5c,{shininess:20}), web=SM(0x3a3f2c,{shininess:10});
+      PL(B.tw*.56,.26,.045,tanM,0,1.31,fz-.025,-.08); PL(B.tw*.54,.025,.05,web,0,1.42,fz-.02,-.08);
+      for(let k=-1;k<=1;k++){PL(B.tw*.17,.11,.07,tanM,k*B.tw*.2,1.13,fz*.97);PL(B.tw*.17,.025,.075,web,k*B.tw*.2,1.18,fz*.97)}
+      [-1,1].forEach(k=>{PL(.05,.3,.03,web,k*B.tw*.22,1.43,fz*.55,-.5);PL(.04,.22,fz*1.6,web,k*B.tw*.47,1.22,0)});
+      PL(.07,.05,.02,trimM,-B.tw*.18,1.36,fz+.03,-.06); PL(.1,.06,.02,SM(0x2a2d24),B.tw*.17,1.35,fz+.03,-.06)}
     else if(c==='tac'){[-1,1].forEach(k=>{const o=ell(B.tw*.18,.11,fz*.45,armorM,k*B.tw*.15,1.34,fz*.62,null,false,12);o.rotation.x=-.1});PL(.014,.22,.016,trimM,0,1.34,fz+.03);ell(B.tw*.3,.04,fz*.4,armorM,0,1.15,fz*.62,null,false,12);PL(B.tw*.5,.012,.02,trimM,0,1.19,fz*.92+.02)}
     else if(c==='tubes'){[-1,1].forEach(k=>{limb(V(k*.13,1.18,-fz-.05),V(k*.17,1.52,-.02),.018,.018,trimM);limb(V(k*.17,1.52,-.02),V(k*.09,1.26,fz+.02),.018,.018,trimM)});PL(.1,.16,.06,armorM,0,1.2,-fz-.04)}
     else if(c==='medal'){[-1,1].forEach(k=>{const o=ell(B.tw*.17,.11,fz*.45,armorM,k*B.tw*.15,1.35,fz*.62,null,false,12);o.rotation.x=-.1});cyl(.08,.08,.025,brassM,0,1.32,fz+.03).rotation.x=Math.PI/2;cyl(.04,.04,.03,trimM,0,1.32,fz+.045).rotation.x=Math.PI/2}
@@ -2450,6 +2469,25 @@ function heroMesh(id,skin){
     TB(.026,.03,.3,dk,0,.1,.04,14); [-1,1].forEach(k=>{RB(.025,.04,.025,dk,0,.06,.04+k*.08);W(new THREE.CircleGeometry(.024,14),SM(0x9ff5e6,{emissive:0x1a5a50}),0,.1,.04+k*.152,0,k>0?0:PI,0)});
     W(new THREE.CylinderGeometry(.025,.025,.11,12),glow,0,-.09,.05); TY(.028,.012,steel,0,-.035,.05); TY(.028,.012,steel,0,-.145,.05);
     GRIP(0,-.09,-.14,rub,.045); TG(0,-.05,-.06); TRG(0,-.055,-.06);
+  }
+  else if(id==='amr'){                              // dune rifle (original design): detailed receiver, rail, handguard, optic, curved mag, side rocket pod
+    const tan=SM(0xb8a47a,{shininess:35}), od=SM(0x4e5638,{shininess:25}), grn=MB(0x8fff6a), blk=SM(0x1d1f22,{shininess:50});
+    RB(.085,.13,.42,tan,0,0,-.02);                                   // lower receiver
+    RB(.08,.07,.5,od,0,.085,.0);                                     // upper receiver
+    RB(.03,.02,.07,dk,.042,.085,-.02); RB(.012,.016,.05,steel,.05,.1,-.12);   // ejection port, charging handle
+    RB(.05,.018,.6,blk,0,.13,.08); for(let k=0;k<14;k++)RB(.052,.01,.012,dk,0,.142,-.2+k*.042);   // top rail with notches
+    RB(.095,.09,.32,od,0,.04,.36); for(let k=0;k<4;k++)[-1,1].forEach(sd=>RB(.004,.02,.045,blk,sd*.048,.04,.26+k*.07));   // handguard and slots
+    TB(.017,.016,.26,steel,0,.04,.62,12); RB(.03,.035,.035,dk,0,.06,.54);                 // barrel, gas block
+    TB(.026,.026,.08,blk,0,.04,.78,12); for(let k=0;k<3;k++)[-1,1].forEach(sd=>RB(.006,.016,.012,dk,sd*.026,.04,.76+k*.02));   // muzzle brake and ports
+    RB(.07,.06,.14,blk,0,.18,.02); TB(.026,.03,.16,blk,0,.2,.02,14); RB(.02,.02,.03,dk,.03,.2,.02);   // optic body, tube, turret
+    W(new THREE.CircleGeometry(.024,16),SM(0x9fff8a,{emissive:0x2a6a1a,shininess:120}),0,.2,.101); W(new THREE.CircleGeometry(.022,16),SM(0x1a3a14,{shininess:120}),0,.2,-.061,0,PI,0);
+    for(let k=0;k<4;k++)RB(.06,.05,.05,tan,0,-.1-k*.045,-.04+k*.018,.18+k*.07);               // curved magazine
+    RB(.065,.03,.06,dk,0,-.27,.04,.4);
+    RB(.07,.11,.22,tan,0,.01,-.33); RB(.075,.13,.03,blk,0,0,-.455); RB(.04,.05,.18,od,0,.075,-.32);  // stock, butt pad, cheek riser
+    GRIP(0,-.1,-.14,blk,.05); TG(0,-.065,-.07); TRG(0,-.07,-.07);
+    TY(.02,.1,blk,0,-.04,.33); RB(.03,.06,.03,blk,0,-.1,.33);                                       // vertical fore grip
+    [[0,0],[.03,.048],[-.03,.048]].forEach(([dx,dy])=>{TB(.026,.026,.28,od,.095+dx,-.005+dy,.3,14);RG(.027,.006,grn,.095+dx,-.005+dy,.44);W(new THREE.CircleGeometry(.02,12),blk,.095+dx,-.005+dy,.446)});
+    RB(.015,.1,.2,steel,.065,.02,.3); RB(.03,.03,.02,grn,.065,.07,.2);                            // pod mount and status light
   }
   else{RB(.16,.2,.9,dk,0,0,0)}
   if(wp.length)mergeStatic(gun,wp);
@@ -2606,7 +2644,7 @@ const ANIM={
   zizo:{f:.5,ab:.55,ul:.9}, naheef:{f:.28,ab:1.8,ul:.7}, sabit:{f:.16,p:.4,ab:.6,ul:.7},
   jathab:{f:.3,ab:.5,ul:.6}, illa:{f:.22,ab:.6,ul:.7}, leo:{f:.26,ab:.6,ul:.6},
   thabih:{f:.16,ab:.5,ul:.6}, shamikh:{f:.2,ab:.4,ul:.8}, osama:{f:.32,ab:.55,ul:.9},
-  rayan:{f:.16,ab:.6,ul:.7}, barraq:{f:.12,ab:.3,ul:.55}, hakim:{f:.4,ab:.45,ul:.7}
+  rayan:{f:.16,ab:.6,ul:.7}, barraq:{f:.12,ab:.3,ul:.55}, hakim:{f:.4,ab:.45,ul:.7}, amr:{f:.09,ab:.45,ul:.6}
 };
 function playAnim(a,kind){const d=(ANIM[a.h]||{})[kind];if(!d)return;a.anK=kind;a.anD=d;a.anT=d;if(a.h==='zizo'&&kind==='f')a.swDir=-(a.swDir||-1)}
 const easeOut=k=>1-Math.pow(1-k,3), tri=(k,a,b)=>k<a?k/a:k<b?1:Math.max(0,1-(k-b)/(1-b));
@@ -2787,7 +2825,7 @@ function layerDmg(a,d){const L=layers(a);let hp=a.hp,rem=d;
   if(rem>0&&L.ar&&hp>L.aB){const t=Math.min(rem*.7,hp-L.aB);hp-=t;rem-=t/.7}
   if(rem>0)hp-=rem; return a.hp-hp}
 // falloff: full damage up to s metres, down to f x damage at e metres (sheet distances x0.5 for our smaller maps)
-const FALLOFF={jathab:[12.5,17.5,.3],leo:[5,10,.3],barraq:[5,10,.3]};
+const FALLOFF={jathab:[12.5,17.5,.3],leo:[5,10,.3],barraq:[5,10,.3],amr:[15,25,.3]};
 function falloff(h,dist){const f=FALLOFF[h];if(!f||dist<=f[0])return 1;return dist>=f[1]?f[2]:1-(1-f[2])*(dist-f[0])/(f[1]-f[0])}
 function applyBuff(a,f){if(!a||a.dead||!f)return;if(f.em)a.em=Math.max(a.em,clamp(num(f.em),0,10));if(f.dr)a.dr=Math.max(a.dr,clamp(num(f.dr),0,10));if(f.sb)a.sb=Math.max(a.sb||0,clamp(num(f.sb),0,8));if(f.ov){a.ovh=Math.max(a.ovh,clamp(num(f.ov),0,600));a.ovhT=Math.max(a.ovhT,clamp(num(f.ovt,5),0,15))}}
 function buffTarget(src,t,f){if(isAuth(t))applyBuff(t,f);else pushEv({k:'bf',to:t.id,by:src.id,f})}
@@ -2857,6 +2895,7 @@ function ringFx(x,z,rad,col,dur=.3){
 function cosFx(e){
   const x=clamp(num(e.x),-LIM,LIM),z=clamp(num(e.z),-LIM,LIM),r=clamp(num(e.r,2),0,12);
   switch(e.t){
+    case 'rk3':{const a=num(e.a),pp=num(e.p),y=clamp(num(e.y,1.4),0,4),own=String(e.by||'');for(let k=0;k<3;k++){const v=V3(a+(k-1)*.025,pp,34);addProj({cos:true,ownId:own,kind:'rocket',x,z,y,vx:v.vx,vz:v.vz,vy:v.vy,life:1.2,r:.25,dmg:0,delay:k*.09})}playAt('c_amr_ab',x,z);break;}
     case 'boom': burst(x,.8,z,0x9b5cff,14,7,7);burst(x,.8,z,0xffffff,4,5,5);ringFx(x,z,r,0xc49bff);S.shake=Math.max(S.shake,.15);playAt('boom',x,z);break;
     case 'fire': burst(x,.8,z,0xff8a3d,14,6,6);ringFx(x,z,r,0xff8a3d);playAt('boom',x,z);break;
     case 'bolt': bolt(x,z,clamp(num(e.ex),-LIM,LIM),clamp(num(e.ez),-LIM,LIM));playAt('zap',x,z);break;
@@ -2975,10 +3014,11 @@ function rayEnd(x,z,ax,az,max,through,owner){
 }
 function addProj(p){
   const geo=p.kind==='orb'||p.kind==='sonic'?G.orb:p.kind==='wave'?G.wave:(p.kind==='thorn'||p.kind==='dart'||p.kind==='sleep'||p.kind==='bolt')?G.thorn:G.pellet;
-  const col={orb:0xc49bff,sonic:0x5ee38a,wave:0xff8a3d,rivet:0xffd23a,bolt:0xf2c14e,thorn:0x8af0aa,dart:0xb7f04a,sleep:0xffffff}[p.kind]||(p.dark?0x1f8a90:p.hot?0xffd27a:0xff7a5c);
+  const col={rocket:0xffb347,orb:0xc49bff,sonic:0x5ee38a,wave:0xff8a3d,rivet:0xffd23a,bolt:0xf2c14e,thorn:0x8af0aa,dart:0xb7f04a,sleep:0xffffff}[p.kind]||(p.dark?0x1f8a90:p.hot?0xffd27a:0xff7a5c);
   p.m=new THREE.Mesh(geo,pmat(col)); if(MZ_NOW)p.mo=[MZ_NOW.x-p.x,MZ_NOW.y-(p.y||1.05),MZ_NOW.z-p.z];
   p.m.position.set(p.x+(p.mo?p.mo[0]:0),(p.y||1.05)+(p.mo?p.mo[1]:0),p.z+(p.mo?p.mo[2]:0)); p.m.rotation.y=Math.atan2(p.vx,p.vz);
   if(p.kind==='sonic')p.m.scale.setScalar(.6);
+  if(p.kind==='rocket')p.m.scale.set(1.4,1.4,2.6);
   p.m.visible=!(p.delay>0); scene.add(p.m); projs.push(p);
 }
 function flameCone(A,an){
@@ -3024,10 +3064,10 @@ function coneHit(A,an,range,ang,dmg,f,o){
 function arcParts(x,z,a,r,c,n=14){for(let i=0;i<n&&parts.length<420;i++){const q=a+rand(-1,1),d=rand(.6,r);burst(x+Math.sin(q)*d,1,z+Math.cos(q)*d,c,1,.6,2)}}
 /* ---------- weapon feel: muzzle origin, flash, casings, recoil, bloom ---------- */
 // visual recoil per shot (radians of camera kick), bloom added per shot, and extra spread while moving
-const RECOIL={zizo:0,naheef:.06,sabit:.004,jathab:.05,illa:.022,leo:.035,thabih:0,shamikh:.012,osama:.02,rayan:.003,barraq:.012,hakim:.07};
-const BLOOM={naheef:.01,jathab:.012,illa:.008,leo:.01,shamikh:.004,osama:.006,barraq:.005,hakim:.004};
-const MOVESPR={naheef:.05,jathab:.02,illa:.018,leo:.04,shamikh:.012,osama:.02,barraq:.025,hakim:.03};
-const CASING={naheef:1,leo:2,shamikh:1,illa:0,barraq:2,hakim:1};
+const RECOIL={zizo:0,naheef:.06,sabit:.004,jathab:.05,illa:.022,leo:.035,thabih:0,shamikh:.012,osama:.02,rayan:.003,barraq:.012,hakim:.07,amr:.016};
+const BLOOM={amr:.0035,naheef:.01,jathab:.012,illa:.008,leo:.01,shamikh:.004,osama:.006,barraq:.005,hakim:.004};
+const MOVESPR={amr:.015,naheef:.05,jathab:.02,illa:.018,leo:.04,shamikh:.012,osama:.02,barraq:.025,hakim:.03};
+const CASING={amr:1,naheef:1,leo:2,shamikh:1,illa:0,barraq:2,hakim:1};
 const MZL=HQ?new THREE.PointLight(0xffc477,0,8,2):null; if(MZL)scene.add(MZL);
 let MZ_NOW=null;
 const _mv=new THREE.Vector3(), _tv=new THREE.Vector3();
@@ -3259,6 +3299,15 @@ function fire(A){
     if(best){dealDamage(A,best,9.5*(1+en/100),null,{quiet:Math.random()<.6});tracer3(mz.x,mz.y,mz.z,best.x,1.15,best.z,0x9fb4ff,(me?.7:1.3)*w,.09);tracer3(mz.x,mz.y,mz.z,best.x,1.15,best.z,0xffffff,(me?.25:.5)*w,.09);recE=[best.x,best.z];if(Math.random()<.3)shotEv(A,{x:r2(gx),z:r2(gz),a:r2(an),ex:r2(best.x),ez:r2(best.z),e:Math.round(en)})}
     else{const [ex,ez]=rayEnd(gx,gz,Math.sin(an),Math.cos(an),6,false,A);tracer3(mz.x,mz.y,mz.z,ex,1.15,ez,0x9fb4ff,(me?.4:.8)*w,.06)}
     if(Math.random()<.3)snd('rayan'); break;}
+  case 'amr':{     // dune rifle: hitscan auto fire, 19 per bullet, falls to 5.7 from 15 to 25 m (sheet 30-50 m, halved); the ult locks every shot
+    let a=an, pp=null, lockT=null;
+    if(me&&P.ultT>0){let bs=1e9;for(const e of visibleEnemies(P,40)){const dx=e.x-P.x,dz=e.z-P.z,d=Math.hypot(dx,dz),off=Math.abs(angDiff(an,Math.atan2(dx,dz)));if(off<1.2&&!lineBlocked(P.x,P.z,e.x,e.z)){const sc=off*20+d;if(sc<bs){bs=sc;lockT=e}}}
+      if(lockT){a=Math.atan2(lockT.x-P.x,lockT.z-P.z);pp=Math.atan2(baseY(lockT)+bodyH(lockT)*.6-R0.y,Math.hypot(lockT.x-P.x,lockT.z-P.z))}}
+    const sprd=lockT?0:(me?.003+xs:.012), aa=a+rand(-sprd,sprd), hr=ray3(A,R0,aa,pp!==null?pp:pv(sprd),30), hit=hr.e; let ex=hr.x,ez=hr.z,ey=hr.y;
+    if(hit){dealDamage(A,hit,Math.round(19*falloff('amr',Math.hypot(hit.x-A.x,hit.z-A.z))*10)/10,null,{quiet:Math.random()<.6,crit:hr.head})}else impact(ex,ey,ez);
+    tracer3(mz.x,mz.y,mz.z,ex,ey,ez,lockT?0x8fff6a:0xfff1b0,me?.5:.9,.07); recE=[ex,ez];
+    if(me)P.lastFireT=performance.now();
+    if(Math.random()<.4)shotEv(A,{x:r2(gx),z:r2(gz),a:r2(an),ex:r2(ex),ez:r2(ez),ey:r2(ey)}); snd('amr'); break;}
   case 'barraq':{  // twin pistols: hitscan, full damage to 7 m, half beyond
     const sprd=(me?.012+xs:.05), a=an+rand(-sprd,sprd), hr=ray3(A,R0,a,pv(sprd),12), hit=hr.e; const ex=hr.x,ez=hr.z,ey=hr.y;
     if(hit){const d=Math.hypot(hit.x-A.x,hit.z-A.z);dealDamage(A,hit,Math.round(12*falloff('barraq',d)*10)/10,null,{quiet:Math.random()<.5,crit:hr.head})}else impact(ex,ey,ez);
@@ -3281,7 +3330,7 @@ function cosShot(e){
   const x=clamp(num(e.x),-LIM,LIM),z=clamp(num(e.z),-LIM,LIM),a=num(e.a),y=(A?A.y:0)+1.05,ex=clamp(num(e.ex),-LIM,LIM),ez=clamp(num(e.ez),-LIM,LIM),ey=e.ey===undefined?1.15:clamp(num(e.ey),0,8),pt=clamp(num(e.pt),-.6,.6),ry=(A?A.y:0)+(A&&FP.eye[A.h]||1.6)*.88;
   const P2=(kind,o)=>addProj(Object.assign({cos:true,ownId:e.by,kind,x,z,y},o));
   const mz=A?muzzle(A,e.w==='leo'||e.w==='barraq'?(A.alt||1):0):{x,y,z}; MZ_NOW=mz;
-  recShot(A,a,e.w==='jathab'||e.w==='thabih'||e.w==='rayan'||e.w==='barraq'||e.w==='hakim'?ex:undefined,ez);
+  recShot(A,a,e.w==='jathab'||e.w==='thabih'||e.w==='rayan'||e.w==='barraq'||e.w==='hakim'||e.w==='amr'?ex:undefined,ez);
   switch(e.w){
     case 'zizo':setTimeout(()=>{arcParts(x,z,a,3.4,0xffb070);swooshFx(x,z,a,0xff8a3a);playAt('zizo',x,z)},170);break;
     case 'zizo_w':P2('wave',{vx:Math.sin(a)*20,vz:Math.cos(a)*20,life:.85,r:.9,pierceE:true});playAt('flame',x,z);break;
@@ -3295,6 +3344,7 @@ function cosShot(e){
     case 'osama':for(let i=0;i<4;i++)P2('sonic',Object.assign({y:ry,life:.47,r:.24,delay:i*.06},V3(a,pt,30)));playAt('osama',x,z);break;
     case 'rayan':{const w=1+clamp(num(e.e),0,100)/100*.6;tracer3(mz.x,mz.y,mz.z,ex,1.15,ez,0x9fb4ff,1.3*w,.2);tracer3(mz.x,mz.y,mz.z,ex,1.15,ez,0xffffff,.5*w,.2);playAt('rayan',x,z);break}
     case 'barraq':tracer3(mz.x,mz.y,mz.z,ex,ey,ez,0xffc36a,.9,.08);playAt('barraq',x,z);break;
+    case 'amr':tracer3(mz.x,mz.y,mz.z,ex,ey,ez,0xfff1b0,.9,.07);playAt('amr',x,z);break;
     case 'hakim':tracer3(mz.x,mz.y,mz.z,ex,ey,ez,0x9ff5e6,1.2,.16);playAt('hakim',x,z);break;
   }
   MZ_NOW=null; if(A&&e.w!=='zizo_w')weaponFx(A,mz,a);
@@ -3339,6 +3389,10 @@ function useAbility(slot){
     for(const e of alliesOf(P,9,true))buffTarget(P,e,{sb:5});
     fxOut({t:'ring',x:r2(P.x),z:r2(P.z),r:9,c:0x5ee38a}); break;
   case 'rayan': P.bar=2.5; P.barHp=200; break;
+  case 'amr':{      // رشقة الصقر: three rockets, 40 direct + 40 splash (2.5 m) each
+    const a=aimA(), R0=shotRay(P,a), pp=FP.shotPitch!==undefined&&isTouchOnly?FP.shotPitch:FP.pitch;
+    for(let k=0;k<3;k++){const sp=34,v=V3(a+(k-1)*.025,pp,sp);addProj({own:P,kind:'rocket',x:R0.x,z:R0.z,y:R0.y,vx:v.vx,vz:v.vz,vy:v.vy,life:1.2,r:.25,dmg:40,boom:2.5,bdmg:40,delay:k*.09})}
+    pushEv({k:'f',t:'rk3',by:P.id,x:r2(R0.x),z:r2(R0.z),y:r2(R0.y),a:r2(a),p:r2(pp)}); playAt('c_amr_ab',P.x,P.z); break;}   // others draw cosmetic rockets
   case 'barraq':{   // blink: instant, in the direction you are moving (forward if standing still), stops short of walls
     let dx=inp.mx,dz=inp.mz,l=Math.hypot(dx,dz); if(l<.2){dx=P.ax;dz=P.az;l=1} dx/=l; dz/=l;
     let [ex,ez]=rayEnd(P.x,P.z,dx,dz,7,false,P); const back=Math.max(0,Math.hypot(ex-P.x,ez-P.z)-.55); ex=P.x+dx*back; ez=P.z+dz*back;
@@ -3374,6 +3428,7 @@ function useUlt(){
     const a=aimA(); let x=P.x+Math.sin(a)*10,z=P.z+Math.cos(a)*10; if(FP.foe&&FP.foe.tight&&FP.foe.d<12){x=FP.foe.x;z=FP.foe.z}   // lobbed: flies over low cover
     for(let k=0;k<20&&inBox(x,z,.6);k++){x-=Math.sin(a)*.5;z-=Math.cos(a)*.5}
     x=clamp(x,-ARENA+1.5,ARENA-1.5); z=clamp(z,-ARENA+1.5,ARENA-1.5); addObj({k:'grav',x,z,a:0,t:4}); fxOut({t:'ring',x:r2(x),z:r2(z),r:6.5,c:0x5c7cff}); break;}
+  case 'amr': start(6); break;
   case 'barraq':{ // pulse bomb: sticks to the first enemy along your aim (9 m), otherwise lands
     const a=aimA(),dx=Math.sin(a),dz=Math.cos(a); let [ex,ez]=rayEnd(P.x,P.z,dx,dz,9,false,P),hit=null,bt=2;
     for(const e of combatants()){if(!isEnemy(P,e)||e.dead)continue;const [d,,,t]=segDist(e.x,e.z,P.x,P.z,ex,ez);if(d<e.r+.45&&t<bt){bt=t;hit=e}}
@@ -3424,6 +3479,7 @@ function heroTick(dt){
 }
 function speedMul(){
   let m=1;
+  if(P.h==='amr'&&performance.now()-(P.lastFireT||0)>700)m*=1.1;
   if(P.sb>0)m*=1.4; if(P.wraith>0)m*=1.5; if(P.breath>0)m*=.6; if(P.deadeye)m*=.3;
   if(P.ultT>0){if(P.h==='leo')m*=.6;if(P.h==='sabit')m*=1.25;if(P.h==='shamikh')m*=1.35;if(P.h==='naheef')m*=.8}
   return m;
@@ -4236,6 +4292,8 @@ function update(dt){
       }
     }
     if(!dead&&p.life<=0){dead=true;if(!p.cos&&p.kind==='orb')makeWell(own,p.x,p.z)}
+    if(dead&&p.kind==='rocket'){const hy=p.y||1.05;burst(p.x,hy,p.z,0xffb347,10,5,5);burst(p.x,hy,p.z,0xffffff,3,4,4);ringFx(p.x,p.z,p.boom||2.5,0xffb347,.25);playAt('boom',p.x,p.z,.6);
+      if(!p.cos&&own&&p.boom)for(const e of targetsFor(own)){if(e.dead||!isEnemy(own,e))continue;const d=Math.hypot(e.x-p.x,e.z-p.z);if(d<p.boom+e.r)dealDamage(own,e,p.bdmg*(1-.5*Math.min(1,d/p.boom)),{kb:[r2((e.x-p.x)/(d||1)*3),r2((e.z-p.z)/(d||1)*3)]},{quiet:true})}}
     else if(dead&&!p.cos&&p.kind==='orb'&&(outside(p.x,p.z)||inBox(p.x,p.z)))makeWell(own,p.x-p.vx*.03,p.z-p.vz*.03);
     if(dead){if(p.kind!=='orb'&&!p.delay&&(inBox(p.x,p.z)||outside(p.x,p.z)))impact(p.m.position.x,p.m.position.y,p.m.position.z);if(p.kind!=='orb')burst(p.x,p.m.position.y,p.z,p.kind==='thorn'?0x8af0aa:p.kind==='dart'?0xb7f04a:p.kind==='flux'?0xff6b8b:p.kind==='slug'?0xe8c48a:0xff7a5c,2,2,2);scene.remove(p.m);projs.splice(i,1)}
   }
